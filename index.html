@@ -180,6 +180,11 @@
         /* Vue jeu */
         .game-view {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: background-color 0.5s ease;
+        }
+
+        .blue-screen {
+            background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%) !important;
         }
 
         .game-container {
@@ -208,6 +213,34 @@
             border: 3px solid #e9ecef;
         }
 
+        .answers-display {
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .answer-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .answer-item.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .answer-item.incorrect {
+            background: #f8f9fa;
+            border-color: #e9ecef;
+            color: #666;
+        }
+
         .status-message {
             font-size: 20px;
             margin: 30px 0;
@@ -222,43 +255,32 @@
             color: #667eea;
         }
 
-        .answer-time {
-            color: #00b894;
-            font-size: 24px;
+        .blue-screen-message {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
         }
 
-        .answers-container {
+        .controls {
             margin-top: 30px;
         }
 
-        .answer-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
+        .next-btn {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .answer-btn:hover {
-            background: #f8f9fa;
-            border-color: #667eea;
-        }
-
-        .answer-btn.correct {
-            background: #d4edda;
-            border-color: #28a745;
-            color: #155724;
-        }
-
-        .answer-btn.incorrect {
-            background: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .hidden {
@@ -349,12 +371,18 @@
                 La question apparaîtra ici...
             </div>
 
+            <div class="answers-display" id="answersDisplay">
+                <!-- Les réponses seront affichées ici -->
+            </div>
+
             <div class="status-message thinking" id="statusMessage">
                 ⏳ Réfléchissez à la question...
             </div>
 
-            <div class="answers-container hidden" id="answersContainer">
-                <!-- Les réponses seront ajoutées ici dynamiquement -->
+            <div class="controls">
+                <button class="next-btn" onclick="nextQuestion()" id="nextButton">
+                    Question Suivante
+                </button>
             </div>
 
             <div class="music-controls">
@@ -394,18 +422,21 @@
         let currentTimer;
         let timeLeft;
         const thinkingTime = 10;
+        const blueScreenTime = 3;
         let currentQuestionIndex = 0;
         let isMusicPlaying = false;
         let countdownInterval;
 
         // Éléments DOM
         const questionDisplay = document.getElementById('questionDisplay');
+        const answersDisplay = document.getElementById('answersDisplay');
         const statusMessage = document.getElementById('statusMessage');
-        const answersContainer = document.getElementById('answersContainer');
         const bipSound = document.getElementById('bipSound');
         const countdownSound = document.getElementById('countdownSound');
         const ambienceMusic = document.getElementById('ambienceMusic');
         const countdownNumber = document.getElementById('countdownNumber');
+        const nextButton = document.getElementById('nextButton');
+        const gameView = document.getElementById('normal-game-view');
 
         // Questions d'exemple
         const sampleQuestions = [
@@ -502,10 +533,23 @@
             const question = sampleQuestions[currentQuestionIndex];
             currentQuestionIndex++;
 
+            // Afficher la question
             questionDisplay.textContent = question.question;
-            answersContainer.classList.add('hidden');
+            
+            // Afficher toutes les réponses (sans indication de correct/incorrect)
+            answersDisplay.innerHTML = '';
+            question.answers.forEach((answer, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item incorrect';
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
+                answersDisplay.appendChild(answerElement);
+            });
+
+            // Réinitialiser l'interface
             statusMessage.textContent = "⏳ Réfléchissez à la question...";
             statusMessage.className = 'status-message thinking';
+            nextButton.style.display = 'none';
+            gameView.classList.remove('blue-screen');
 
             startAmbienceMusic();
             startTimer();
@@ -530,62 +574,43 @@
             stopAmbienceMusic();
             bipSound.play();
             
-            statusMessage.textContent = "🎯 TEMPS ÉCOULÉ ! Répondez maintenant !";
-            statusMessage.className = 'status-message answer-time';
-
-            displayAnswers();
+            // Afficher l'écran bleu
+            showBlueScreen();
         }
 
-        // Afficher les réponses
-        function displayAnswers() {
+        // Afficher l'écran bleu
+        function showBlueScreen() {
+            gameView.classList.add('blue-screen');
+            statusMessage.textContent = "⏰ Temps écoulé !";
+            statusMessage.className = 'blue-screen-message';
+            
+            // Après 3 secondes, afficher la réponse
+            setTimeout(() => {
+                showCorrectAnswer();
+            }, blueScreenTime * 1000);
+        }
+
+        // Afficher la réponse correcte
+        function showCorrectAnswer() {
             const question = sampleQuestions[currentQuestionIndex - 1];
-            answersContainer.innerHTML = '';
-            answersContainer.classList.remove('hidden');
-
-            question.answers.forEach((answer) => {
-                const button = document.createElement('button');
-                button.className = 'answer-btn';
-                button.textContent = answer.text;
-                button.onclick = () => selectAnswer(answer.correct, button);
-                answersContainer.appendChild(button);
+            
+            // Marquer la bonne réponse en vert
+            const answerElements = answersDisplay.querySelectorAll('.answer-item');
+            question.answers.forEach((answer, index) => {
+                if (answer.correct) {
+                    answerElements[index].className = 'answer-item correct';
+                }
             });
+
+            statusMessage.textContent = "✅ Voici la bonne réponse !";
+            statusMessage.className = 'status-message thinking';
+            gameView.classList.remove('blue-screen');
+            nextButton.style.display = 'block';
         }
 
-        // Sélectionner une réponse
-        function selectAnswer(isCorrect, button) {
-            const allButtons = answersContainer.querySelectorAll('.answer-btn');
-            allButtons.forEach(btn => {
-                btn.disabled = true;
-                btn.style.cursor = 'not-allowed';
-            });
-
-            if (isCorrect) {
-                button.classList.add('correct');
-                statusMessage.textContent = "✅ Bonne réponse ! 🎉";
-                
-                // Passer à la question suivante après un délai
-                setTimeout(() => {
-                    startNewQuestion();
-                }, 2000);
-            } else {
-                button.classList.add('incorrect');
-                statusMessage.textContent = "❌ Mauvaise réponse !";
-                
-                // Marquer la bonne réponse
-                const correctButton = Array.from(allButtons).find(btn => 
-                    sampleQuestions[currentQuestionIndex - 1].answers[
-                        Array.from(allButtons).indexOf(btn)
-                    ].correct
-                );
-                if (correctButton) {
-                    correctButton.classList.add('correct');
-                }
-                
-                // Passer à la question suivante après un délai
-                setTimeout(() => {
-                    startNewQuestion();
-                }, 2000);
-            }
+        // Question suivante
+        function nextQuestion() {
+            startNewQuestion();
         }
 
         // Gestion musique
