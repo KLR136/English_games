@@ -90,7 +90,7 @@
             border: none;
             border-radius: 25px;
             font-size: 16px;
-            font-weight: bold;
+            fontWeight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 0 10px;
@@ -104,6 +104,13 @@
         .btn-secondary {
             background: #636e72;
             color: white;
+        }
+
+        .btn-music {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-size: 14px;
+            padding: 8px 15px;
         }
 
         .btn:hover {
@@ -153,6 +160,16 @@
         .hidden-timer {
             display: none;
         }
+
+        .music-controls {
+            margin-top: 20px;
+        }
+
+        .music-status {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body class="normal-state">
@@ -176,6 +193,15 @@
             <!-- Les réponses seront ajoutées ici dynamiquement -->
         </div>
 
+        <div class="music-controls">
+            <button class="btn btn-music" onclick="toggleMusic()">
+                🔇 Musique
+            </button>
+            <div class="music-status" id="musicStatus">
+                Musique: Arrêtée
+            </div>
+        </div>
+
         <div class="controls">
             <button class="btn btn-primary" onclick="startNewQuestion()">
                 Question Suivante
@@ -191,6 +217,12 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Musique d'ambiance -->
+    <audio id="ambienceMusic" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+        <!-- Musique d'ambiance électronique douce -->
+    </audio>
+
     <script>
         // Variables du jeu
         let currentTimer;
@@ -198,6 +230,8 @@
         const thinkingTime = 10; // 10 secondes de réflexion
         let questions = [];
         let currentQuestionIndex = 0;
+        let isMusicPlaying = false;
+        let musicFadeInterval;
 
         // Éléments DOM
         const questionDisplay = document.getElementById('questionDisplay');
@@ -205,7 +239,9 @@
         const statusMessage = document.getElementById('statusMessage');
         const answersContainer = document.getElementById('answersContainer');
         const bipSound = document.getElementById('bipSound');
+        const ambienceMusic = document.getElementById('ambienceMusic');
         const body = document.body;
+        const musicStatus = document.getElementById('musicStatus');
 
         // Questions d'exemple
         const sampleQuestions = [
@@ -254,6 +290,9 @@
             statusMessage.textContent = "⏳ Réfléchissez à la question...";
             statusMessage.className = 'status-message thinking';
 
+            // Démarrer la musique d'ambiance si activée
+            startAmbienceMusic();
+
             // Démarrer le timer caché
             startTimer();
         }
@@ -277,6 +316,9 @@
 
         // Temps écoulé
         function timeUp() {
+            // Arrêter la musique d'ambiance avec fondu
+            stopAmbienceMusic();
+            
             // Jouer le bip sonore
             bipSound.play();
             
@@ -289,6 +331,66 @@
 
             // Afficher les réponses
             displayAnswers();
+        }
+
+        // Gestion de la musique d'ambiance
+        function startAmbienceMusic() {
+            if (isMusicPlaying) {
+                ambienceMusic.currentTime = 0;
+                ambienceMusic.volume = 0.3;
+                ambienceMusic.play().catch(e => {
+                    console.log("Lecture automatique bloquée:", e);
+                });
+            }
+        }
+
+        function stopAmbienceMusic() {
+            if (isMusicPlaying) {
+                // Fondu de sortie
+                fadeOutMusic(ambienceMusic, 500); // 500ms de fondu
+            }
+        }
+
+        function fadeOutMusic(audioElement, duration) {
+            const startVolume = audioElement.volume;
+            const fadeStep = startVolume / (duration / 50);
+            
+            clearInterval(musicFadeInterval);
+            
+            musicFadeInterval = setInterval(() => {
+                if (audioElement.volume > 0) {
+                    audioElement.volume = Math.max(0, audioElement.volume - fadeStep);
+                } else {
+                    clearInterval(musicFadeInterval);
+                    audioElement.pause();
+                    audioElement.volume = startVolume; // Réinitialiser le volume
+                }
+            }, 50);
+        }
+
+        function toggleMusic() {
+            const musicBtn = document.querySelector('.btn-music');
+            
+            if (isMusicPlaying) {
+                // Arrêter la musique
+                ambienceMusic.pause();
+                ambienceMusic.currentTime = 0;
+                musicBtn.innerHTML = '🔇 Musique';
+                musicStatus.textContent = 'Musique: Arrêtée';
+                isMusicPlaying = false;
+            } else {
+                // Démarrer la musique
+                ambienceMusic.volume = 0.3;
+                ambienceMusic.play().then(() => {
+                    musicBtn.innerHTML = '🔊 Musique';
+                    musicStatus.textContent = 'Musique: En cours...';
+                    isMusicPlaying = true;
+                }).catch(e => {
+                    console.log("Erreur de lecture:", e);
+                    musicStatus.textContent = 'Musique: Cliquez pour activer';
+                    // Certains navigateurs nécessitent une interaction utilisateur
+                });
+            }
         }
 
         // Afficher les réponses
@@ -339,17 +441,26 @@
         function goToMenu() {
             if (confirm("Voulez-vous vraiment retourner au menu ?")) {
                 clearInterval(currentTimer);
+                stopAmbienceMusic();
                 window.location.href = "index.html";
             }
         }
 
         // Démarrer la première question au chargement
-        window.onload = startNewQuestion;
+        window.onload = function() {
+            // Attendre un peu avant de démarrer la première question
+            setTimeout(startNewQuestion, 1000);
+        };
 
         // Gestion des erreurs audio
         bipSound.addEventListener('error', function() {
-            console.log("Erreur de chargement du son. Utilisation d'un son de secours.");
+            console.log("Erreur de chargement du bip. Utilisation d'un son de secours.");
             playFallbackBeep();
+        });
+
+        ambienceMusic.addEventListener('error', function() {
+            console.log("Erreur de chargement de la musique.");
+            musicStatus.textContent = 'Musique: Non disponible';
         });
 
         function playFallbackBeep() {
@@ -373,6 +484,16 @@
                 console.log("L'API Audio n'est pas supportée");
             }
         }
+
+        // Gestion de la visibilité de la page
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Page cachée, mettre en pause la musique
+                if (!ambienceMusic.paused) {
+                    ambienceMusic.pause();
+                }
+            }
+        });
     </script>
 </body>
 </html>
