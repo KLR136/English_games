@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mode Normal - El Beeper</title>
+    <title>El Beeper - Menu Principal</title>
     <style>
         * {
             margin: 0;
@@ -13,487 +13,247 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            transition: background-color 0.5s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .game-container {
-            background: white;
+        .menu-container {
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             text-align: center;
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
         }
 
-        /* État normal */
-        .normal-state {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .logo-space {
+            margin-bottom: 20px;
         }
 
-        /* État réponse */
-        .answer-state {
-            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
-            animation: flash 0.3s 3;
-        }
-
-        @keyframes flash {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .question-display {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            min-height: 80px;
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.4;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border: 3px solid #e9ecef;
-        }
-
-        .status-message {
-            font-size: 20px;
-            margin: 30px 0;
-            min-height: 30px;
+            color: white;
+            font-size: 48px;
             font-weight: bold;
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9);
         }
 
-        .thinking {
-            color: #667eea;
+        .slogan-space {
+            margin-bottom: 30px;
         }
 
-        .answer-time {
-            color: #00b894;
-            font-size: 24px;
+        .slogan {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.4;
         }
 
-        .controls {
-            margin-top: 30px;
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .btn {
-            padding: 12px 30px;
+        .menu-btn {
+            padding: 15px 30px;
             border: none;
-            border-radius: 25px;
+            border-radius: 50px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #636e72;
-            color: white;
-        }
-
-        .btn-music {
+        .btn-rules {
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
-            font-size: 14px;
-            padding: 8px 15px;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .btn-normal {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
         }
 
-        .hidden {
+        .btn-hard {
+            background: linear-gradient(45deg, #6c5ce7, #5b4bc4);
+            color: white;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Styles pour les différentes vues */
+        .view {
             display: none;
         }
 
-        .answers-container {
-            margin-top: 30px;
+        .view.active {
+            display: block;
         }
 
-        .answer-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            font-size: 16px;
+        .back-btn {
+            background: #636e72;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
 
-        .answer-btn:hover {
+        .back-btn:hover {
+            background: #2d3436;
+        }
+
+        /* Style pour la vue règles */
+        .rules-content {
+            text-align: left;
             background: #f8f9fa;
-            border-color: #667eea;
-        }
-
-        .answer-btn.correct {
-            background: #d4edda;
-            border-color: #28a745;
-            color: #155724;
-        }
-
-        .answer-btn.incorrect {
-            background: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
-        }
-
-        /* Timer complètement caché */
-        .hidden-timer {
-            display: none;
-        }
-
-        .music-controls {
+            padding: 20px;
+            border-radius: 10px;
             margin-top: 20px;
         }
 
-        .music-status {
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
+        .rules-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .rules-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* Style pour les vues de jeu */
+        .game-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
         }
     </style>
 </head>
-<body class="normal-state">
-    <div class="game-container">
-        <h1>🎮 Mode Normal</h1>
+<body>
+    <!-- Menu Principal -->
+    <div class="menu-container view active" id="main-menu">
+        <div class="logo-space">
+            <div class="logo">EB</div>
+        </div>
         
-        <div class="question-display" id="questionDisplay">
-            La question apparaîtra ici...
+        <div class="slogan-space">
+            <p class="slogan" id="slogan">Testez vos connaissances en mode normal ou défiez-vous en mode difficile !</p>
         </div>
-
-        <!-- Timer complètement caché -->
-        <div class="hidden-timer" id="hiddenTimer">
-            <span id="timer">10</span>
-        </div>
-
-        <div class="status-message thinking" id="statusMessage">
-            ⏳ Réfléchissez à la question...
-        </div>
-
-        <div class="answers-container hidden" id="answersContainer">
-            <!-- Les réponses seront ajoutées ici dynamiquement -->
-        </div>
-
-        <div class="music-controls">
-            <button class="btn btn-music" onclick="toggleMusic()">
-                🔇 Musique
+        
+        <div class="menu-buttons">
+            <button class="menu-btn btn-rules" onclick="showView('rules-view')">
+                📋 Voir les Règles
             </button>
-            <div class="music-status" id="musicStatus">
-                Musique: Arrêtée
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-primary" onclick="startNewQuestion()">
-                Question Suivante
+            <button class="menu-btn btn-normal" onclick="startGame('normal')">
+                🎮 Mode Normal
             </button>
-            <button class="btn btn-secondary" onclick="goToMenu()">
-                Retour au Menu
+            <button class="menu-btn btn-hard" onclick="startGame('hard')">
+                💀 Mode Difficile
             </button>
         </div>
     </div>
 
-    <!-- Audio pour le bip -->
-    <audio id="bipSound" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Vue Règles -->
+    <div class="menu-container view" id="rules-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour</button>
+        <h2>Règles du Jeu</h2>
+        <div class="rules-content">
+            <h3>🎯 Objectif du jeu</h3>
+            <p>Répondez correctement aux questions pour accumuler le maximum de points.</p>
+            
+            <h3>📊 Mode Normal</h3>
+            <p>- Questions de difficulté standard</p>
+            <p>- Temps de réponse limité</p>
+            <p>- Points standards par bonne réponse</p>
+            
+            <h3>🔥 Mode Difficile</h3>
+            <p>- Questions complexes et détaillées</p>
+            <p>- Temps de réponse réduit</p>
+            <p>- Bonus de points pour les réponses rapides</p>
+            <p>- Pénalités pour les mauvaises réponses</p>
+            
+            <h3>🏆 Système de points</h3>
+            <p>Chaque question a une valeur différente selon sa difficulté et votre rapidité.</p>
+        </div>
+    </div>
 
-    <!-- Musique d'ambiance -->
-    <audio id="ambienceMusic" loop preload="auto">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
-        <!-- Musique d'ambiance électronique douce -->
-    </audio>
+    <!-- Vue Jeu Normal -->
+    <div class="menu-container view" id="normal-game-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour au Menu</button>
+        <h2 class="game-title">🎮 Mode Normal</h2>
+        <div id="normal-game-content">
+            <!-- Le contenu du jeu normal sera chargé ici -->
+            <p>Interface du jeu en mode normal...</p>
+        </div>
+    </div>
+
+    <!-- Vue Jeu Difficile -->
+    <div class="menu-container view" id="hard-game-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour au Menu</button>
+        <h2 class="game-title">💀 Mode Difficile</h2>
+        <div id="hard-game-content">
+            <!-- Le contenu du jeu difficile sera chargé ici -->
+            <p>Interface du jeu en mode difficile...</p>
+        </div>
+    </div>
 
     <script>
-        // Variables du jeu
-        let currentTimer;
-        let timeLeft;
-        const thinkingTime = 10; // 10 secondes de réflexion
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let isMusicPlaying = false;
-        let musicFadeInterval;
+        // Fonction pour changer de vue
+        function showView(viewId) {
+            // Cacher toutes les vues
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Afficher la vue demandée
+            document.getElementById(viewId).classList.add('active');
+        }
 
-        // Éléments DOM
-        const questionDisplay = document.getElementById('questionDisplay');
-        const timerElement = document.getElementById('timer');
-        const statusMessage = document.getElementById('statusMessage');
-        const answersContainer = document.getElementById('answersContainer');
-        const bipSound = document.getElementById('bipSound');
-        const ambienceMusic = document.getElementById('ambienceMusic');
-        const body = document.body;
-        const musicStatus = document.getElementById('musicStatus');
-
-        // Questions d'exemple
-        const sampleQuestions = [
-            {
-                question: "Quelle est la capitale de la France?",
-                answers: [
-                    { text: "Londres", correct: false },
-                    { text: "Paris", correct: true },
-                    { text: "Berlin", correct: false },
-                    { text: "Madrid", correct: false }
-                ]
-            },
-            {
-                question: "Combien font 2 + 2?",
-                answers: [
-                    { text: "3", correct: false },
-                    { text: "4", correct: true },
-                    { text: "5", correct: false },
-                    { text: "6", correct: false }
-                ]
-            },
-            {
-                question: "Quelle est la couleur du ciel par temps clair?",
-                answers: [
-                    { text: "Rouge", correct: false },
-                    { text: "Vert", correct: false },
-                    { text: "Bleu", correct: true },
-                    { text: "Jaune", correct: false }
-                ]
+        // Fonction pour démarrer le jeu
+        function startGame(mode) {
+            if (mode === 'normal') {
+                showView('normal-game-view');
+                // Ici vous chargeriez les questions normales depuis votre JSON
+                console.log('Démarrage du mode normal');
+            } else if (mode === 'hard') {
+                showView('hard-game-view');
+                // Ici vous chargeriez les questions difficiles depuis votre JSON
+                console.log('Démarrage du mode difficile');
             }
+        }
+
+        // Exemple de chargement dynamique du slogan
+        const slogans = [
+            "Testez vos connaissances en mode normal ou défiez-vous en mode difficile !",
+            "Saurez-vous relever le défi ? Mode normal ou difficile, à vous de choisir !",
+            "La connaissance n'a pas de limites. Testez-la dès maintenant !"
         ];
 
-        // Démarrer une nouvelle question
-        function startNewQuestion() {
-            if (currentQuestionIndex >= sampleQuestions.length) {
-                currentQuestionIndex = 0; // Recommencer
-            }
-
-            const question = sampleQuestions[currentQuestionIndex];
-            currentQuestionIndex++;
-
-            // Réinitialiser l'interface
-            questionDisplay.textContent = question.question;
-            answersContainer.classList.add('hidden');
-            body.className = 'normal-state';
-            statusMessage.textContent = "⏳ Réfléchissez à la question...";
-            statusMessage.className = 'status-message thinking';
-
-            // Démarrer la musique d'ambiance si activée
-            startAmbienceMusic();
-
-            // Démarrer le timer caché
-            startTimer();
-        }
-
-        // Démarrer le timer caché
-        function startTimer() {
-            timeLeft = thinkingTime;
-            timerElement.textContent = timeLeft;
-
-            currentTimer = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-
-                // Fin du temps de réflexion
-                if (timeLeft <= 0) {
-                    clearInterval(currentTimer);
-                    timeUp();
-                }
-            }, 1000);
-        }
-
-        // Temps écoulé
-        function timeUp() {
-            // Arrêter la musique d'ambiance avec fondu
-            stopAmbienceMusic();
-            
-            // Jouer le bip sonore
-            bipSound.play();
-            
-            // Changer la couleur de fond avec effet flash
-            body.className = 'answer-state';
-            
-            // Afficher le message
-            statusMessage.textContent = "🎯 TEMPS ÉCOULÉ ! Répondez maintenant !";
-            statusMessage.className = 'status-message answer-time';
-
-            // Afficher les réponses
-            displayAnswers();
-        }
-
-        // Gestion de la musique d'ambiance
-        function startAmbienceMusic() {
-            if (isMusicPlaying) {
-                ambienceMusic.currentTime = 0;
-                ambienceMusic.volume = 0.3;
-                ambienceMusic.play().catch(e => {
-                    console.log("Lecture automatique bloquée:", e);
-                });
-            }
-        }
-
-        function stopAmbienceMusic() {
-            if (isMusicPlaying) {
-                // Fondu de sortie
-                fadeOutMusic(ambienceMusic, 500); // 500ms de fondu
-            }
-        }
-
-        function fadeOutMusic(audioElement, duration) {
-            const startVolume = audioElement.volume;
-            const fadeStep = startVolume / (duration / 50);
-            
-            clearInterval(musicFadeInterval);
-            
-            musicFadeInterval = setInterval(() => {
-                if (audioElement.volume > 0) {
-                    audioElement.volume = Math.max(0, audioElement.volume - fadeStep);
-                } else {
-                    clearInterval(musicFadeInterval);
-                    audioElement.pause();
-                    audioElement.volume = startVolume; // Réinitialiser le volume
-                }
-            }, 50);
-        }
-
-        function toggleMusic() {
-            const musicBtn = document.querySelector('.btn-music');
-            
-            if (isMusicPlaying) {
-                // Arrêter la musique
-                ambienceMusic.pause();
-                ambienceMusic.currentTime = 0;
-                musicBtn.innerHTML = '🔇 Musique';
-                musicStatus.textContent = 'Musique: Arrêtée';
-                isMusicPlaying = false;
-            } else {
-                // Démarrer la musique
-                ambienceMusic.volume = 0.3;
-                ambienceMusic.play().then(() => {
-                    musicBtn.innerHTML = '🔊 Musique';
-                    musicStatus.textContent = 'Musique: En cours...';
-                    isMusicPlaying = true;
-                }).catch(e => {
-                    console.log("Erreur de lecture:", e);
-                    musicStatus.textContent = 'Musique: Cliquez pour activer';
-                    // Certains navigateurs nécessitent une interaction utilisateur
-                });
-            }
-        }
-
-        // Afficher les réponses
-        function displayAnswers() {
-            const question = sampleQuestions[currentQuestionIndex - 1];
-            answersContainer.innerHTML = '';
-            answersContainer.classList.remove('hidden');
-
-            question.answers.forEach((answer, index) => {
-                const button = document.createElement('button');
-                button.className = 'answer-btn';
-                button.textContent = answer.text;
-                button.onclick = () => selectAnswer(answer.correct, button);
-                answersContainer.appendChild(button);
-            });
-        }
-
-        // Sélectionner une réponse
-        function selectAnswer(isCorrect, button) {
-            // Désactiver tous les boutons
-            const allButtons = answersContainer.querySelectorAll('.answer-btn');
-            allButtons.forEach(btn => {
-                btn.disabled = true;
-                btn.style.cursor = 'not-allowed';
-            });
-
-            // Marquer la réponse correcte/incorrecte
-            if (isCorrect) {
-                button.classList.add('correct');
-                statusMessage.textContent = "✅ Bonne réponse ! 🎉";
-            } else {
-                button.classList.add('incorrect');
-                statusMessage.textContent = "❌ Mauvaise réponse !";
-                
-                // Trouver et marquer la bonne réponse
-                const correctButton = Array.from(allButtons).find(btn => 
-                    sampleQuestions[currentQuestionIndex - 1].answers[
-                        Array.from(allButtons).indexOf(btn)
-                    ].correct
-                );
-                if (correctButton) {
-                    correctButton.classList.add('correct');
-                }
-            }
-        }
-
-        // Retour au menu
-        function goToMenu() {
-            if (confirm("Voulez-vous vraiment retourner au menu ?")) {
-                clearInterval(currentTimer);
-                stopAmbienceMusic();
-                window.location.href = "index.html";
-            }
-        }
-
-        // Démarrer la première question au chargement
-        window.onload = function() {
-            // Attendre un peu avant de démarrer la première question
-            setTimeout(startNewQuestion, 1000);
-        };
-
-        // Gestion des erreurs audio
-        bipSound.addEventListener('error', function() {
-            console.log("Erreur de chargement du bip. Utilisation d'un son de secours.");
-            playFallbackBeep();
-        });
-
-        ambienceMusic.addEventListener('error', function() {
-            console.log("Erreur de chargement de la musique.");
-            musicStatus.textContent = 'Musique: Non disponible';
-        });
-
-        function playFallbackBeep() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.5);
-            } catch (e) {
-                console.log("L'API Audio n'est pas supportée");
-            }
-        }
-
-        // Gestion de la visibilité de la page
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                // Page cachée, mettre en pause la musique
-                if (!ambienceMusic.paused) {
-                    ambienceMusic.pause();
-                }
-            }
-        });
+        // Changer le slogan aléatoirement (optionnel)
+        document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
     </script>
 </body>
 </html>
