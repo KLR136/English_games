@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Beeper - Menu Principal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .logo-space {
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .slogan-space {
+            margin-bottom: 30px;
+        }
+
+        .slogan {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-rules {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .btn-normal {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+        }
+
+        .btn-hard {
+            background: linear-gradient(45deg, #6c5ce7, #5b4bc4);
+            color: white;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Styles pour les différentes vues */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: #636e72;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #2d3436;
+        }
+
+        /* Style pour la vue règles */
+        .rules-content {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .rules-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .rules-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* Style pour les vues de jeu */
+        .game-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Principal -->
+    <div class="menu-container view active" id="main-menu">
+        <div class="logo-space">
+            <div class="logo">EB</div>
+        </div>
+        
+        <div class="slogan-space">
+            <p class="slogan" id="slogan">Testez vos connaissances en mode normal ou défiez-vous en mode difficile !</p>
+        </div>
+        
+        <div class="menu-buttons">
+            <button class="menu-btn btn-rules" onclick="showView('rules-view')">
+                📋 Voir les Règles
+            </button>
+            <button class="menu-btn btn-normal" onclick="startGame('normal')">
+                🎮 Mode Normal
+            </button>
+            <button class="menu-btn btn-hard" onclick="startGame('hard')">
+                💀 Mode Difficile
+            </button>
+        </div>
+    </div>
+
+    <!-- Vue Règles -->
+    <div class="menu-container view" id="rules-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour</button>
+        <h2>Règles du Jeu</h2>
+        <div class="rules-content">
+            <h3>🎯 Objectif du jeu</h3>
+            <p>Répondez correctement aux questions pour accumuler le maximum de points.</p>
+            
+            <h3>📊 Mode Normal</h3>
+            <p>- Questions de difficulté standard</p>
+            <p>- Temps de réponse limité</p>
+            <p>- Points standards par bonne réponse</p>
+            
+            <h3>🔥 Mode Difficile</h3>
+            <p>- Questions complexes et détaillées</p>
+            <p>- Temps de réponse réduit</p>
+            <p>- Bonus de points pour les réponses rapides</p>
+            <p>- Pénalités pour les mauvaises réponses</p>
+            
+            <h3>🏆 Système de points</h3>
+            <p>Chaque question a une valeur différente selon sa difficulté et votre rapidité.</p>
+        </div>
+    </div>
+
+    <!-- Vue Jeu Normal -->
+    <div class="menu-container view" id="normal-game-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour au Menu</button>
+        <h2 class="game-title">🎮 Mode Normal</h2>
+        <div id="normal-game-content">
+            <!-- Le contenu du jeu normal sera chargé ici -->
+            <p>Interface du jeu en mode normal...</p>
+        </div>
+    </div>
+
+    <!-- Vue Jeu Difficile -->
+    <div class="menu-container view" id="hard-game-view">
+        <button class="back-btn" onclick="showView('main-menu')">← Retour au Menu</button>
+        <h2 class="game-title">💀 Mode Difficile</h2>
+        <div id="hard-game-content">
+            <!-- Le contenu du jeu difficile sera chargé ici -->
+            <p>Interface du jeu en mode difficile...</p>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour changer de vue
+        function showView(viewId) {
+            // Cacher toutes les vues
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Afficher la vue demandée
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // Fonction pour démarrer le jeu
+        function startGame(mode) {
+            if (mode === 'normal') {
+                showView('normal-game-view');
+                // Ici vous chargeriez les questions normales depuis votre JSON
+                console.log('Démarrage du mode normal');
+            } else if (mode === 'hard') {
+                showView('hard-game-view');
+                // Ici vous chargeriez les questions difficiles depuis votre JSON
+                console.log('Démarrage du mode difficile');
+            }
+        }
+
+        // Exemple de chargement dynamique du slogan
+        const slogans = [
+            "Testez vos connaissances en mode normal ou défiez-vous en mode difficile !",
+            "Saurez-vous relever le défi ? Mode normal ou difficile, à vous de choisir !",
+            "La connaissance n'a pas de limites. Testez-la dès maintenant !"
+        ];
+
+        // Changer le slogan aléatoirement (optionnel)
+        document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
+    </script>
+</body>
+</html>
