@@ -13,13 +13,31 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: white;
+            transition: all 0.5s ease;
         }
 
+        .view {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        /* Menu Principal */
         .menu-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -28,6 +46,7 @@
             text-align: center;
             max-width: 500px;
             width: 90%;
+            color: #333;
         }
 
         .logo-space {
@@ -101,15 +120,6 @@
             transform: translateY(-1px);
         }
 
-        /* Styles pour les différentes vues */
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-        }
-
         .back-btn {
             background: #636e72;
             color: white;
@@ -144,115 +154,480 @@
             line-height: 1.6;
         }
 
-        /* Style pour les vues de jeu */
-        .game-title {
-            color: #333;
-            margin-bottom: 30px;
+        /* Vue countdown */
+        .countdown-view {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+        }
+
+        .countdown-number {
+            font-size: 120px;
+            font-weight: bold;
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .countdown-text {
             font-size: 24px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* Vue jeu */
+        .game-view {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            color: #333;
+        }
+
+        .question-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 3px solid #e9ecef;
+        }
+
+        .status-message {
+            font-size: 20px;
+            margin: 30px 0;
+            min-height: 30px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .thinking {
+            color: #667eea;
+        }
+
+        .answer-time {
+            color: #00b894;
+            font-size: 24px;
+        }
+
+        .answers-container {
+            margin-top: 30px;
+        }
+
+        .answer-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .answer-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .answer-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Contrôles musique */
+        .music-controls {
+            margin-top: 20px;
+        }
+
+        .btn-music {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <!-- Menu Principal -->
-    <div class="menu-container view active" id="main-menu">
-        <div class="logo-space">
-            <div class="logo">EB</div>
-        </div>
-        
-        <div class="slogan-space">
-            <p class="slogan" id="slogan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo error veniam alias expedita amet perferendis qui dignissimos esse iusto at doloremque laborum deserunt perspiciatis vitae earum quis illo, quae quia. !</p>
-        </div>
-        
-        <div class="menu-buttons">
-            <button class="menu-btn btn-rules" onclick="showView('rules-view')">
-                📋 Rules
-            </button>
-            <button class="menu-btn btn-normal" onclick="startGame('normal')">
-                🎮 Normal Mode
-            </button>
-            <button class="menu-btn btn-hard" onclick="startGame('hard')">
-                💀 Hard Mode
-            </button>
+    <div class="view active" id="main-menu">
+        <div class="menu-container">
+            <div class="logo-space">
+                <div class="logo">EB</div>
+            </div>
+            
+            <div class="slogan-space">
+                <p class="slogan" id="slogan">Testez vos connaissances en mode normal ou défiez-vous en mode difficile !</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn btn-rules" onclick="showView('rules-view')">
+                    📋 Rules
+                </button>
+                <button class="menu-btn btn-normal" onclick="startNormalGame()">
+                    🎮 Normal Mode
+                </button>
+                <button class="menu-btn btn-hard" onclick="startGame('hard')">
+                    💀 Hard Mode
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Vue Règles -->
-    <div class="menu-container view" id="rules-view">
-        <button class="back-btn" onclick="showView('main-menu')">← Back</button>
-        <h2>Rules</h2>
-        <div class="rules-content">
-            <h3>🎯</h3>
-            <p>Answer correctly to accumulate the maximum points.</p>
-            
-            <h3>📊 Mode Normal</h3>
-            <p>- Questions de difficulté standard</p>
-            <p>- Temps de réponse limité</p>
-            <p>- Points standards par bonne réponse</p>
-            
-            <h3>🔥 Mode Difficile</h3>
-            <p>- Questions complexes et détaillées</p>
-            <p>- Temps de réponse réduit</p>
-            <p>- Bonus de points pour les réponses rapides</p>
-            <p>- Pénalités pour les mauvaises réponses</p>
-            
-            <h3>🏆 Système de points</h3>
-            <p>Chaque question a une valeur différente selon sa difficulté et votre rapidité.</p>
+    <div class="view" id="rules-view">
+        <div class="menu-container">
+            <button class="back-btn" onclick="showView('main-menu')">← Back</button>
+            <h2>Rules</h2>
+            <div class="rules-content">
+                <h3>🎯 Objectif du jeu</h3>
+                <p>Répondez correctement aux questions pour accumuler le maximum de points.</p>
+                
+                <h3>📊 Mode Normal</h3>
+                <p>- Questions de difficulté standard</p>
+                <p>- Temps de réflexion limité</p>
+                <p>- Points standards par bonne réponse</p>
+                
+                <h3>🔥 Mode Difficile</h3>
+                <p>- Questions complexes et détaillées</p>
+                <p>- Temps de réflexion réduit</p>
+                <p>- Bonus de points pour les réponses rapides</p>
+                <p>- Pénalités pour les mauvaises réponses</p>
+                
+                <h3>🏆 Système de points</h3>
+                <p>Chaque question a une valeur différente selon sa difficulté et votre rapidité.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Vue Jeu Normal -->
-    <div class="menu-container view" id="normal-game-view">
-        <button class="back-btn" onclick="showView('main-menu')">← Main menu</button>
-        <h2 class="game-title">🎮 Normal Mode</h2>
-        <div id="normal-game-content">
-            <!-- Le contenu du jeu normal sera chargé ici -->
-            <p>Interface du jeu en mode normal...</p>
+    <!-- Vue countdown -->
+    <div class="view countdown-view" id="countdown-view">
+        <div class="countdown-number" id="countdownNumber">3</div>
+        <div class="countdown-text">Préparez-vous !</div>
+    </div>
+
+    <!-- Vue jeu normal -->
+    <div class="view game-view" id="normal-game-view">
+        <div class="game-container">
+            <button class="back-btn" onclick="returnToMenu()">← Menu Principal</button>
+            <h1>🎮 Mode Normal</h1>
+            
+            <div class="question-display" id="questionDisplay">
+                La question apparaîtra ici...
+            </div>
+
+            <div class="status-message thinking" id="statusMessage">
+                ⏳ Réfléchissez à la question...
+            </div>
+
+            <div class="answers-container hidden" id="answersContainer">
+                <!-- Les réponses seront ajoutées ici dynamiquement -->
+            </div>
+
+            <div class="music-controls">
+                <button class="btn-music" onclick="toggleMusic()">
+                    🔇 Musique
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Vue Jeu Difficile -->
-    <div class="menu-container view" id="hard-game-view">
-        <button class="back-btn" onclick="showView('main-menu')">← Main menu</button>
-        <h2 class="game-title">💀 Hard Mode</h2>
-        <div id="hard-game-content">
-            <!-- Le contenu du jeu difficile sera chargé ici -->
-            <p>Interface du jeu en mode difficile...</p>
+    <div class="view" id="hard-game-view">
+        <div class="menu-container">
+            <button class="back-btn" onclick="showView('main-menu')">← Main menu</button>
+            <h2 class="game-title">💀 Hard Mode</h2>
+            <div id="hard-game-content">
+                <p>Mode difficile - Bientôt disponible !</p>
+            </div>
         </div>
     </div>
 
+    <!-- Audio -->
+    <audio id="bipSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="countdownSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-retro-game-countdown-929.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="ambienceMusic" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
+        // Variables du jeu
+        let currentTimer;
+        let timeLeft;
+        const thinkingTime = 10;
+        let currentQuestionIndex = 0;
+        let isMusicPlaying = false;
+        let countdownInterval;
+
+        // Éléments DOM
+        const questionDisplay = document.getElementById('questionDisplay');
+        const statusMessage = document.getElementById('statusMessage');
+        const answersContainer = document.getElementById('answersContainer');
+        const bipSound = document.getElementById('bipSound');
+        const countdownSound = document.getElementById('countdownSound');
+        const ambienceMusic = document.getElementById('ambienceMusic');
+        const countdownNumber = document.getElementById('countdownNumber');
+
+        // Questions d'exemple
+        const sampleQuestions = [
+            {
+                question: "Quelle est la capitale de la France?",
+                answers: [
+                    { text: "Londres", correct: false },
+                    { text: "Paris", correct: true },
+                    { text: "Berlin", correct: false },
+                    { text: "Madrid", correct: false }
+                ]
+            },
+            {
+                question: "Combien font 2 + 2?",
+                answers: [
+                    { text: "3", correct: false },
+                    { text: "4", correct: true },
+                    { text: "5", correct: false },
+                    { text: "6", correct: false }
+                ]
+            },
+            {
+                question: "Quelle est la couleur du ciel par temps clair?",
+                answers: [
+                    { text: "Rouge", correct: false },
+                    { text: "Vert", correct: false },
+                    { text: "Bleu", correct: true },
+                    { text: "Jaune", correct: false }
+                ]
+            }
+        ];
+
         // Fonction pour changer de vue
         function showView(viewId) {
-            // Cacher toutes les vues
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
             });
-            
-            // Afficher la vue demandée
             document.getElementById(viewId).classList.add('active');
         }
 
-        // Fonction pour démarrer le jeu
+        // Démarrer le jeu normal - COUNTDOWN IMMÉDIAT
+        function startNormalGame() {
+            showView('countdown-view');
+            startCountdown();
+        }
+
+        // Démarrer les autres jeux
         function startGame(mode) {
-            if (mode === 'normal') {
-                showView('normal-game-view');
-                // Ici vous chargeriez les questions normales depuis votre JSON
-                console.log('Démarrage du mode normal');
-            } else if (mode === 'hard') {
+            if (mode === 'hard') {
                 showView('hard-game-view');
-                // Ici vous chargeriez les questions difficiles depuis votre JSON
-                console.log('Démarrage du mode difficile');
             }
         }
 
-        // Exemple de chargement dynamique du slogan
+        // Retour au menu depuis le jeu
+        function returnToMenu() {
+            if (confirm("Voulez-vous vraiment retourner au menu ? Votre progression sera perdue.")) {
+                clearInterval(currentTimer);
+                stopAmbienceMusic();
+                showView('main-menu');
+            }
+        }
+
+        // Démarrer le countdown
+        function startCountdown() {
+            let count = 3;
+            countdownNumber.textContent = count;
+            
+            countdownSound.play();
+            
+            countdownInterval = setInterval(() => {
+                count--;
+                countdownNumber.textContent = count;
+                
+                if (count <= 0) {
+                    clearInterval(countdownInterval);
+                    startNormalGameSession();
+                }
+            }, 1000);
+        }
+
+        // Démarrer la session de jeu normal
+        function startNormalGameSession() {
+            showView('normal-game-view');
+            currentQuestionIndex = 0;
+            startNewQuestion();
+        }
+
+        // Démarrer une nouvelle question
+        function startNewQuestion() {
+            if (currentQuestionIndex >= sampleQuestions.length) {
+                currentQuestionIndex = 0;
+            }
+
+            const question = sampleQuestions[currentQuestionIndex];
+            currentQuestionIndex++;
+
+            questionDisplay.textContent = question.question;
+            answersContainer.classList.add('hidden');
+            statusMessage.textContent = "⏳ Réfléchissez à la question...";
+            statusMessage.className = 'status-message thinking';
+
+            startAmbienceMusic();
+            startTimer();
+        }
+
+        // Timer caché
+        function startTimer() {
+            timeLeft = thinkingTime;
+
+            currentTimer = setInterval(() => {
+                timeLeft--;
+
+                if (timeLeft <= 0) {
+                    clearInterval(currentTimer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        // Temps écoulé
+        function timeUp() {
+            stopAmbienceMusic();
+            bipSound.play();
+            
+            statusMessage.textContent = "🎯 TEMPS ÉCOULÉ ! Répondez maintenant !";
+            statusMessage.className = 'status-message answer-time';
+
+            displayAnswers();
+        }
+
+        // Afficher les réponses
+        function displayAnswers() {
+            const question = sampleQuestions[currentQuestionIndex - 1];
+            answersContainer.innerHTML = '';
+            answersContainer.classList.remove('hidden');
+
+            question.answers.forEach((answer) => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer.text;
+                button.onclick = () => selectAnswer(answer.correct, button);
+                answersContainer.appendChild(button);
+            });
+        }
+
+        // Sélectionner une réponse
+        function selectAnswer(isCorrect, button) {
+            const allButtons = answersContainer.querySelectorAll('.answer-btn');
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                statusMessage.textContent = "✅ Bonne réponse ! 🎉";
+                
+                // Passer à la question suivante après un délai
+                setTimeout(() => {
+                    startNewQuestion();
+                }, 2000);
+            } else {
+                button.classList.add('incorrect');
+                statusMessage.textContent = "❌ Mauvaise réponse !";
+                
+                // Marquer la bonne réponse
+                const correctButton = Array.from(allButtons).find(btn => 
+                    sampleQuestions[currentQuestionIndex - 1].answers[
+                        Array.from(allButtons).indexOf(btn)
+                    ].correct
+                );
+                if (correctButton) {
+                    correctButton.classList.add('correct');
+                }
+                
+                // Passer à la question suivante après un délai
+                setTimeout(() => {
+                    startNewQuestion();
+                }, 2000);
+            }
+        }
+
+        // Gestion musique
+        function startAmbienceMusic() {
+            if (isMusicPlaying) {
+                ambienceMusic.currentTime = 0;
+                ambienceMusic.volume = 0.3;
+                ambienceMusic.play().catch(e => console.log("Audio error:", e));
+            }
+        }
+
+        function stopAmbienceMusic() {
+            if (isMusicPlaying && !ambienceMusic.paused) {
+                ambienceMusic.pause();
+            }
+        }
+
+        function toggleMusic() {
+            const musicBtn = document.querySelector('.btn-music');
+            
+            if (isMusicPlaying) {
+                ambienceMusic.pause();
+                musicBtn.innerHTML = '🔇 Musique';
+                isMusicPlaying = false;
+            } else {
+                ambienceMusic.volume = 0.3;
+                ambienceMusic.play().then(() => {
+                    musicBtn.innerHTML = '🔊 Musique';
+                    isMusicPlaying = true;
+                }).catch(e => {
+                    console.log("Music error:", e);
+                });
+            }
+        }
+
+        // Slogans aléatoires
         const slogans = [
             "Testez vos connaissances en mode normal ou défiez-vous en mode difficile !",
             "Saurez-vous relever le défi ? Mode normal ou difficile, à vous de choisir !",
             "La connaissance n'a pas de limites. Testez-la dès maintenant !"
         ];
 
-        // Changer le slogan aléatoirement (optionnel)
         document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
     </script>
 </body>
