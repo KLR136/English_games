@@ -404,7 +404,7 @@
                 <ol>
                     <li>Firstly, choose your folder color. This folder will contain "files", which will be your points.</li>
                     <li>Then, choose a game mode: simple or hard.</li>
-                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BIP", by slapping (and leaving) your hand on the carpet target.</li>
+                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BEEP", by slapping (and leaving) your hand on the carpet target.</li>
                     <li><strong>ATTENTION:</strong> In hard mode if you slap your hand before the "BEEP" or the color is anything but blue, you can't play for this turn.</li>
                     <li>The first player who answers the question. If the answer is right, you win "files" (depending on the number of points the question made you earn). If the answer is wrong, you don't gain files at all.</li>
                 </ol>
@@ -481,7 +481,7 @@
         let currentTimer;
         let timeLeft;
         const thinkingTime = 10;
-        const blueScreenTime = 3;
+        const blueScreenTime = 5;
         let currentQuestionIndex = 0;
         let isMusicPlaying = false;
         let countdownInterval;
@@ -642,8 +642,9 @@
             gameView.classList.add('blue-screen');
             statusMessage.textContent = "⏰ Time's up!";
             statusMessage.className = 'blue-screen-message';
+            blueScreenTime = Math.floor(Math.random() * 6) + 5; // Random between 5 and 10 seconds
             
-            // After 3 seconds, show the answer
+            // After blueScreenTime seconds, show the answer
             setTimeout(() => {
                 showCorrectAnswer();
             }, blueScreenTime * 1000);
