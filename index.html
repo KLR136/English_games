@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Beeper - Main Menu</title>
+    <title>EL BEEPER - The Ultimate Quiz Game</title>
     <style>
         * {
             margin: 0;
@@ -37,7 +37,7 @@
             display: flex;
         }
 
-        /* Menu Principal */
+        /* Main Menu */
         .menu-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -101,7 +101,7 @@
             color: white;
         }
 
-        .btn-normal {
+        .btn-simple {
             background: linear-gradient(45deg, #00b894, #00a085);
             color: white;
         }
@@ -135,26 +135,69 @@
             background: #2d3436;
         }
 
-        /* Style pour la vue règles */
+        /* Rules View */
         .rules-content {
             text-align: left;
             background: #f8f9fa;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             margin-top: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .rules-content h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 28px;
         }
 
         .rules-content h3 {
-            color: #333;
-            margin-bottom: 10px;
+            color: #ff6b6b;
+            margin: 20px 0 10px 0;
+            font-size: 20px;
         }
 
         .rules-content p {
             margin-bottom: 15px;
             line-height: 1.6;
+            color: #555;
         }
 
-        /* Vue countdown */
+        .rules-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .rules-content li {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 5px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .info-item h4 {
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+
+        /* Countdown View */
         .countdown-view {
             background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
         }
@@ -177,7 +220,7 @@
             font-weight: bold;
         }
 
-        /* Vue jeu */
+        /* Game View */
         .game-view {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transition: background-color 0.5s ease;
@@ -287,7 +330,7 @@
             display: none;
         }
 
-        /* Contrôles musique */
+        /* Music Controls */
         .music-controls {
             margin-top: 20px;
         }
@@ -304,7 +347,7 @@
     </style>
 </head>
 <body>
-    <!-- Menu Principal -->
+    <!-- Main Menu -->
     <div class="view active" id="main-menu">
         <div class="menu-container">
             <div class="logo-space">
@@ -312,15 +355,15 @@
             </div>
             
             <div class="slogan-space">
-                <p class="slogan" id="slogan">Testez vos connaissances en mode normal ou défiez-vous en mode difficile !</p>
+                <p class="slogan" id="slogan">Test your knowledge in Simple Mode or challenge yourself in Hard Mode!</p>
             </div>
             
             <div class="menu-buttons">
                 <button class="menu-btn btn-rules" onclick="showView('rules-view')">
                     📋 Rules
                 </button>
-                <button class="menu-btn btn-normal" onclick="startNormalGame()">
-                    🎮 Normal Mode
+                <button class="menu-btn btn-simple" onclick="startSimpleGame()">
+                    🎮 Simple Mode
                 </button>
                 <button class="menu-btn btn-hard" onclick="startGame('hard')">
                     💀 Hard Mode
@@ -329,77 +372,93 @@
         </div>
     </div>
 
-    <!-- Vue Règles -->
+    <!-- Rules View -->
     <div class="view" id="rules-view">
         <div class="menu-container">
             <button class="back-btn" onclick="showView('main-menu')">← Back</button>
-            <h2>Rules</h2>
             <div class="rules-content">
-                <h3>🎯 Objectif du jeu</h3>
-                <p>Répondez correctement aux questions pour accumuler le maximum de points.</p>
+                <h2>EL BEEPER RULES</h2>
                 
-                <h3>📊 Mode Normal</h3>
-                <p>- Questions de difficulté standard</p>
-                <p>- Temps de réflexion limité</p>
-                <p>- Points standards par bonne réponse</p>
+                <div class="game-info">
+                    <div class="info-item">
+                        <h4>AGE</h4>
+                        <p>12 years old +</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>DURATION</h4>
+                        <p>15 min</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>PLAYERS</h4>
+                        <p>2-6 players</p>
+                    </div>
+                </div>
                 
-                <h3>🔥 Mode Difficile</h3>
-                <p>- Questions complexes et détaillées</p>
-                <p>- Temps de réflexion réduit</p>
-                <p>- Bonus de points pour les réponses rapides</p>
-                <p>- Pénalités pour les mauvaises réponses</p>
+                <h3>THE OBJECTIVE</h3>
+                <p>First to win 20 files, wins and ends the game.</p>
                 
-                <h3>🏆 Système de points</h3>
-                <p>Chaque question a une valeur différente selon sa difficulté et votre rapidité.</p>
+                <h3>GAME MODES</h3>
+                <p>2 modes: Simple mode and Hard mode</p>
+                
+                <h3>HOW TO PLAY</h3>
+                <ol>
+                    <li>Firstly, choose your folder color. This folder will contain "files", which will be your points.</li>
+                    <li>Then, choose a game mode: simple or hard.</li>
+                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BIP", by slapping (and leaving) your hand on the carpet target.</li>
+                    <li><strong>ATTENTION:</strong> In hard mode if you slap your hand before the "BEEP" or the color is anything but blue, you can't play for this turn.</li>
+                    <li>The first player who answers the question. If the answer is right, you win "files" (depending on the number of points the question made you earn). If the answer is wrong, you don't gain files at all.</li>
+                </ol>
+                
+                <p><strong>The first to win 20 files, wins and ends the game.</strong></p>
             </div>
         </div>
     </div>
 
-    <!-- Vue countdown -->
+    <!-- Countdown View -->
     <div class="view countdown-view" id="countdown-view">
         <div class="countdown-number" id="countdownNumber">3</div>
-        <div class="countdown-text">Préparez-vous !</div>
+        <div class="countdown-text">Get Ready!</div>
     </div>
 
-    <!-- Vue jeu normal -->
-    <div class="view game-view" id="normal-game-view">
+    <!-- Simple Game View -->
+    <div class="view game-view" id="simple-game-view">
         <div class="game-container">
-            <button class="back-btn" onclick="returnToMenu()">← Menu Principal</button>
-            <h1>🎮 Mode Normal</h1>
+            <button class="back-btn" onclick="returnToMenu()">← Main Menu</button>
+            <h1>🎮 Simple Mode</h1>
             
             <div class="question-display" id="questionDisplay">
-                La question apparaîtra ici...
+                The question will appear here...
             </div>
 
             <div class="answers-display" id="answersDisplay">
-                <!-- Les réponses seront affichées ici -->
+                <!-- Answers will be displayed here -->
             </div>
 
             <div class="status-message thinking" id="statusMessage">
-                ⏳ Réfléchissez à la question...
+                ⏳ Think about the question...
             </div>
 
             <div class="controls">
                 <button class="next-btn" onclick="nextQuestion()" id="nextButton">
-                    Question Suivante
+                    Next Question
                 </button>
             </div>
 
             <div class="music-controls">
                 <button class="btn-music" onclick="toggleMusic()">
-                    🔇 Musique
+                    🔇 Music
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Vue Jeu Difficile -->
+    <!-- Hard Game View -->
     <div class="view" id="hard-game-view">
         <div class="menu-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Main menu</button>
-            <h2 class="game-title">💀 Hard Mode</h2>
+            <button class="back-btn" onclick="showView('main-menu')">← Main Menu</button>
+            <h2>💀 Hard Mode</h2>
             <div id="hard-game-content">
-                <p>Mode difficile - Bientôt disponible !</p>
+                <p>Hard Mode - Coming Soon!</p>
             </div>
         </div>
     </div>
@@ -418,7 +477,7 @@
     </audio>
 
     <script>
-        // Variables du jeu
+        // Game variables
         let currentTimer;
         let timeLeft;
         const thinkingTime = 10;
@@ -427,7 +486,7 @@
         let isMusicPlaying = false;
         let countdownInterval;
 
-        // Éléments DOM
+        // DOM Elements
         const questionDisplay = document.getElementById('questionDisplay');
         const answersDisplay = document.getElementById('answersDisplay');
         const statusMessage = document.getElementById('statusMessage');
@@ -436,21 +495,21 @@
         const ambienceMusic = document.getElementById('ambienceMusic');
         const countdownNumber = document.getElementById('countdownNumber');
         const nextButton = document.getElementById('nextButton');
-        const gameView = document.getElementById('normal-game-view');
+        const gameView = document.getElementById('simple-game-view');
 
-        // Questions d'exemple
+        // Sample questions
         const sampleQuestions = [
             {
-                question: "Quelle est la capitale de la France?",
+                question: "What is the capital of France?",
                 answers: [
-                    { text: "Londres", correct: false },
+                    { text: "London", correct: false },
                     { text: "Paris", correct: true },
                     { text: "Berlin", correct: false },
                     { text: "Madrid", correct: false }
                 ]
             },
             {
-                question: "Combien font 2 + 2?",
+                question: "How much is 2 + 2?",
                 answers: [
                     { text: "3", correct: false },
                     { text: "4", correct: true },
@@ -459,17 +518,17 @@
                 ]
             },
             {
-                question: "Quelle est la couleur du ciel par temps clair?",
+                question: "What is the color of the sky on a clear day?",
                 answers: [
-                    { text: "Rouge", correct: false },
-                    { text: "Vert", correct: false },
-                    { text: "Bleu", correct: true },
-                    { text: "Jaune", correct: false }
+                    { text: "Red", correct: false },
+                    { text: "Green", correct: false },
+                    { text: "Blue", correct: true },
+                    { text: "Yellow", correct: false }
                 ]
             }
         ];
 
-        // Fonction pour changer de vue
+        // Function to change view
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
@@ -477,29 +536,29 @@
             document.getElementById(viewId).classList.add('active');
         }
 
-        // Démarrer le jeu normal - COUNTDOWN IMMÉDIAT
-        function startNormalGame() {
+        // Start simple game - IMMEDIATE COUNTDOWN
+        function startSimpleGame() {
             showView('countdown-view');
             startCountdown();
         }
 
-        // Démarrer les autres jeux
+        // Start other games
         function startGame(mode) {
             if (mode === 'hard') {
                 showView('hard-game-view');
             }
         }
 
-        // Retour au menu depuis le jeu
+        // Return to menu from game
         function returnToMenu() {
-            if (confirm("Voulez-vous vraiment retourner au menu ? Votre progression sera perdue.")) {
+            if (confirm("Do you really want to return to the menu? Your progress will be lost.")) {
                 clearInterval(currentTimer);
                 stopAmbienceMusic();
                 showView('main-menu');
             }
         }
 
-        // Démarrer le countdown
+        // Start countdown
         function startCountdown() {
             let count = 3;
             countdownNumber.textContent = count;
@@ -512,19 +571,19 @@
                 
                 if (count <= 0) {
                     clearInterval(countdownInterval);
-                    startNormalGameSession();
+                    startSimpleGameSession();
                 }
             }, 1000);
         }
 
-        // Démarrer la session de jeu normal
-        function startNormalGameSession() {
-            showView('normal-game-view');
+        // Start simple game session
+        function startSimpleGameSession() {
+            showView('simple-game-view');
             currentQuestionIndex = 0;
             startNewQuestion();
         }
 
-        // Démarrer une nouvelle question
+        // Start a new question
         function startNewQuestion() {
             if (currentQuestionIndex >= sampleQuestions.length) {
                 currentQuestionIndex = 0;
@@ -533,10 +592,10 @@
             const question = sampleQuestions[currentQuestionIndex];
             currentQuestionIndex++;
 
-            // Afficher la question
+            // Display the question
             questionDisplay.textContent = question.question;
             
-            // Afficher toutes les réponses (sans indication de correct/incorrect)
+            // Display all answers (without correct/incorrect indication)
             answersDisplay.innerHTML = '';
             question.answers.forEach((answer, index) => {
                 const answerElement = document.createElement('div');
@@ -545,8 +604,8 @@
                 answersDisplay.appendChild(answerElement);
             });
 
-            // Réinitialiser l'interface
-            statusMessage.textContent = "⏳ Réfléchissez à la question...";
+            // Reset interface
+            statusMessage.textContent = "⏳ Think about the question...";
             statusMessage.className = 'status-message thinking';
             nextButton.style.display = 'none';
             gameView.classList.remove('blue-screen');
@@ -555,7 +614,7 @@
             startTimer();
         }
 
-        // Timer caché
+        // Hidden timer
         function startTimer() {
             timeLeft = thinkingTime;
 
@@ -569,32 +628,32 @@
             }, 1000);
         }
 
-        // Temps écoulé
+        // Time's up
         function timeUp() {
             stopAmbienceMusic();
             bipSound.play();
             
-            // Afficher l'écran bleu
+            // Show blue screen
             showBlueScreen();
         }
 
-        // Afficher l'écran bleu
+        // Show blue screen
         function showBlueScreen() {
             gameView.classList.add('blue-screen');
-            statusMessage.textContent = "⏰ Temps écoulé !";
+            statusMessage.textContent = "⏰ Time's up!";
             statusMessage.className = 'blue-screen-message';
             
-            // Après 3 secondes, afficher la réponse
+            // After 3 seconds, show the answer
             setTimeout(() => {
                 showCorrectAnswer();
             }, blueScreenTime * 1000);
         }
 
-        // Afficher la réponse correcte
+        // Show correct answer
         function showCorrectAnswer() {
             const question = sampleQuestions[currentQuestionIndex - 1];
             
-            // Marquer la bonne réponse en vert
+            // Mark the correct answer in green
             const answerElements = answersDisplay.querySelectorAll('.answer-item');
             question.answers.forEach((answer, index) => {
                 if (answer.correct) {
@@ -602,18 +661,18 @@
                 }
             });
 
-            statusMessage.textContent = "✅ Voici la bonne réponse !";
+            statusMessage.textContent = "✅ Here is the correct answer!";
             statusMessage.className = 'status-message thinking';
             gameView.classList.remove('blue-screen');
             nextButton.style.display = 'block';
         }
 
-        // Question suivante
+        // Next question
         function nextQuestion() {
             startNewQuestion();
         }
 
-        // Gestion musique
+        // Music management
         function startAmbienceMusic() {
             if (isMusicPlaying) {
                 ambienceMusic.currentTime = 0;
@@ -633,12 +692,12 @@
             
             if (isMusicPlaying) {
                 ambienceMusic.pause();
-                musicBtn.innerHTML = '🔇 Musique';
+                musicBtn.innerHTML = '🔇 Music';
                 isMusicPlaying = false;
             } else {
                 ambienceMusic.volume = 0.3;
                 ambienceMusic.play().then(() => {
-                    musicBtn.innerHTML = '🔊 Musique';
+                    musicBtn.innerHTML = '🔊 Music';
                     isMusicPlaying = true;
                 }).catch(e => {
                     console.log("Music error:", e);
@@ -646,11 +705,11 @@
             }
         }
 
-        // Slogans aléatoires
+        // Random slogans
         const slogans = [
-            "Testez vos connaissances en mode normal ou défiez-vous en mode difficile !",
-            "Saurez-vous relever le défi ? Mode normal ou difficile, à vous de choisir !",
-            "La connaissance n'a pas de limites. Testez-la dès maintenant !"
+            "Test your knowledge in Simple Mode or challenge yourself in Hard Mode!",
+            "Can you take on the challenge? Simple or Hard mode, the choice is yours!",
+            "Knowledge has no limits. Test it now!"
         ];
 
         document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
