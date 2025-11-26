@@ -230,6 +230,18 @@
             background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%) !important;
         }
 
+        .red-screen {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+        }
+
+        .green-screen {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        }
+
+        .yellow-screen {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+        }
+
         .game-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -298,11 +310,23 @@
             color: #667eea;
         }
 
+        .warning {
+            color: #dc3545;
+        }
+
         .blue-screen-message {
             color: white;
             font-size: 32px;
             font-weight: bold;
             text-align: center;
+        }
+
+        .penalty-message {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
         }
 
         .controls {
@@ -344,6 +368,19 @@
             cursor: pointer;
             font-size: 14px;
         }
+
+        /* Score Display */
+        .score-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: #333;
+            font-weight: bold;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -365,7 +402,7 @@
                 <button class="menu-btn btn-simple" onclick="startSimpleGame()">
                     🎮 Simple Mode
                 </button>
-                <button class="menu-btn btn-hard" onclick="startGame('hard')">
+                <button class="menu-btn btn-hard" onclick="startHardGame()">
                     💀 Hard Mode
                 </button>
             </div>
@@ -422,6 +459,9 @@
 
     <!-- Simple Game View -->
     <div class="view game-view" id="simple-game-view">
+        <div class="score-display" id="simpleScoreDisplay">
+            Files: <span id="simpleScore">0</span>/20
+        </div>
         <div class="game-container">
             <button class="back-btn" onclick="returnToMenu()">← Main Menu</button>
             <h1>🎮 Simple Mode</h1>
@@ -453,12 +493,36 @@
     </div>
 
     <!-- Hard Game View -->
-    <div class="view" id="hard-game-view">
-        <div class="menu-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Main Menu</button>
-            <h2>💀 Hard Mode</h2>
-            <div id="hard-game-content">
-                <p>Hard Mode - Coming Soon!</p>
+    <div class="view game-view" id="hard-game-view">
+        <div class="score-display" id="hardScoreDisplay">
+            Files: <span id="hardScore">0</span>/20
+        </div>
+        <div class="game-container">
+            <button class="back-btn" onclick="returnToMenu()">← Main Menu</button>
+            <h1>💀 Hard Mode</h1>
+            
+            <div class="question-display" id="hardQuestionDisplay">
+                The question will appear here...
+            </div>
+
+            <div class="answers-display" id="hardAnswersDisplay">
+                <!-- Answers will be displayed here -->
+            </div>
+
+            <div class="status-message thinking" id="hardStatusMessage">
+                ⚠️ WAIT for the BLUE screen and BEEP!
+            </div>
+
+            <div class="controls">
+                <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
+                    Next Question
+                </button>
+            </div>
+
+            <div class="music-controls">
+                <button class="btn-music" onclick="toggleMusic()">
+                    🔇 Music
+                </button>
             </div>
         </div>
     </div>
@@ -476,26 +540,40 @@
         <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="errorSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // Game variables
         let currentTimer;
         let timeLeft;
-        const thinkingTime = 10;
-        const blueScreenTime = 5;
+        const blueScreenTime = 3;
         let currentQuestionIndex = 0;
         let isMusicPlaying = false;
         let countdownInterval;
+        let simpleScore = 0;
+        let hardScore = 0;
+        let currentGameMode = '';
 
         // DOM Elements
         const questionDisplay = document.getElementById('questionDisplay');
         const answersDisplay = document.getElementById('answersDisplay');
         const statusMessage = document.getElementById('statusMessage');
+        const hardQuestionDisplay = document.getElementById('hardQuestionDisplay');
+        const hardAnswersDisplay = document.getElementById('hardAnswersDisplay');
+        const hardStatusMessage = document.getElementById('hardStatusMessage');
         const bipSound = document.getElementById('bipSound');
         const countdownSound = document.getElementById('countdownSound');
         const ambienceMusic = document.getElementById('ambienceMusic');
+        const errorSound = document.getElementById('errorSound');
         const countdownNumber = document.getElementById('countdownNumber');
         const nextButton = document.getElementById('nextButton');
+        const hardNextButton = document.getElementById('hardNextButton');
         const gameView = document.getElementById('simple-game-view');
+        const hardGameView = document.getElementById('hard-game-view');
+        const simpleScoreDisplay = document.getElementById('simpleScore');
+        const hardScoreDisplay = document.getElementById('hardScore');
 
         // Sample questions
         const sampleQuestions = [
@@ -506,7 +584,8 @@
                     { text: "Paris", correct: true },
                     { text: "Berlin", correct: false },
                     { text: "Madrid", correct: false }
-                ]
+                ],
+                points: 2
             },
             {
                 question: "How much is 2 + 2?",
@@ -515,7 +594,8 @@
                     { text: "4", correct: true },
                     { text: "5", correct: false },
                     { text: "6", correct: false }
-                ]
+                ],
+                points: 1
             },
             {
                 question: "What is the color of the sky on a clear day?",
@@ -524,7 +604,28 @@
                     { text: "Green", correct: false },
                     { text: "Blue", correct: true },
                     { text: "Yellow", correct: false }
-                ]
+                ],
+                points: 1
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                answers: [
+                    { text: "Venus", correct: false },
+                    { text: "Mars", correct: true },
+                    { text: "Jupiter", correct: false },
+                    { text: "Saturn", correct: false }
+                ],
+                points: 2
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                answers: [
+                    { text: "Elephant", correct: false },
+                    { text: "Blue Whale", correct: true },
+                    { text: "Giraffe", correct: false },
+                    { text: "Polar Bear", correct: false }
+                ],
+                points: 3
             }
         ];
 
@@ -536,17 +637,22 @@
             document.getElementById(viewId).classList.add('active');
         }
 
-        // Start simple game - IMMEDIATE COUNTDOWN
+        // Start simple game
         function startSimpleGame() {
+            currentGameMode = 'simple';
+            simpleScore = 0;
+            simpleScoreDisplay.textContent = '0';
             showView('countdown-view');
             startCountdown();
         }
 
-        // Start other games
-        function startGame(mode) {
-            if (mode === 'hard') {
-                showView('hard-game-view');
-            }
+        // Start hard game
+        function startHardGame() {
+            currentGameMode = 'hard';
+            hardScore = 0;
+            hardScoreDisplay.textContent = '0';
+            showView('countdown-view');
+            startCountdown();
         }
 
         // Return to menu from game
@@ -571,7 +677,11 @@
                 
                 if (count <= 0) {
                     clearInterval(countdownInterval);
-                    startSimpleGameSession();
+                    if (currentGameMode === 'simple') {
+                        startSimpleGameSession();
+                    } else {
+                        startHardGameSession();
+                    }
                 }
             }, 1000);
         }
@@ -583,7 +693,14 @@
             startNewQuestion();
         }
 
-        // Start a new question
+        // Start hard game session
+        function startHardGameSession() {
+            showView('hard-game-view');
+            currentQuestionIndex = 0;
+            startNewHardQuestion();
+        }
+
+        // SIMPLE MODE FUNCTIONS
         function startNewQuestion() {
             if (currentQuestionIndex >= sampleQuestions.length) {
                 currentQuestionIndex = 0;
@@ -592,10 +709,7 @@
             const question = sampleQuestions[currentQuestionIndex];
             currentQuestionIndex++;
 
-            // Display the question
             questionDisplay.textContent = question.question;
-            
-            // Display all answers (without correct/incorrect indication)
             answersDisplay.innerHTML = '';
             question.answers.forEach((answer, index) => {
                 const answerElement = document.createElement('div');
@@ -604,56 +718,47 @@
                 answersDisplay.appendChild(answerElement);
             });
 
-            // Reset interface
             statusMessage.textContent = "⏳ Think about the question...";
             statusMessage.className = 'status-message thinking';
             nextButton.style.display = 'none';
             gameView.classList.remove('blue-screen');
 
             startAmbienceMusic();
-            startTimer();
+            startSimpleTimer();
         }
 
-        // Hidden timer
-        function startTimer() {
-            timeLeft = thinkingTime;
+        function startSimpleTimer() {
+            timeLeft = Math.floor(Math.random() * 6) + 5;
+            console.log("Thinking time:", timeLeft + " seconds");
 
             currentTimer = setInterval(() => {
                 timeLeft--;
 
                 if (timeLeft <= 0) {
                     clearInterval(currentTimer);
-                    timeUp();
+                    simpleTimeUp();
                 }
             }, 1000);
         }
 
-        // Time's up
-        function timeUp() {
+        function simpleTimeUp() {
             stopAmbienceMusic();
             bipSound.play();
-            
-            // Show blue screen
             showBlueScreen();
         }
 
-        // Show blue screen
         function showBlueScreen() {
             gameView.classList.add('blue-screen');
-            statusMessage.textContent = "⏰ Time's up!";
+            statusMessage.textContent = "⏰ Time's up! Answer now!";
             statusMessage.className = 'blue-screen-message';
             
-            // After blueScreenTime seconds, show the answer
             setTimeout(() => {
                 showCorrectAnswer();
             }, blueScreenTime * 1000);
         }
 
-        // Show correct answer
         function showCorrectAnswer() {
             const question = sampleQuestions[currentQuestionIndex - 1];
-            
-            // Mark the correct answer in green
             const answerElements = answersDisplay.querySelectorAll('.answer-item');
             question.answers.forEach((answer, index) => {
                 if (answer.correct) {
@@ -667,9 +772,93 @@
             nextButton.style.display = 'block';
         }
 
-        // Next question
         function nextQuestion() {
             startNewQuestion();
+        }
+
+        // HARD MODE FUNCTIONS
+        function startNewHardQuestion() {
+            if (currentQuestionIndex >= sampleQuestions.length) {
+                currentQuestionIndex = 0;
+            }
+
+            const question = sampleQuestions[currentQuestionIndex];
+            currentQuestionIndex++;
+
+            hardQuestionDisplay.textContent = question.question;
+            hardAnswersDisplay.innerHTML = '';
+            question.answers.forEach((answer, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item incorrect';
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
+                hardAnswersDisplay.appendChild(answerElement);
+            });
+
+            hardStatusMessage.textContent = "⚠️ WAIT for the BLUE screen and BEEP!";
+            hardStatusMessage.className = 'status-message warning';
+            hardNextButton.style.display = 'none';
+            hardGameView.className = 'view game-view';
+            
+            // Random screen colors before blue screen
+            startHardTimer();
+        }
+
+        function startHardTimer() {
+            const totalTime = Math.floor(Math.random() * 6) + 5;
+            let elapsedTime = 0;
+            let colorChangeInterval;
+            
+            // Change colors randomly before blue screen
+            colorChangeInterval = setInterval(() => {
+                elapsedTime++;
+                const colors = ['red-screen', 'green-screen', 'yellow-screen'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                hardGameView.className = `view game-view ${randomColor}`;
+                hardStatusMessage.textContent = `⚠️ DON'T ANSWER! Wait for BLUE! (${totalTime - elapsedTime}s)`;
+                
+                if (elapsedTime >= totalTime) {
+                    clearInterval(colorChangeInterval);
+                    hardGameView.classList.add('blue-screen');
+                    hardStatusMessage.textContent = "🎯 NOW! Answer after the BEEP!";
+                    hardStatusMessage.className = 'blue-screen-message';
+                    bipSound.play();
+                    
+                    setTimeout(() => {
+                        showHardCorrectAnswer();
+                    }, blueScreenTime * 1000);
+                }
+            }, 1000);
+        }
+
+        function showHardCorrectAnswer() {
+            const question = sampleQuestions[currentQuestionIndex - 1];
+            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+            question.answers.forEach((answer, index) => {
+                if (answer.correct) {
+                    answerElements[index].className = 'answer-item correct';
+                }
+            });
+
+            hardStatusMessage.textContent = "✅ Correct answer revealed!";
+            hardStatusMessage.className = 'status-message thinking';
+            hardGameView.className = 'view game-view';
+            hardNextButton.style.display = 'block';
+            
+            // Add points for hard mode (double points)
+            hardScore += question.points * 2;
+            hardScoreDisplay.textContent = hardScore;
+            
+            if (hardScore >= 20) {
+                setTimeout(() => {
+                    alert("🎉 CONGRATULATIONS! You won Hard Mode with 20 files!");
+                    returnToMenu();
+                }, 1000);
+            }
+        }
+
+        function nextHardQuestion() {
+            startNewHardQuestion();
         }
 
         // Music management
