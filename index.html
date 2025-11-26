@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL BEEPER - The Ultimate Quiz Game</title>
     <style>
+        /* All previous CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -269,6 +270,7 @@
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .answer-item.correct {
@@ -282,6 +284,20 @@
             background: #f8f9fa;
             border-color: #e9ecef;
             color: #666;
+        }
+
+        .answer-item.selectable {
+            cursor: pointer;
+        }
+
+        .answer-item.selectable:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .answer-item.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .status-message {
@@ -344,6 +360,41 @@
             cursor: pointer;
             font-size: 14px;
         }
+
+        /* Player Score Display */
+        .score-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .player-score {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 5px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .player-score h4 {
+            color: #6c5ce7;
+            margin-bottom: 5px;
+        }
+
+        .player-score.active {
+            border: 2px solid #6c5ce7;
+            background: rgba(108, 92, 231, 0.1);
+        }
+
+        /* Penalty Message */
+        .penalty-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -365,7 +416,7 @@
                 <button class="menu-btn btn-simple" onclick="startSimpleGame()">
                     🎮 Simple Mode
                 </button>
-                <button class="menu-btn btn-hard" onclick="startGame('hard')">
+                <button class="menu-btn btn-hard" onclick="startHardGame()">
                     💀 Hard Mode
                 </button>
             </div>
@@ -453,12 +504,41 @@
     </div>
 
     <!-- Hard Game View -->
-    <div class="view" id="hard-game-view">
-        <div class="menu-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Main Menu</button>
-            <h2>💀 Hard Mode</h2>
-            <div id="hard-game-content">
-                <p>Hard Mode - Coming Soon!</p>
+    <div class="view game-view" id="hard-game-view">
+        <div class="game-container">
+            <button class="back-btn" onclick="returnToMenu()">← Main Menu</button>
+            <h1>💀 Hard Mode</h1>
+            
+            <div class="score-display" id="scoreDisplay">
+                <!-- Player scores will be displayed here -->
+            </div>
+            
+            <div class="question-display" id="hardQuestionDisplay">
+                The question will appear here...
+            </div>
+
+            <div class="answers-display" id="hardAnswersDisplay">
+                <!-- Answers will be displayed here -->
+            </div>
+
+            <div class="status-message thinking" id="hardStatusMessage">
+                ⏳ Think about the question...
+            </div>
+
+            <div class="penalty-message" id="penaltyMessage">
+                <!-- Penalty messages will appear here -->
+            </div>
+
+            <div class="controls">
+                <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
+                    Next Question
+                </button>
+            </div>
+
+            <div class="music-controls">
+                <button class="btn-music" onclick="toggleMusic()">
+                    🔇 Music
+                </button>
             </div>
         </div>
     </div>
@@ -476,6 +556,10 @@
         <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="errorSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // Game variables
         let currentTimer;
@@ -486,6 +570,14 @@
         let isMusicPlaying = false;
         let countdownInterval;
 
+        // Hard Mode specific variables
+        let isBlueScreenActive = false;
+        let canAnswer = false;
+        let players = [];
+        let currentPlayerIndex = 0;
+        let playerWhoAnswered = null;
+        let penaltyActive = false;
+
         // DOM Elements
         const questionDisplay = document.getElementById('questionDisplay');
         const answersDisplay = document.getElementById('answersDisplay');
@@ -493,9 +585,19 @@
         const bipSound = document.getElementById('bipSound');
         const countdownSound = document.getElementById('countdownSound');
         const ambienceMusic = document.getElementById('ambienceMusic');
+        const errorSound = document.getElementById('errorSound');
         const countdownNumber = document.getElementById('countdownNumber');
         const nextButton = document.getElementById('nextButton');
         const gameView = document.getElementById('simple-game-view');
+        
+        // Hard Mode DOM Elements
+        const hardQuestionDisplay = document.getElementById('hardQuestionDisplay');
+        const hardAnswersDisplay = document.getElementById('hardAnswersDisplay');
+        const hardStatusMessage = document.getElementById('hardStatusMessage');
+        const hardNextButton = document.getElementById('hardNextButton');
+        const hardGameView = document.getElementById('hard-game-view');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const penaltyMessage = document.getElementById('penaltyMessage');
 
         // Sample questions
         const sampleQuestions = [
@@ -525,6 +627,24 @@
                     { text: "Blue", correct: true },
                     { text: "Yellow", correct: false }
                 ]
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                answers: [
+                    { text: "Venus", correct: false },
+                    { text: "Mars", correct: true },
+                    { text: "Jupiter", correct: false },
+                    { text: "Saturn", correct: false }
+                ]
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                answers: [
+                    { text: "Elephant", correct: false },
+                    { text: "Blue Whale", correct: true },
+                    { text: "Giraffe", correct: false },
+                    { text: "Polar Bear", correct: false }
+                ]
             }
         ];
 
@@ -542,11 +662,29 @@
             startCountdown();
         }
 
-        // Start other games
-        function startGame(mode) {
-            if (mode === 'hard') {
-                showView('hard-game-view');
+        // Start hard game
+        function startHardGame() {
+            // Initialize players
+            const playerCount = prompt("Enter number of players (2-6):", "2");
+            const numPlayers = parseInt(playerCount);
+            
+            if (isNaN(numPlayers) || numPlayers < 2 || numPlayers > 6) {
+                alert("Please enter a valid number between 2 and 6");
+                return;
             }
+            
+            players = [];
+            for (let i = 1; i <= numPlayers; i++) {
+                players.push({
+                    id: i,
+                    name: `Player ${i}`,
+                    score: 0,
+                    active: i === 1 // First player is active initially
+                });
+            }
+            
+            showView('countdown-view');
+            startCountdown('hard');
         }
 
         // Return to menu from game
@@ -559,7 +697,7 @@
         }
 
         // Start countdown
-        function startCountdown() {
+        function startCountdown(mode = 'simple') {
             let count = 3;
             countdownNumber.textContent = count;
             
@@ -571,7 +709,11 @@
                 
                 if (count <= 0) {
                     clearInterval(countdownInterval);
-                    startSimpleGameSession();
+                    if (mode === 'hard') {
+                        startHardGameSession();
+                    } else {
+                        startSimpleGameSession();
+                    }
                 }
             }, 1000);
         }
@@ -583,7 +725,29 @@
             startNewQuestion();
         }
 
-        // Start a new question
+        // Start hard game session
+        function startHardGameSession() {
+            showView('hard-game-view');
+            currentQuestionIndex = 0;
+            updateScoreDisplay();
+            startNewHardQuestion();
+        }
+
+        // Update score display for hard mode
+        function updateScoreDisplay() {
+            scoreDisplay.innerHTML = '';
+            players.forEach(player => {
+                const playerElement = document.createElement('div');
+                playerElement.className = `player-score ${player.active ? 'active' : ''}`;
+                playerElement.innerHTML = `
+                    <h4>${player.name}</h4>
+                    <p>Files: ${player.score}</p>
+                `;
+                scoreDisplay.appendChild(playerElement);
+            });
+        }
+
+        // Start a new question for simple mode
         function startNewQuestion() {
             if (currentQuestionIndex >= sampleQuestions.length) {
                 currentQuestionIndex = 0;
@@ -614,7 +778,47 @@
             startTimer();
         }
 
-        // Hidden timer
+        // Start a new question for hard mode
+        function startNewHardQuestion() {
+            if (currentQuestionIndex >= sampleQuestions.length) {
+                currentQuestionIndex = 0;
+            }
+
+            const question = sampleQuestions[currentQuestionIndex];
+            currentQuestionIndex++;
+
+            // Reset game state
+            isBlueScreenActive = false;
+            canAnswer = false;
+            playerWhoAnswered = null;
+            penaltyActive = false;
+            penaltyMessage.textContent = '';
+
+            // Display the question
+            hardQuestionDisplay.textContent = question.question;
+            
+            // Display all answers (initially disabled)
+            hardAnswersDisplay.innerHTML = '';
+            question.answers.forEach((answer, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item incorrect disabled';
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
+                answerElement.dataset.index = index;
+                answerElement.dataset.correct = answer.correct;
+                hardAnswersDisplay.appendChild(answerElement);
+            });
+
+            // Reset interface
+            hardStatusMessage.textContent = "⏳ Think about the question...";
+            hardStatusMessage.className = 'status-message thinking';
+            hardNextButton.style.display = 'none';
+            hardGameView.classList.remove('blue-screen');
+
+            startAmbienceMusic();
+            startHardTimer();
+        }
+
+        // Hidden timer for simple mode
         function startTimer() {
             timeLeft = thinkingTime;
 
@@ -628,7 +832,21 @@
             }, 1000);
         }
 
-        // Time's up
+        // Timer for hard mode
+        function startHardTimer() {
+            timeLeft = thinkingTime;
+
+            currentTimer = setInterval(() => {
+                timeLeft--;
+
+                if (timeLeft <= 0) {
+                    clearInterval(currentTimer);
+                    hardTimeUp();
+                }
+            }, 1000);
+        }
+
+        // Time's up for simple mode
         function timeUp() {
             stopAmbienceMusic();
             bipSound.play();
@@ -637,7 +855,16 @@
             showBlueScreen();
         }
 
-        // Show blue screen
+        // Time's up for hard mode
+        function hardTimeUp() {
+            stopAmbienceMusic();
+            bipSound.play();
+            
+            // Show blue screen and enable answering
+            showHardBlueScreen();
+        }
+
+        // Show blue screen for simple mode
         function showBlueScreen() {
             gameView.classList.add('blue-screen');
             statusMessage.textContent = "⏰ Time's up!";
@@ -649,7 +876,106 @@
             }, blueScreenTime * 1000);
         }
 
-        // Show correct answer
+        // Show blue screen for hard mode
+        function showHardBlueScreen() {
+            hardGameView.classList.add('blue-screen');
+            hardStatusMessage.textContent = "⏰ Time's up! ANSWER NOW!";
+            hardStatusMessage.className = 'blue-screen-message';
+            
+            isBlueScreenActive = true;
+            canAnswer = true;
+            
+            // Enable answer selection
+            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+            answerElements.forEach(element => {
+                element.classList.remove('disabled');
+                element.classList.add('selectable');
+                element.addEventListener('click', handleAnswerSelection);
+            });
+            
+            // After blueScreenTime seconds, disable answering and show correct answer
+            setTimeout(() => {
+                canAnswer = false;
+                isBlueScreenActive = false;
+                showHardCorrectAnswer();
+            }, blueScreenTime * 1000);
+        }
+
+        // Handle answer selection in hard mode
+        function handleAnswerSelection(event) {
+            if (!canAnswer) {
+                // Player answered before blue screen - penalty
+                if (!isBlueScreenActive) {
+                    penaltyActive = true;
+                    penaltyMessage.textContent = `⚠️ ${players[currentPlayerIndex].name} answered too early! Skipping turn.`;
+                    errorSound.play();
+                    
+                    // Disable all answers
+                    const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+                    answerElements.forEach(element => {
+                        element.classList.remove('selectable');
+                        element.classList.add('disabled');
+                        element.removeEventListener('click', handleAnswerSelection);
+                    });
+                    
+                    // Move to next player
+                    moveToNextPlayer();
+                }
+                return;
+            }
+            
+            // Record who answered
+            playerWhoAnswered = currentPlayerIndex;
+            
+            const selectedElement = event.currentTarget;
+            const isCorrect = selectedElement.dataset.correct === 'true';
+            
+            // Show result immediately
+            if (isCorrect) {
+                // Correct answer
+                players[currentPlayerIndex].score += 5; // Award 5 points for correct answer
+                hardStatusMessage.textContent = `✅ ${players[currentPlayerIndex].name} answered correctly! +5 files`;
+                selectedElement.classList.add('correct');
+                
+                // Check for win condition
+                if (players[currentPlayerIndex].score >= 20) {
+                    setTimeout(() => {
+                        alert(`🎉 ${players[currentPlayerIndex].name} wins with ${players[currentPlayerIndex].score} files!`);
+                        returnToMenu();
+                    }, 1500);
+                    return;
+                }
+            } else {
+                // Incorrect answer
+                hardStatusMessage.textContent = `❌ ${players[currentPlayerIndex].name} answered incorrectly!`;
+                selectedElement.classList.add('incorrect');
+                
+                // Highlight correct answer
+                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+                answerElements.forEach(element => {
+                    if (element.dataset.correct === 'true') {
+                        element.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Disable further answers
+            canAnswer = false;
+            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+            answerElements.forEach(element => {
+                element.classList.remove('selectable');
+                element.classList.add('disabled');
+                element.removeEventListener('click', handleAnswerSelection);
+            });
+            
+            // Show next button
+            hardNextButton.style.display = 'block';
+            
+            // Update score display
+            updateScoreDisplay();
+        }
+
+        // Show correct answer for simple mode
         function showCorrectAnswer() {
             const question = sampleQuestions[currentQuestionIndex - 1];
             
@@ -667,9 +993,54 @@
             nextButton.style.display = 'block';
         }
 
-        // Next question
+        // Show correct answer for hard mode
+        function showHardCorrectAnswer() {
+            const question = sampleQuestions[currentQuestionIndex - 1];
+            
+            // Mark the correct answer in green
+            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+            question.answers.forEach((answer, index) => {
+                if (answer.correct) {
+                    answerElements[index].className = 'answer-item correct';
+                }
+            });
+
+            hardStatusMessage.textContent = "⏰ Time's up! Here is the correct answer!";
+            hardStatusMessage.className = 'status-message thinking';
+            hardGameView.classList.remove('blue-screen');
+            hardNextButton.style.display = 'block';
+            
+            // If no one answered, move to next player
+            if (playerWhoAnswered === null && !penaltyActive) {
+                moveToNextPlayer();
+            }
+        }
+
+        // Move to next player in hard mode
+        function moveToNextPlayer() {
+            players[currentPlayerIndex].active = false;
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            players[currentPlayerIndex].active = true;
+            updateScoreDisplay();
+        }
+
+        // Next question for simple mode
         function nextQuestion() {
             startNewQuestion();
+        }
+
+        // Next question for hard mode
+        function nextHardQuestion() {
+            // Move to next player if no penalty was applied
+            if (!penaltyActive && playerWhoAnswered === null) {
+                moveToNextPlayer();
+            } else if (playerWhoAnswered !== null) {
+                // If someone answered, move to next player
+                moveToNextPlayer();
+            }
+            // If penalty was active, we already moved to next player
+            
+            startNewHardQuestion();
         }
 
         // Music management
