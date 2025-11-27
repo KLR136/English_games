@@ -355,12 +355,12 @@ body {
 
 /* Game View */
 .game-view {
-    background: #F06B04;
+    background: #A1071F;
     transition: background-color 0.5s ease;
 }
 
 .blue-screen {
-    background: #2B9FC6 !important;
+    background: #2B9FC6;
 }
 
 .red-screen {
@@ -474,15 +474,6 @@ body {
     display: none;
 }
 
-.btn-music {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
 
 /* Penalty Message */
 .penalty-message {
