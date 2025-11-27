@@ -31,6 +31,7 @@
             align-items: center;
             text-align: center;
             padding: 20px;
+            position: relative;
         }
 
         .view.active {
@@ -61,6 +62,15 @@
             animation: pulse 2s infinite;
         }
 
+        .team-logo {
+            position: absolute;
+            bottom: 20px;
+            max-width: 150px;
+            width: 40%;
+            height: auto;
+            opacity: 0.8;
+        }
+
         /* Main Menu */
         .menu-container {
             background: rgba(255, 255, 255, 0.95);
@@ -71,6 +81,7 @@
             max-width: 500px;
             width: 90%;
             color: #333;
+            position: relative;
         }
 
         .logo-space {
@@ -462,6 +473,15 @@
             font-size: 24px;
             margin-bottom: 30px;
         }
+
+        /* Team Logo in Main Menu */
+        .menu-team-logo {
+            max-width: 120px;
+            width: 30%;
+            height: auto;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -470,6 +490,7 @@
         <div class="splash-screen">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
             <div class="splash-text">Loading...</div>
+            <img src="images/team_logo.png" alt="Team Logo" class="team-logo" id="splashTeamLogo">
         </div>
     </div>
 
@@ -495,6 +516,8 @@
                     💀 Hard Mode
                 </button>
             </div>
+            
+            <img src="images/team_logo.png" alt="Team Logo" class="menu-team-logo" id="menuTeamLogo">
         </div>
     </div>
 
@@ -708,6 +731,8 @@
         // Logo elements
         const splashLogo = document.getElementById('splashLogo');
         const menuLogo = document.getElementById('menuLogo');
+        const splashTeamLogo = document.getElementById('splashTeamLogo');
+        const menuTeamLogo = document.getElementById('menuTeamLogo');
 
         // Sample questions
         const sampleQuestions = [
@@ -1227,7 +1252,11 @@
         }
 
         // Random slogans
-        const slogans = ["Be the fastest!\n\n Be the smartest!\n\n Beat the beep!",];
+        const slogans = [
+            "Test your knowledge in Simple Mode or challenge yourself in Hard Mode!",
+            "Can you take on the challenge? Simple or Hard mode, the choice is yours!",
+            "Knowledge has no limits. Test it now!"
+        ];
 
         document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
 
@@ -1254,6 +1283,14 @@
         menuLogo.onerror = function() {
             // If menu logo fails to load, hide it
             menuLogo.style.display = 'none';
+        };
+        
+        // Set up team logo event listeners
+        splashTeamLogo.onerror = function() {
+            splashTeamLogo.style.display = 'none';
+        };
+        menuTeamLogo.onerror = function() {
+            menuTeamLogo.style.display = 'none';
         };
 
         // Check if logo has already loaded (cached case)
