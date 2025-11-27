@@ -31,7 +31,6 @@
             align-items: center;
             text-align: center;
             padding: 20px;
-            position: relative;
         }
 
         .view.active {
@@ -39,8 +38,20 @@
         }
 
         /* Splash Screen */
-        .splash-screen {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .splash-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 400px;
         }
 
         .splash-logo {
@@ -48,7 +59,6 @@
             width: 80%;
             height: auto;
             animation: fadeIn 2s ease-in-out;
-            margin-bottom: 20px;
         }
 
         @keyframes fadeIn {
@@ -60,15 +70,15 @@
             font-size: 24px;
             font-weight: bold;
             animation: pulse 2s infinite;
+            margin: 20px 0;
         }
 
-        .team-logo {
-            position: absolute;
-            bottom: 20px;
+        .splash-team-logo {
             max-width: 150px;
             width: 40%;
             height: auto;
             opacity: 0.8;
+            margin-top: 20px;
         }
 
         /* Main Menu */
@@ -139,17 +149,17 @@
         }
 
         .btn-rules {
-            background: linear-gradient(45deg, #32cd32, #00b894);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
         }
 
         .btn-simple {
-            background: linear-gradient(45deg, #0000ff, #add8e6);
+            background: linear-gradient(45deg, #00b894, #00a085);
             color: white;
         }
 
         .btn-hard {
-            background: linear-gradient(45deg, #ff0000, #ff6347);
+            background: linear-gradient(45deg, #6c5ce7, #5b4bc4);
             color: white;
         }
 
@@ -487,10 +497,10 @@
 <body>
     <!-- Splash Screen -->
     <div class="view active" id="splash-screen">
-        <div class="splash-screen">
+        <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
             <div class="splash-text">Loading...</div>
-            <img src="images/team_logo.png" alt="Team Logo" class="team-logo" id="splashTeamLogo">
+            <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
 
