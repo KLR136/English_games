@@ -178,7 +178,7 @@
             </div>
 
             <div class="status-message thinking" id="statusMessage">
-                ⏳ Think about the question...
+                Listen and wait.
             </div>
 
             <div class="controls">
@@ -402,7 +402,7 @@
             });
 
             // Reset interface
-            statusMessage.textContent = "⏳ Think about the question...";
+            statusMessage.textContent = "Listen and wait.";
             statusMessage.className = 'status-message thinking';
             nextButton.style.display = 'none';
             gameView.classList.remove('blue-screen');
@@ -577,7 +577,7 @@
                 }
             });
 
-            statusMessage.textContent = "✅ Here is the correct answer!";
+            statusMessage.textContent = "Tap to continue.";
             statusMessage.className = 'status-message thinking';
             gameView.classList.remove('blue-screen');
             nextButton.style.display = 'block';
@@ -595,7 +595,7 @@
                 }
             });
 
-            hardStatusMessage.textContent = "✅ Here is the correct answer!";
+            hardStatusMessage.textContent = "Tap to continue.";
             hardStatusMessage.className = 'status-message thinking';
             hardGameView.classList.remove('blue-screen');
             hardGameView.classList.remove('red-screen');
