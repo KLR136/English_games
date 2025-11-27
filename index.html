@@ -747,19 +747,19 @@
     </audio>
 
     <audio id="fakebipSound1" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer.mp3" type="audio/mpeg">
+        <source src="audio/beepers/incorrect/fake_buzzer_1.mp3" type="audio/mpeg">
     </audio>
     
     <audio id="fakebipSound2" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer2.mp3" type="audio/mpeg">
+        <source src="audio/beepers/incorrect/fake_buzzer_2.mp3" type="audio/mpeg">
     </audio>
 
     <audio id="fakebipSound3" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer3.mp3" type="audio/mpeg">
+        <source src="audio/beepers/incorrect/fake_buzzer_3.mp3" type="audio/mpeg">
     </audio>
 
     <audio id="fakebipSound4" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer4.mp3" type="audio/mpeg">
+        <source src="audio/beepers/incorrect/fake_buzzer_4.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -1162,78 +1162,6 @@
             }, 1500);
         }
 
-        // Handle answer selection in hard mode
-        function handleAnswerSelection(event) {
-            if (!canAnswer) {
-                // Player answered before blue screen - penalty
-                if (!isBlueScreenActive) {
-                    penaltyActive = true;
-                    penaltyMessage.textContent = `⚠️ You answered too early! -2 points penalty.`;
-                    errorSound.play();
-                    
-                    // Apply penalty
-                    playerScore = Math.max(0, playerScore - 2);
-                    updateScoreDisplay();
-                    
-                    // Disable all answers
-                    const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-                    answerElements.forEach(element => {
-                        element.classList.remove('selectable');
-                        element.classList.add('disabled');
-                        element.removeEventListener('click', handleAnswerSelection);
-                    });
-                }
-                return;
-            }
-            
-            const selectedElement = event.currentTarget;
-            const isCorrect = selectedElement.dataset.correct === 'true';
-            
-            // Show result immediately
-            if (isCorrect) {
-                // Correct answer
-                playerScore += 5; // Award 5 points for correct answer
-                hardStatusMessage.textContent = `✅ You answered correctly! +5 files`;
-                selectedElement.classList.add('correct');
-                
-                // Check for win condition
-                if (playerScore >= 20) {
-                    setTimeout(() => {
-                        finalScoreDisplay.textContent = playerScore;
-                        winSound.play();
-                        showView('game-over-view');
-                    }, 1500);
-                    return;
-                }
-            } else {
-                // Incorrect answer
-                hardStatusMessage.textContent = `❌ You answered incorrectly!`;
-                selectedElement.classList.add('incorrect');
-                
-                // Highlight correct answer
-                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-                answerElements.forEach(element => {
-                    if (element.dataset.correct === 'true') {
-                        element.classList.add('correct');
-                    }
-                });
-            }
-            
-            // Disable further answers
-            canAnswer = false;
-            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-            answerElements.forEach(element => {
-                element.classList.remove('selectable');
-                element.classList.add('disabled');
-                element.removeEventListener('click', handleAnswerSelection);
-            });
-            
-            // Show next button
-            hardNextButton.style.display = 'block';
-            
-            // Update score display
-            updateScoreDisplay();
-        }
 
         // Show correct answer for simple mode
         function showCorrectAnswer() {
