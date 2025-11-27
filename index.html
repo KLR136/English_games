@@ -447,16 +447,6 @@
             margin-top: 20px;
         }
 
-        .btn-music {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
         /* Player Score Display */
         .score-display {
             display: flex;
@@ -643,12 +633,6 @@
                     Next Question
                 </button>
             </div>
-
-            <div class="music-controls">
-                <button class="btn-music" onclick="toggleMusic()">
-                    🔇 Music
-                </button>
-            </div>
         </div>
     </div>
 
@@ -688,12 +672,6 @@
             <div class="controls">
                 <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
                     Next Question
-                </button>
-            </div>
-
-            <div class="music-controls">
-                <button class="btn-music" onclick="toggleMusic()">
-                    🔇 Music
                 </button>
             </div>
         </div>
@@ -1285,23 +1263,6 @@
             }
         }
 
-        function toggleMusic() {
-            const musicBtn = document.querySelector('.btn-music');
-            
-            if (isMusicPlaying) {
-                ambienceMusic.pause();
-                musicBtn.innerHTML = '🔇 Music';
-                isMusicPlaying = false;
-            } else {
-                ambienceMusic.volume = 0.3;
-                ambienceMusic.play().then(() => {
-                    musicBtn.innerHTML = '🔊 Music';
-                    isMusicPlaying = true;
-                }).catch(e => {
-                    console.log("Music error:", e);
-                });
-            }
-        }
 
         // Random slogans
         const slogans = [
