@@ -784,7 +784,6 @@
         const answersDisplay = document.getElementById('answersDisplay');
         const statusMessage = document.getElementById('statusMessage');
         const bipSound = document.getElementById('bipSound');
-        const countdownSound = document.getElementById('countdownSound');
         const ambienceMusic = document.getElementById('ambienceMusic');
         const errorSound = document.getElementById('errorSound');
         const winSound = document.getElementById('winSound');
@@ -925,9 +924,7 @@
         function startCountdown(mode = 'simple') {
             let count = 3;
             countdownNumber.textContent = count;
-            
-            countdownSound.play();
-            
+                    
             countdownInterval = setInterval(() => {
                 count--;
                 countdownNumber.textContent = count;
