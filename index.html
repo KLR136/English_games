@@ -201,6 +201,54 @@
             gap: 15px;
         }
 
+        .mode-buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 15px 10px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .btn-simple {
+            background: #FBB728;
+        }
+
+        .btn-hard {
+            background: #FBB728;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .mode-icon {
+            max-height: 60px;
+            margin-bottom: 8px;
+        }
+
         .menu-btn {
             padding: 15px 30px;
             border: none;
@@ -215,18 +263,6 @@
 
         .btn-rules {
             background: #F06B04;
-            color: white;
-            max-width: 150px;
-            margin: 0 auto;
-        }
-
-        .btn-simple {
-            background: #FBB728;
-            color: white;
-        }
-
-        .btn-hard {
-            background: #FBB728;
             color: white;
         }
 
@@ -420,7 +456,6 @@
 
         .controls {
             margin-top: 30px;
-            background-color: #F06B04;
         }
 
         .next-btn {
@@ -447,6 +482,16 @@
         /* Music Controls */
         .music-controls {
             margin-top: 20px;
+        }
+
+        .btn-music {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         /* Player Score Display */
@@ -554,21 +599,24 @@
             </div>
             
             <div class="slogan-space">
-                <p class="slogan" id="slogan">Test your knowledge in Simple Mode or challenge yourself in Hard Mode!</p>
+                <p class="slogan" id="slogan">Be the fastest! Be the smartest! Beat the BEEP!</p>
             </div>
             
             <div class="menu-buttons">
                 <button class="menu-btn btn-rules" onclick="showView('rules-view')">
                     Rules
                 </button>
-                <button class="menu-btn btn-simple" onclick="startSimpleGame()">
-                    Simple Mode <br>
-                    <img src="images/simple_mode_icon.png" alt="Simple Mode Icon" style="max-height:80px;">
-                </button>
-                <button class="menu-btn btn-hard" onclick="startHardGame()">
-                    Hard Mode <br>
-                <img src="images/hard_mode_icon.png" alt="Hard Mode Icon" style="max-height:80px;">
-                </button>
+                
+                <div class="mode-buttons-container">
+                    <button class="mode-btn btn-simple" onclick="startSimpleGame()">
+                        <img src="images/simple_mode_icon.png" alt="Simple Mode Icon" class="mode-icon">
+                        Simple Mode
+                    </button>
+                    <button class="mode-btn btn-hard" onclick="startHardGame()">
+                        <img src="images/hard_mode_icon.png" alt="Hard Mode Icon" class="mode-icon">
+                        Hard Mode
+                    </button>
+                </div>
             </div>
             
             <img src="images/team_logo.png" alt="Team Logo" class="menu-team-logo" id="menuTeamLogo">
@@ -635,6 +683,12 @@
                     Next Question
                 </button>
             </div>
+
+            <div class="music-controls">
+                <button class="btn-music" onclick="toggleMusic()">
+                    🔇 Music
+                </button>
+            </div>
         </div>
     </div>
 
@@ -674,6 +728,12 @@
             <div class="controls">
                 <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
                     Next Question
+                </button>
+            </div>
+
+            <div class="music-controls">
+                <button class="btn-music" onclick="toggleMusic()">
+                    🔇 Music
                 </button>
             </div>
         </div>
@@ -1201,7 +1261,7 @@
                 }
             });
 
-            statusMessage.textContent = "Here is the correct answer!";
+            statusMessage.textContent = "✅ Here is the correct answer!";
             statusMessage.className = 'status-message thinking';
             gameView.classList.remove('blue-screen');
             nextButton.style.display = 'block';
@@ -1265,13 +1325,23 @@
             }
         }
 
-
-        // Random slogans
-        const slogans = [
-            "Be the fastest! Be the smartest! Beat the BEEP!",
-        ];
-
-        document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
+        function toggleMusic() {
+            const musicBtn = document.querySelector('.btn-music');
+            
+            if (isMusicPlaying) {
+                ambienceMusic.pause();
+                musicBtn.innerHTML = '🔇 Music';
+                isMusicPlaying = false;
+            } else {
+                ambienceMusic.volume = 0.3;
+                ambienceMusic.play().then(() => {
+                    musicBtn.innerHTML = '🔊 Music';
+                    isMusicPlaying = true;
+                }).catch(e => {
+                    console.log("Music error:", e);
+                });
+            }
+        }
 
         // Handle logo loading and splash screen
         function handleLogoLoad() {
