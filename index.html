@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Your HTML content remains exactly the same -->
+    <!-- Background Music (auto-plays after sound-on screen) -->
+    <audio id="backgroundMusic" loop>
+        <source src="audio/background_music.mp3" type="audio/mpeg">
+        <!-- Add your background music file here -->
+    </audio>
+
     <!-- Splash Screen -->
     <div class="view active" id="splash-screen">
         <div class="splash-container">
@@ -26,7 +31,7 @@
                 This game requires sound to play properly.<br>
                 You need to hear the "BEEP" to know when to answer questions!
             </p>
-            <button class="continue-btn" onclick="showView('main-menu')">
+            <button class="continue-btn" onclick="startBackgroundMusic(); showView('main-menu')">
                 Continue to Game
             </button>
         </div>
@@ -199,7 +204,6 @@
     </audio>
 
     <script>
-        // Your JavaScript code remains exactly the same
         // Game variables
         let currentTimer;
         let timeLeft;
@@ -221,10 +225,6 @@
         const answersDisplay = document.getElementById('answersDisplay');
         const statusMessage = document.getElementById('statusMessage');
         const bipSound = document.getElementById('bipSound');
-        const ambienceMusic = document.getElementById('ambienceMusic');
-        const errorSound = document.getElementById('errorSound');
-        const winSound = document.getElementById('winSound');
-        const trickSound = document.getElementById('trickSound');
         const countdownNumber = document.getElementById('countdownNumber');
         const nextButton = document.getElementById('nextButton');
         const gameView = document.getElementById('simple-game-view');
@@ -235,10 +235,8 @@
         const hardStatusMessage = document.getElementById('hardStatusMessage');
         const hardNextButton = document.getElementById('hardNextButton');
         const hardGameView = document.getElementById('hard-game-view');
-        const playerScoreDisplay = document.getElementById('playerScore');
         const penaltyMessage = document.getElementById('penaltyMessage');
         const trickMessage = document.getElementById('trickMessage');
-        const finalScoreDisplay = document.getElementById('finalScore');
         const gameOverView = document.getElementById('game-over-view');
 
         // Logo elements
@@ -247,6 +245,15 @@
         const splashTeamLogo = document.getElementById('splashTeamLogo');
         const menuTeamLogo = document.getElementById('menuTeamLogo');
         const soundOnIcon = document.getElementById('soundOnIcon');
+
+        // Background Music Function
+        function startBackgroundMusic() {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.volume = 0.3; // Set volume to 30%
+            backgroundMusic.play().catch(e => {
+                console.log("Autoplay prevented - user interaction required");
+            });
+        }
 
         // Sample questions
         const sampleQuestions = [
@@ -340,10 +347,6 @@
 
         // Start hard game
         function startHardGame() {
-            // Reset player score
-            playerScore = 0;
-            updateScoreDisplay();
-            
             showView('countdown-view');
             startCountdown('hard');
         }
@@ -352,7 +355,6 @@
         function returnToMenu() {
             if (confirm("Do you really want to return to the menu? Your progress will be lost.")) {
                 clearInterval(currentTimer);
-                stopAmbienceMusic();
                 showView('main-menu');
             }
         }
@@ -391,11 +393,6 @@
             startNewHardQuestion();
         }
 
-        // Update score display for hard mode
-        function updateScoreDisplay() {
-            playerScoreDisplay.textContent = playerScore;
-        }
-
         // Start a new question for simple mode
         function startNewQuestion() {
             if (currentQuestionIndex >= sampleQuestions.length) {
@@ -423,7 +420,6 @@
             nextButton.style.display = 'none';
             gameView.classList.remove('blue-screen');
 
-            startAmbienceMusic();
             startTimer();
         }
 
@@ -453,19 +449,16 @@
                 const answerElement = document.createElement('div');
                 answerElement.className = 'answer-item incorrect disabled';
                 answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
-                answerElement.dataset.index = index;
-                answerElement.dataset.correct = answer.correct;
                 hardAnswersDisplay.appendChild(answerElement);
             });
 
             // Reset interface
-            hardStatusMessage.textContent = "⏳ Think about the question...";
+            hardStatusMessage.textContent = "Listen and wait";
             hardStatusMessage.className = 'status-message thinking';
             hardNextButton.style.display = 'none';
             hardGameView.classList.remove('blue-screen');
             hardGameView.classList.remove('red-screen');
 
-            startAmbienceMusic();
             startHardTimer();
         }
 
@@ -499,18 +492,12 @@
 
         // Time's up for simple mode
         function timeUp() {
-            stopAmbienceMusic();
-            bipSound.play();
-            
             // Show blue screen
             showBlueScreen();
         }
 
         // Time's up for hard mode
         function hardTimeUp() {
-            stopAmbienceMusic();
-            bipSound.play();
-            
             // Randomly decide if this will be a trick screen (30% chance)
             isTrickScreen = Math.random() < 0.3;
             
@@ -547,7 +534,6 @@
             answerElements.forEach(element => {
                 element.classList.remove('disabled');
                 element.classList.add('selectable');
-                element.addEventListener('click', handleAnswerSelection);
             });
             
             // After blueScreenTime seconds, disable answering and show correct answer
@@ -565,9 +551,6 @@
             hardStatusMessage.className = 'red-screen-message';
             trickMessage.textContent = "⚠️ TRICK! Wait for the BLUE screen!";
             
-            // Play trick sound
-            trickSound.play();
-            
             // After a shorter time, switch to blue screen
             setTimeout(() => {
                 hardGameView.classList.remove('red-screen');
@@ -584,7 +567,6 @@
                 answerElements.forEach(element => {
                     element.classList.remove('disabled');
                     element.classList.add('selectable');
-                    element.addEventListener('click', handleAnswerSelection);
                 });
                 
                 // Then show the answer after the remaining time
@@ -595,7 +577,6 @@
                 }, (blueScreenTime - 1.5) * 1000);
             }, 1500);
         }
-
 
         // Show correct answer for simple mode
         function showCorrectAnswer() {
@@ -627,19 +608,7 @@
                 }
             });
 
-            // Award points for correct answer (only if it wasn't a trick screen with penalty)
-            if (!penaltyActive) {
-                if (!isTrickScreen) {
-                    playerScore += 5;
-                    updateScoreDisplay();
-                    hardStatusMessage.textContent = "✅ Here is the correct answer! +5 files";
-                } else {
-                    hardStatusMessage.textContent = "✅ Here is the correct answer! (No points - trick screen)";
-                }
-            } else {
-                hardStatusMessage.textContent = "✅ Here is the correct answer!";
-            }
-            
+            hardStatusMessage.textContent = "✅ Here is the correct answer!";
             hardStatusMessage.className = 'status-message thinking';
             hardGameView.classList.remove('blue-screen');
             hardGameView.classList.remove('red-screen');
@@ -656,39 +625,6 @@
         // Next question for hard mode
         function nextHardQuestion() {
             startNewHardQuestion();
-        }
-
-        // Music management
-        function startAmbienceMusic() {
-            if (isMusicPlaying) {
-                ambienceMusic.currentTime = 0;
-                ambienceMusic.volume = 0.3;
-                ambienceMusic.play().catch(e => console.log("Audio error:", e));
-            }
-        }
-
-        function stopAmbienceMusic() {
-            if (isMusicPlaying && !ambienceMusic.paused) {
-                ambienceMusic.pause();
-            }
-        }
-
-        function toggleMusic() {
-            const musicBtn = document.querySelector('.btn-music');
-            
-            if (isMusicPlaying) {
-                ambienceMusic.pause();
-                musicBtn.innerHTML = '🔇 Music';
-                isMusicPlaying = false;
-            } else {
-                ambienceMusic.volume = 0.3;
-                ambienceMusic.play().then(() => {
-                    musicBtn.innerHTML = '🔊 Music';
-                    isMusicPlaying = true;
-                }).catch(e => {
-                    console.log("Music error:", e);
-                });
-            }
         }
 
         // Handle logo loading and splash screen
