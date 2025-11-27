@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL BEEPER - The Ultimate Quiz Game</title>
     <style>
-        /* All previous CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -38,6 +37,30 @@
             display: flex;
         }
 
+        /* Splash Screen */
+        .splash-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .splash-logo {
+            max-width: 300px;
+            width: 80%;
+            height: auto;
+            animation: fadeIn 2s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .splash-text {
+            font-size: 24px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
         /* Main Menu */
         .menu-container {
             background: rgba(255, 255, 255, 0.95);
@@ -52,6 +75,13 @@
 
         .logo-space {
             margin-bottom: 20px;
+        }
+
+        .menu-logo {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
         }
 
         .logo {
@@ -231,6 +261,10 @@
             background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%) !important;
         }
 
+        .red-screen {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+        }
+
         .game-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -321,6 +355,13 @@
             text-align: center;
         }
 
+        .red-screen-message {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+        }
+
         .controls {
             margin-top: 30px;
         }
@@ -364,9 +405,8 @@
         /* Player Score Display */
         .score-display {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             margin-bottom: 20px;
-            flex-wrap: wrap;
         }
 
         .player-score {
@@ -376,16 +416,12 @@
             margin: 5px;
             flex: 1;
             min-width: 120px;
+            max-width: 200px;
         }
 
         .player-score h4 {
             color: #6c5ce7;
             margin-bottom: 5px;
-        }
-
-        .player-score.active {
-            border: 2px solid #6c5ce7;
-            background: rgba(108, 92, 231, 0.1);
         }
 
         /* Penalty Message */
@@ -395,14 +431,53 @@
             font-size: 18px;
             margin: 10px 0;
         }
+
+        /* Trick Message */
+        .trick-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Game Over Screen */
+        .game-over {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .game-over h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #6c5ce7;
+        }
+
+        .game-over p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div class="view active" id="splash-screen">
+        <div class="splash-screen">
+            <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
+            <div class="splash-text">Loading...</div>
+        </div>
+    </div>
+
     <!-- Main Menu -->
-    <div class="view active" id="main-menu">
+    <div class="view" id="main-menu">
         <div class="menu-container">
             <div class="logo-space">
-                <div class="logo">EB</div>
+                <img src="images/game_logo.png" alt="EL BEEPER Logo" class="menu-logo" id="menuLogo">
             </div>
             
             <div class="slogan-space">
@@ -441,7 +516,7 @@
                     </div>
                     <div class="info-item">
                         <h4>PLAYERS</h4>
-                        <p>2-6 players</p>
+                        <p>1 player</p>
                     </div>
                 </div>
                 
@@ -453,11 +528,11 @@
                 
                 <h3>HOW TO PLAY</h3>
                 <ol>
-                    <li>Firstly, choose your folder color. This folder will contain "files", which will be your points.</li>
-                    <li>Then, choose a game mode: simple or hard.</li>
-                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BEEP", by slapping (and leaving) your hand on the carpet target.</li>
-                    <li><strong>ATTENTION:</strong> In hard mode if you slap your hand before the "BEEP" or the color is anything but blue, you can't play for this turn.</li>
-                    <li>The first player who answers the question. If the answer is right, you win "files" (depending on the number of points the question made you earn). If the answer is wrong, you don't gain files at all.</li>
+                    <li>Choose a game mode: simple or hard.</li>
+                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BEEP", by clicking on the correct answer.</li>
+                    <li><strong>ATTENTION:</strong> In hard mode if you click an answer before the "BEEP" or the screen is anything but blue, you lose points for this turn.</li>
+                    <li><strong>TRICK:</strong> Sometimes the screen turns RED instead of blue - this is a trick! Don't be fooled!</li>
+                    <li>If the answer is right, you win "files" (depending on the number of points the question made you earn). If the answer is wrong, you don't gain files at all.</li>
                 </ol>
                 
                 <p><strong>The first to win 20 files, wins and ends the game.</strong></p>
@@ -509,8 +584,11 @@
             <button class="back-btn" onclick="returnToMenu()">← Main Menu</button>
             <h1>💀 Hard Mode</h1>
             
-            <div class="score-display" id="scoreDisplay">
-                <!-- Player scores will be displayed here -->
+            <div class="score-display">
+                <div class="player-score">
+                    <h4>Your Files</h4>
+                    <p id="playerScore">0</p>
+                </div>
             </div>
             
             <div class="question-display" id="hardQuestionDisplay">
@@ -529,6 +607,10 @@
                 <!-- Penalty messages will appear here -->
             </div>
 
+            <div class="trick-message" id="trickMessage">
+                <!-- Trick messages will appear here -->
+            </div>
+
             <div class="controls">
                 <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
                     Next Question
@@ -540,6 +622,18 @@
                     🔇 Music
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Game Over View -->
+    <div class="view" id="game-over-view">
+        <div class="menu-container game-over">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p>You've collected <span id="finalScore">20</span> files!</p>
+            <p>You are the EL BEEPER champion!</p>
+            <button class="menu-btn btn-hard" onclick="showView('main-menu')">
+                Play Again
+            </button>
         </div>
     </div>
 
@@ -560,6 +654,14 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="winSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="trickSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-funny-cartoon-jump-465.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // Game variables
         let currentTimer;
@@ -573,10 +675,9 @@
         // Hard Mode specific variables
         let isBlueScreenActive = false;
         let canAnswer = false;
-        let players = [];
-        let currentPlayerIndex = 0;
-        let playerWhoAnswered = null;
+        let playerScore = 0;
         let penaltyActive = false;
+        let isTrickScreen = false;
 
         // DOM Elements
         const questionDisplay = document.getElementById('questionDisplay');
@@ -586,6 +687,8 @@
         const countdownSound = document.getElementById('countdownSound');
         const ambienceMusic = document.getElementById('ambienceMusic');
         const errorSound = document.getElementById('errorSound');
+        const winSound = document.getElementById('winSound');
+        const trickSound = document.getElementById('trickSound');
         const countdownNumber = document.getElementById('countdownNumber');
         const nextButton = document.getElementById('nextButton');
         const gameView = document.getElementById('simple-game-view');
@@ -596,8 +699,15 @@
         const hardStatusMessage = document.getElementById('hardStatusMessage');
         const hardNextButton = document.getElementById('hardNextButton');
         const hardGameView = document.getElementById('hard-game-view');
-        const scoreDisplay = document.getElementById('scoreDisplay');
+        const playerScoreDisplay = document.getElementById('playerScore');
         const penaltyMessage = document.getElementById('penaltyMessage');
+        const trickMessage = document.getElementById('trickMessage');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const gameOverView = document.getElementById('game-over-view');
+
+        // Logo elements
+        const splashLogo = document.getElementById('splashLogo');
+        const menuLogo = document.getElementById('menuLogo');
 
         // Sample questions
         const sampleQuestions = [
@@ -645,6 +755,33 @@
                     { text: "Giraffe", correct: false },
                     { text: "Polar Bear", correct: false }
                 ]
+            },
+            {
+                question: "How many continents are there?",
+                answers: [
+                    { text: "5", correct: false },
+                    { text: "6", correct: false },
+                    { text: "7", correct: true },
+                    { text: "8", correct: false }
+                ]
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                answers: [
+                    { text: "Go", correct: false },
+                    { text: "Gd", correct: false },
+                    { text: "Au", correct: true },
+                    { text: "Ag", correct: false }
+                ]
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                answers: [
+                    { text: "Vincent van Gogh", correct: false },
+                    { text: "Pablo Picasso", correct: false },
+                    { text: "Leonardo da Vinci", correct: true },
+                    { text: "Michelangelo", correct: false }
+                ]
             }
         ];
 
@@ -664,24 +801,9 @@
 
         // Start hard game
         function startHardGame() {
-            // Initialize players
-            const playerCount = prompt("Enter number of players (2-6):", "2");
-            const numPlayers = parseInt(playerCount);
-            
-            if (isNaN(numPlayers) || numPlayers < 2 || numPlayers > 6) {
-                alert("Please enter a valid number between 2 and 6");
-                return;
-            }
-            
-            players = [];
-            for (let i = 1; i <= numPlayers; i++) {
-                players.push({
-                    id: i,
-                    name: `Player ${i}`,
-                    score: 0,
-                    active: i === 1 // First player is active initially
-                });
-            }
+            // Reset player score
+            playerScore = 0;
+            updateScoreDisplay();
             
             showView('countdown-view');
             startCountdown('hard');
@@ -729,22 +851,12 @@
         function startHardGameSession() {
             showView('hard-game-view');
             currentQuestionIndex = 0;
-            updateScoreDisplay();
             startNewHardQuestion();
         }
 
         // Update score display for hard mode
         function updateScoreDisplay() {
-            scoreDisplay.innerHTML = '';
-            players.forEach(player => {
-                const playerElement = document.createElement('div');
-                playerElement.className = `player-score ${player.active ? 'active' : ''}`;
-                playerElement.innerHTML = `
-                    <h4>${player.name}</h4>
-                    <p>Files: ${player.score}</p>
-                `;
-                scoreDisplay.appendChild(playerElement);
-            });
+            playerScoreDisplay.textContent = playerScore;
         }
 
         // Start a new question for simple mode
@@ -790,9 +902,10 @@
             // Reset game state
             isBlueScreenActive = false;
             canAnswer = false;
-            playerWhoAnswered = null;
             penaltyActive = false;
+            isTrickScreen = false;
             penaltyMessage.textContent = '';
+            trickMessage.textContent = '';
 
             // Display the question
             hardQuestionDisplay.textContent = question.question;
@@ -813,6 +926,7 @@
             hardStatusMessage.className = 'status-message thinking';
             hardNextButton.style.display = 'none';
             hardGameView.classList.remove('blue-screen');
+            hardGameView.classList.remove('red-screen');
 
             startAmbienceMusic();
             startHardTimer();
@@ -860,8 +974,14 @@
             stopAmbienceMusic();
             bipSound.play();
             
-            // Show blue screen and enable answering
-            showHardBlueScreen();
+            // Randomly decide if this will be a trick screen (30% chance)
+            isTrickScreen = Math.random() < 0.3;
+            
+            if (isTrickScreen) {
+                showRedScreen();
+            } else {
+                showHardBlueScreen();
+            }
         }
 
         // Show blue screen for simple mode
@@ -901,14 +1021,56 @@
             }, blueScreenTime * 1000);
         }
 
+        // Show red screen (trick) for hard mode
+        function showRedScreen() {
+            hardGameView.classList.add('red-screen');
+            hardStatusMessage.textContent = "⏰ Time's up!";
+            hardStatusMessage.className = 'red-screen-message';
+            trickMessage.textContent = "⚠️ TRICK! Wait for the BLUE screen!";
+            
+            // Play trick sound
+            trickSound.play();
+            
+            // After a shorter time, switch to blue screen
+            setTimeout(() => {
+                hardGameView.classList.remove('red-screen');
+                hardGameView.classList.add('blue-screen');
+                hardStatusMessage.className = 'blue-screen-message';
+                trickMessage.textContent = "";
+                
+                // Enable answering on blue screen
+                isBlueScreenActive = true;
+                canAnswer = true;
+                
+                // Enable answer selection
+                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+                answerElements.forEach(element => {
+                    element.classList.remove('disabled');
+                    element.classList.add('selectable');
+                    element.addEventListener('click', handleAnswerSelection);
+                });
+                
+                // Then show the answer after the remaining time
+                setTimeout(() => {
+                    canAnswer = false;
+                    isBlueScreenActive = false;
+                    showHardCorrectAnswer();
+                }, (blueScreenTime - 1.5) * 1000);
+            }, 1500);
+        }
+
         // Handle answer selection in hard mode
         function handleAnswerSelection(event) {
             if (!canAnswer) {
                 // Player answered before blue screen - penalty
                 if (!isBlueScreenActive) {
                     penaltyActive = true;
-                    penaltyMessage.textContent = `⚠️ ${players[currentPlayerIndex].name} answered too early! Skipping turn.`;
+                    penaltyMessage.textContent = `⚠️ You answered too early! -2 points penalty.`;
                     errorSound.play();
+                    
+                    // Apply penalty
+                    playerScore = Math.max(0, playerScore - 2);
+                    updateScoreDisplay();
                     
                     // Disable all answers
                     const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
@@ -917,15 +1079,9 @@
                         element.classList.add('disabled');
                         element.removeEventListener('click', handleAnswerSelection);
                     });
-                    
-                    // Move to next player
-                    moveToNextPlayer();
                 }
                 return;
             }
-            
-            // Record who answered
-            playerWhoAnswered = currentPlayerIndex;
             
             const selectedElement = event.currentTarget;
             const isCorrect = selectedElement.dataset.correct === 'true';
@@ -933,21 +1089,22 @@
             // Show result immediately
             if (isCorrect) {
                 // Correct answer
-                players[currentPlayerIndex].score += 5; // Award 5 points for correct answer
-                hardStatusMessage.textContent = `✅ ${players[currentPlayerIndex].name} answered correctly! +5 files`;
+                playerScore += 5; // Award 5 points for correct answer
+                hardStatusMessage.textContent = `✅ You answered correctly! +5 files`;
                 selectedElement.classList.add('correct');
                 
                 // Check for win condition
-                if (players[currentPlayerIndex].score >= 20) {
+                if (playerScore >= 20) {
                     setTimeout(() => {
-                        alert(`🎉 ${players[currentPlayerIndex].name} wins with ${players[currentPlayerIndex].score} files!`);
-                        returnToMenu();
+                        finalScoreDisplay.textContent = playerScore;
+                        winSound.play();
+                        showView('game-over-view');
                     }, 1500);
                     return;
                 }
             } else {
                 // Incorrect answer
-                hardStatusMessage.textContent = `❌ ${players[currentPlayerIndex].name} answered incorrectly!`;
+                hardStatusMessage.textContent = `❌ You answered incorrectly!`;
                 selectedElement.classList.add('incorrect');
                 
                 // Highlight correct answer
@@ -1005,23 +1162,25 @@
                 }
             });
 
-            hardStatusMessage.textContent = "⏰ Time's up! Here is the correct answer!";
+            // Award points for correct answer (only if it wasn't a trick screen with penalty)
+            if (!penaltyActive) {
+                if (!isTrickScreen) {
+                    playerScore += 5;
+                    updateScoreDisplay();
+                    hardStatusMessage.textContent = "✅ Here is the correct answer! +5 files";
+                } else {
+                    hardStatusMessage.textContent = "✅ Here is the correct answer! (No points - trick screen)";
+                }
+            } else {
+                hardStatusMessage.textContent = "✅ Here is the correct answer!";
+            }
+            
             hardStatusMessage.className = 'status-message thinking';
             hardGameView.classList.remove('blue-screen');
+            hardGameView.classList.remove('red-screen');
             hardNextButton.style.display = 'block';
-            
-            // If no one answered, move to next player
-            if (playerWhoAnswered === null && !penaltyActive) {
-                moveToNextPlayer();
-            }
-        }
-
-        // Move to next player in hard mode
-        function moveToNextPlayer() {
-            players[currentPlayerIndex].active = false;
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-            players[currentPlayerIndex].active = true;
-            updateScoreDisplay();
+            penaltyMessage.textContent = "";
+            trickMessage.textContent = "";
         }
 
         // Next question for simple mode
@@ -1031,15 +1190,6 @@
 
         // Next question for hard mode
         function nextHardQuestion() {
-            // Move to next player if no penalty was applied
-            if (!penaltyActive && playerWhoAnswered === null) {
-                moveToNextPlayer();
-            } else if (playerWhoAnswered !== null) {
-                // If someone answered, move to next player
-                moveToNextPlayer();
-            }
-            // If penalty was active, we already moved to next player
-            
             startNewHardQuestion();
         }
 
@@ -1078,10 +1228,42 @@
 
         // Random slogans
         const slogans = [
-            "Be the fastest, be the smartest, beat the beep!",
+            "Test your knowledge in Simple Mode or challenge yourself in Hard Mode!",
+            "Can you take on the challenge? Simple or Hard mode, the choice is yours!",
+            "Knowledge has no limits. Test it now!"
         ];
 
         document.getElementById('slogan').textContent = slogans[Math.floor(Math.random() * slogans.length)];
+
+        // Handle logo loading and splash screen
+        function handleLogoLoad() {
+            // If logo loads successfully, proceed after delay
+            setTimeout(() => {
+                showView('main-menu');
+            }, 3000); // Show splash screen for 3 seconds
+        }
+
+        function handleLogoError() {
+            // If logo fails to load, show fallback text and proceed
+            splashLogo.style.display = 'none';
+            document.querySelector('.splash-text').textContent = 'EL BEEPER';
+            setTimeout(() => {
+                showView('main-menu');
+            }, 3000);
+        }
+
+        // Set up logo event listeners
+        splashLogo.onload = handleLogoLoad;
+        splashLogo.onerror = handleLogoError;
+        menuLogo.onerror = function() {
+            // If menu logo fails to load, hide it
+            menuLogo.style.display = 'none';
+        };
+
+        // Check if logo has already loaded (cached case)
+        if (splashLogo.complete) {
+            handleLogoLoad();
+        }
     </script>
 </body>
 </html>
