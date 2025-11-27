@@ -74,7 +74,7 @@
     font-weight: bold;
     padding: 15px;
     border-radius: 10px;
-    background: transparent !important; /* Remove background */
+    background: transparent !important;
 }
 
 .thinking {
@@ -86,7 +86,7 @@
     font-size: 32px;
     font-weight: bold;
     text-align: center;
-    background: transparent !important; /* Remove background */
+    background: transparent !important;
 }
 
 .red-screen-message {
@@ -94,5 +94,34 @@
     font-size: 32px;
     font-weight: bold;
     text-align: center;
-    background: transparent !important; /* Remove background */
+    background: transparent !important;
+}
+
+/* Main Menu specific background */
+#main-menu .menu-container {
+    background: #F6ECD1;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Remove backgrounds from other game menus */
+#rules-view .menu-container,
+#simple-game-view .game-container,
+#hard-game-view .game-container,
+#game-over-view .menu-container {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Keep the text colors readable on transparent backgrounds */
+#rules-view .menu-container,
+#game-over-view .menu-container {
+    color: white;
+}
+
+#rules-view .rules-content,
+#game-over-view .game-over {
+    background: transparent;
+    color: white;
 }
