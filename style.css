@@ -270,7 +270,6 @@ body {
 }
 
 .back-btn {
-    background: #F06B04;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -278,7 +277,6 @@ body {
     cursor: pointer;
     margin-bottom: 20px;
     transition: all 0.3s ease;
-    margin-left: 0%;
 }
 
 /* Rules View */
