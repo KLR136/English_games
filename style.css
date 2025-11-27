@@ -360,15 +360,15 @@ body {
 }
 
 .blue-screen {
-    background: #F06B04 !important;
+    background: #2B9FC6 !important;
 }
 
 .red-screen {
-    background: #F06B04;
+    background: #A1071F;
 }
 
 .game-container {
-    background: #F6ECD1;
+    background: #A1071F;
     border-radius: 20px;
     padding: 40px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
