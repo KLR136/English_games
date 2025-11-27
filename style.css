@@ -431,6 +431,7 @@ body {
 }
 
 .blue-screen-message {
+    background: #2B9FC6;
     color: white;
     font-size: 32px;
     font-weight: bold;
