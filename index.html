@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #FF8C00 0%, #FF4500 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -81,9 +81,73 @@
             margin-top: 20px;
         }
 
+        /* Sound On Screen */
+        .sound-on-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .sound-on-icon {
+            max-width: 200px;
+            width: 60%;
+            height: auto;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .sound-on-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #6c5ce7;
+            margin-bottom: 15px;
+        }
+
+        .sound-on-text {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            max-width: 80%;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
         /* Main Menu */
         .menu-container {
-            background: #F6ECD1;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -149,17 +213,17 @@
         }
 
         .btn-rules {
-            background: linear-gradient(45deg, #F06B04, #F06B04);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
         }
 
         .btn-simple {
-            background: linear-gradient(45deg, #FBB728, #FBB728);
+            background: linear-gradient(45deg, #00b894, #00a085);
             color: white;
         }
 
         .btn-hard {
-            background: linear-gradient(45deg, #FBB728, #FBB728);
+            background: linear-gradient(45deg, #6c5ce7, #5b4bc4);
             color: white;
         }
 
@@ -504,6 +568,21 @@
         </div>
     </div>
 
+    <!-- Sound On Screen -->
+    <div class="view" id="sound-on-screen">
+        <div class="sound-on-container">
+            <img src="images/sound_on.png" alt="Turn Sound On" class="sound-on-icon" id="soundOnIcon">
+            <h1 class="sound-on-title">TURN YOUR SOUND ON!</h1>
+            <p class="sound-on-text">
+                This game requires sound to play properly.<br>
+                You need to hear the "BEEP" to know when to answer questions!
+            </p>
+            <button class="continue-btn" onclick="showView('main-menu')">
+                Continue to Game
+            </button>
+        </div>
+    </div>
+
     <!-- Main Menu -->
     <div class="view" id="main-menu">
         <div class="menu-container">
@@ -743,6 +822,7 @@
         const menuLogo = document.getElementById('menuLogo');
         const splashTeamLogo = document.getElementById('splashTeamLogo');
         const menuTeamLogo = document.getElementById('menuTeamLogo');
+        const soundOnIcon = document.getElementById('soundOnIcon');
 
         // Sample questions
         const sampleQuestions = [
@@ -1272,9 +1352,9 @@
 
         // Handle logo loading and splash screen
         function handleLogoLoad() {
-            // If logo loads successfully, proceed after delay
+            // If logo loads successfully, proceed to sound on screen after delay
             setTimeout(() => {
-                showView('main-menu');
+                showView('sound-on-screen');
             }, 3000); // Show splash screen for 3 seconds
         }
 
@@ -1283,7 +1363,7 @@
             splashLogo.style.display = 'none';
             document.querySelector('.splash-text').textContent = 'EL BEEPER';
             setTimeout(() => {
-                showView('main-menu');
+                showView('sound-on-screen');
             }, 3000);
         }
 
@@ -1301,6 +1381,13 @@
         };
         menuTeamLogo.onerror = function() {
             menuTeamLogo.style.display = 'none';
+        };
+
+        // Set up sound on icon event listener
+        soundOnIcon.onerror = function() {
+            // If sound on icon fails to load, show text alternative
+            soundOnIcon.style.display = 'none';
+            document.querySelector('.sound-on-title').innerHTML = '🔊 TURN YOUR SOUND ON!';
         };
 
         // Check if logo has already loaded (cached case)
