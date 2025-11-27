@@ -485,28 +485,6 @@ body {
     font-size: 14px;
 }
 
-/* Player Score Display */
-.score-display {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.player-score {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px 15px;
-    border-radius: 10px;
-    margin: 5px;
-    flex: 1;
-    min-width: 120px;
-    max-width: 200px;
-}
-
-.player-score h4 {
-    color: #6c5ce7;
-    margin-bottom: 5px;
-}
-
 /* Penalty Message */
 .penalty-message {
     color: #ff6b6b;
