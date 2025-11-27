@@ -65,3 +65,34 @@
     margin-bottom: 8px;
     line-height: 1.5;
 }
+
+/* Remove backgrounds from status messages */
+.status-message {
+    font-size: 20px;
+    margin: 30px 0;
+    min-height: 30px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+    background: transparent !important; /* Remove background */
+}
+
+.thinking {
+    color: #667eea;
+}
+
+.blue-screen-message {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    background: transparent !important; /* Remove background */
+}
+
+.red-screen-message {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    background: transparent !important; /* Remove background */
+}
