@@ -80,71 +80,26 @@
             <div class="rules-content">
                 <h2>RULES</h2>
                 
-                <p class="rules-subtitle"><strong>Collect the most tokens by slapping the target and answering correctly:</strong></p>
+                <p>12 years old +</p>
+                <p>15 minutes</p>
+                <p>2-6 players</p>
                 
-                <div class="game-info">
-                    <p><strong>7 to 77 years old</strong></p>
-                    <p><strong>15 min • 120 questions</strong></p>
-                    <p><strong>2-6 players</strong></p>
-                </div>
+                <h3>THE OBJECTIVE</h3>
+                <p>First to win 20 files, wins and ends the game.</p>
                 
-                <h3>SETUP</h3>
+                <h3>GAME MODES</h3>
+                <p>2 modes: Simple mode and Hard mode</p>
+                
+                <h3>HOW TO PLAY</h3>
                 <ol>
-                    <li>Place the Target Carpet in the center of the table.</li>
-                    <li>Place the tablet with the El Beeper app next to the target visible to everyone!</li>
-                    <li>Each player/team must take a "Score Card".</li>
-                    <li>Round Choice: Press the "THE RIGHT BEEP" button on the app screen. This is the correct Beep - Memorize it!</li>
-                    <li>Choose a difficulty on the app: Normal or Hard</li>
+                    <li>Choose a game mode: simple or hard.</li>
+                    <li>The game will ask a question, you'll have to answer it as soon as you hear the sound "BEEP", by clicking on the correct answer.</li>
+                    <li><strong>ATTENTION:</strong> In hard mode if you click an answer before the "BEEP" or the screen is anything but blue, you lose points for this turn.</li>
+                    <li><strong>TRICK:</strong> Sometimes the screen turns RED instead of blue - this is a trick! Don't be fooled!</li>
+                    <li>If the answer is right, you win "files" (depending on the number of points the question made you earn). If the answer is wrong, you don't gain files at all.</li>
                 </ol>
                 
-                <div class="section-divider">
-                    <h3>THE RIGHT BEEP 🎯</h3>
-                </div>
-                
-                <h4>How to Play</h4>
-                <p><em>The game is played in rounds of questions controlled by the app.</em></p>
-                
-                <ol class="gameplay-steps">
-                    <li>
-                        <strong>READ:</strong> The question appears on the screen with its Token Value (1, 2, or 3). 
-                        Players read the question themselves.
-                    </li>
-                    <li>
-                        <strong>WAIT:</strong> Wait for the screen to turn RED. Wait for the signal.
-                    </li>
-                    <li>
-                        <strong>SLAP:</strong> As soon as the screen turns BLUE and you hear the BEEP, slap the target!
-                        <ul>
-                            <li>The first hand on the target gets to answer.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <strong>ANSWER:</strong>
-                        <ul>
-                            <li>Say your answer aloud.</li>
-                            <li>Tap the game screen to reveal the correct answer.</li>
-                            <li><strong>Correct:</strong> Take the number of tokens shown on the screen (1, 2, or 3).</li>
-                            <li><strong>Wrong:</strong> You are out for this round. The next player who slapped gets to guess.</li>
-                        </ul>
-                    </li>
-                </ol>
-                
-                <h3>HARD MODE</h3>
-                <ul>
-                    <li>The app will try to trick you with False Signals.</li>
-                    <li>Wrong Colors (other than Blue)</li>
-                    <li>Wrong Sounds (Buzzers or verbs)</li>
-                    <li>Do NOT slap unless it is the Correct Beep AND Blue Screen.</li>
-                    <li><strong>Penalty:</strong> If you slap on a false signal, you must sit out the next round.</li>
-                </ul>
-                
-                <h3>WINNING</h3>
-                <p>The game ends immediately when:</p>
-                <ul>
-                    <li>A player reaches 20 Points (Tokens), OR</li>
-                    <li>All questions have been played.</li>
-                </ul>
-                <p><strong>The player with the most tokens wins!</strong></p>
+                <p><strong>The first to win 20 files, wins and ends the game.</strong></p>
             </div>
         </div>
     </div>
@@ -153,8 +108,6 @@
     <div class="view countdown-view" id="countdown-view">
         <div class="countdown-number" id="countdownNumber">3</div>
         <div class="countdown-text">ARE YOU READY?</div>
-        <div class ="countdown-subtext">Turn your phone</div>
-        <img src="images/turn_phone.png" alt="Turn Phone Icon" class="turn-phone-icon">
     </div>
 
     <!-- Simple Game View -->
@@ -558,7 +511,7 @@
         // Show blue screen for simple mode
         function showBlueScreen() {
             gameView.classList.add('blue-screen');
-            statusMessage.textContent = "⏰ Time's up!";
+            statusMessage.textContent = "Slap and tell!";
             statusMessage.className = 'blue-screen-message';
             
             // After blueScreenTime seconds, show the answer
@@ -570,7 +523,7 @@
         // Show blue screen for hard mode
         function showHardBlueScreen() {
             hardGameView.classList.add('blue-screen');
-            hardStatusMessage.textContent = "⏰ Time's up! ANSWER NOW!";
+            hardStatusMessage.textContent = "SLAP AND TELL!";
             hardStatusMessage.className = 'blue-screen-message';
             
             isBlueScreenActive = true;
@@ -720,4 +673,4 @@
         }
     </script>
 </body>
-</html>
+</html> 
