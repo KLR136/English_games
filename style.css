@@ -954,34 +954,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
     width: 100%;
     max-width: 700px;
     margin-bottom: 30px;
-    position: relative;
-}
-
-.mode-icon-small {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    z-index: 2;
 }
 
 .question-content {
-    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 20px;
     position: relative;
     min-height: 120px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     padding: 25px;
     border: 3px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+}
+
+.mode-icon-small {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
 }
 
 .question-text {
+    flex: 1;
     font-size: 22px;
     line-height: 1.4;
     color: white;
