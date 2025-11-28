@@ -928,3 +928,68 @@ body {
     background: #F6ECD1 !important;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
+
+/* Styles pour l'affichage des questions avec points et catégorie */
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.question-category {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.question-points {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FBB728;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.question-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.mode-icon-small {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.question-text {
+    flex: 1;
+    font-size: 24px;
+    margin-bottom: 30px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.4;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+/* Cacher les titres Simple Mode/Hard Mode */
+#simple-game-view h1,
+#hard-game-view h1 {
+    display: none;
+}
