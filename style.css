@@ -528,19 +528,19 @@ body {
     margin-top: 20px;
     max-height: 60vh;
     overflow-y: auto;
-    color: white;
+    color: black;
 }
 
 .rules-content h2 {
     background: #F6ECD1;
-    color: white;
+    color: black;
     margin-bottom: 20px;
     text-align: center;
     font-size: 28px;
 }
 
 .rules-content h3 {
-    color: #FBB728;
+    color: black;
     margin: 20px 0 10px 0;
     font-size: 20px;
 }
@@ -548,25 +548,25 @@ body {
 .rules-content p {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: white;
+    color: black;
 }
 
 .rules-content ul {
     margin-left: 20px;
     margin-bottom: 15px;
-    color: white;
+    color: black;
 }
 
 .rules-content li {
     margin-bottom: 10px;
-    color: white;
+    color: black;
     line-height: 1.5;
 }
 
 .rules-content ol {
     margin-left: 20px;
     margin-bottom: 15px;
-    color: white;
+    color: black;
 }
 
 .game-info {
