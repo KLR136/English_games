@@ -628,6 +628,19 @@ body {
 
 .red-screen {
     background: #A1071F;
+    animation: redPulse 1s ease-in-out infinite !important;
+}
+
+@keyframes redPulse {
+    0% {
+        background: #A1071F;
+    }
+    50% {
+        background: #CF364E;
+    }
+    100% {
+        background: #A1071F;
+    }
 }
 
 .game-container {
@@ -841,6 +854,7 @@ body {
 /* S'assurer que le conteneur principal des règles a le bon fond */
 #rules-view .menu-container {
     background: #F6ECD1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Forcer tout le texte des règles à être noir */
@@ -933,4 +947,5 @@ body {
 /* Correction spécifique pour la vue des règles */
 #rules-view .menu-container {
     background: #F6ECD1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
