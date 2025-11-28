@@ -533,7 +533,6 @@ body {
 }
 
 .rules-content h2 {
-    background: #F6ECD1;
     color: black;
     margin-bottom: 20px;
     text-align: center;
@@ -796,7 +795,7 @@ body {
 /* Rules View Updates */
 .rules-subtitle {
     font-size: 18px;
-    color: white;
+    color: black;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -805,18 +804,18 @@ body {
     text-align: center;
     margin: 25px 0;
     padding: 10px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #F06B04, #FBB728);
     border-radius: 10px;
-    color: white;
+    color: black;
 }
 
 .section-divider h3 {
     margin: 0;
-    color: white;
+    color: black;
 }
 
 .rules-content h4 {
-    color: white;
+    color: black;
     margin: 20px 0 10px 0;
     font-size: 18px;
 }
@@ -837,6 +836,92 @@ body {
     color: black;
 }
 
+/* CORRECTIONS SPÉCIFIQUES POUR LA VUE DES RÈGLES */
+
+/* S'assurer que le conteneur principal des règles a le bon fond */
+#rules-view .menu-container {
+    background: #F6ECD1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Forcer tout le texte des règles à être noir */
+.rules-content,
+.rules-content * {
+    color: #000000 !important;
+}
+
+/* Titres des règles */
+.rules-content h2,
+.rules-content h3,
+.rules-content h4 {
+    color: #000000 !important;
+    background: transparent !important;
+}
+
+/* Textes et paragraphes */
+.rules-content p,
+.rules-content li,
+.rules-content ul,
+.rules-content ol {
+    color: #000000 !important;
+}
+
+/* Sous-titre des règles */
+.rules-subtitle {
+    color: #000000 !important;
+}
+
+/* Game info */
+.game-info,
+.game-info p {
+    background: #F6ECD1 !important;
+    color: #000000 !important;
+}
+
+/* Listes de gameplay */
+.gameplay-steps,
+.gameplay-steps li,
+.gameplay-steps strong {
+    color: #000000 !important;
+}
+
+/* Section divider - ajuster pour le fond crème */
+.section-divider {
+    background: linear-gradient(45deg, #F06B04, #FBB728) !important;
+    color: #000000 !important;
+}
+
+.section-divider h3 {
+    color: #000000 !important;
+}
+
+/* Bouton THE RIGHT BEEP dans les règles */
+.beep-btn {
+    color: #000000 !important;
+    background: #F6ECD1 !important;
+    border: 2px solid #000000 !important;
+}
+
+/* S'assurer que les autres vues de menu gardent leur apparence normale */
+#main-menu .menu-container,
+#game-over-view .menu-container {
+    background: #F6ECD1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Les vues de jeu doivent rester transparentes */
+#simple-game-view .game-container,
+#hard-game-view .game-container {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Assurer que tous les textes "Listen and wait" et "Tap to continue" sont en blanc */
+#statusMessage,
+#hardStatusMessage {
+    color: #FFFFFF !important;
+}
+
 /* Remove backgrounds from other game menus */
 #rules-view .menu-container,
 #simple-game-view .game-container,
@@ -846,8 +931,8 @@ body {
     box-shadow: none;
 }
 
-/* Assurer que tous les textes "Listen and wait" et "Tap to continue" sont en blanc */
-#statusMessage,
-#hardStatusMessage {
-    color: #FFFFFF !important;
+/* Correction spécifique pour la vue des règles */
+#rules-view .menu-container {
+    background: #F6ECD1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
