@@ -550,13 +550,14 @@ body {
 
 /* Countdown View */
 .countdown-view {
-    background: #F06B04;
+    background: #F6ECD1 !important;
 }
 
 .countdown-number {
     font-size: 120px;
     font-weight: bold;
     animation: pulse 1s ease-in-out;
+    color: #333;
 }
 
 @keyframes pulse {
@@ -569,13 +570,14 @@ body {
     font-size: 24px;
     margin-top: 20px;
     font-weight: bold;
+    color: #333;
 }
 
 .countdown-subtext {
     font-size: 18px;
     margin-top: 10px;
     font-weight: bold;
-    color: white;
+    color: #333;
 }
 
 /* Image pour tourner le téléphone */
@@ -584,13 +586,7 @@ body {
     width: 40%;
     height: auto;
     margin-top: 20px;
-    animation: rotatePhone 2s ease-in-out infinite;
-}
-
-@keyframes rotatePhone {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(90deg); }
-    100% { transform: rotate(0deg); }
+    /* Animation supprimée */
 }
 
 /* Game View */
