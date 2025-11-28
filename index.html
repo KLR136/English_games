@@ -619,11 +619,12 @@
         const questionContainer = document.createElement('div');
         questionContainer.className = 'question-container';
         questionContainer.innerHTML = `
+            <div class="question-category">${question.category}</div>
+            <br>
             <div class="question-content">
                 <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
                 <div class="question-text">${question.text}</div>
                 <div class="question-points">
-                    <span class="points-icon">📁</span>
                     ${question.points} files
                 </div>
             </div>
