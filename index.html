@@ -24,7 +24,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 6...</div>
+            <div class="splash-text">Loading test 7...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -79,7 +79,7 @@
     <!-- Rules View -->
     <div class="view" id="rules-view">
         <div class="menu-container">
-            <button class="back-btn" onclick="showView('main-menu')">←</button>
+            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
             <div class="rules-content">
                 <h2>RULES</h2>
                 
@@ -94,12 +94,15 @@
                     <li>Place the Target Carpet in the center of the table.</li>
                     <li>Place the tablet with the El Beeper app next to the target visible to everyone!</li>
                     <li>Each player/team must take a "Score Card".</li>
-                    <li>Round Choice: Press the "THE RIGHT BEEP" button on the app screen. This is the correct Beep - Memorize it!</li>
+                    <li>Round Choice: Press the "THE RIGHT BEEP" button below to hear the correct Beep - Memorize it!</li>
                     <li>Choose a difficulty on the app: Normal or Hard</li>
                 </ol>
                 
-                <div class="section-divider">
-                    <h3>THE RIGHT BEEP 🎯</h3>
+                <!-- Bouton THE RIGHT BEEP -->
+                <div class="beep-button-container">
+                    <button class="beep-btn" onclick="playBeepSound()">
+                        🎯 THE RIGHT BEEP - CLICK TO HEAR
+                    </button>
                 </div>
                 
                 <h4>How to Play</h4>
@@ -160,7 +163,7 @@
     <!-- Simple Game View -->
     <div class="view game-view" id="simple-game-view">
         <div class="game-container">
-            <button class="back-btn" onclick="returnToMenu()">←</button>
+            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
             <h1>Simple Mode</h1>
             
             <div class="question-display" id="questionDisplay">
@@ -186,7 +189,7 @@
     <!-- Hard Game View -->
     <div class="view game-view" id="hard-game-view">
         <div class="game-container">
-            <button class="back-btn" onclick="returnToMenu()">←</button>
+            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
             <h1>Hard Mode</h1>
             
             <div class="question-display" id="hardQuestionDisplay">
@@ -278,6 +281,15 @@
             backgroundMusic.volume = 0.3;
             backgroundMusic.play().catch(e => {
                 console.log("Autoplay prevented - user interaction required");
+            });
+        }
+
+        // Function to play beep sound
+        function playBeepSound() {
+            const bipSound = document.getElementById('bipSound');
+            bipSound.currentTime = 0;
+            bipSound.play().catch(e => {
+                console.log("Beep sound error:", e);
             });
         }
 

@@ -768,3 +768,83 @@ body {
     background: transparent;
     box-shadow: none;
 }
+
+/* Bouton THE RIGHT BEEP */
+.beep-button-container {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.beep-btn {
+    background: linear-gradient(45deg, #F06B04, #FBB728);
+    color: white;
+    padding: 20px 30px;
+    border: none;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: pulse-glow 2s infinite;
+}
+
+.beep-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #FBB728, #F06B04);
+}
+
+.beep-btn:active {
+    transform: translateY(-1px);
+}
+
+@keyframes pulse-glow {
+    0%, 100% { 
+        box-shadow: 0 5px 15px rgba(240, 107, 4, 0.4);
+    }
+    50% { 
+        box-shadow: 0 5px 25px rgba(240, 107, 4, 0.8);
+    }
+}
+
+/* Flèche de retour améliorée */
+.back-btn {
+    background: #F06B04;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid white;
+    align-self: flex-start;
+    margin-left: 20px;
+}
+
+.back-btn:hover {
+    background: #FBB728;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* Couleur des textes en blanc */
+.status-message.thinking {
+    color: #FFFFFF !important;
+}
+
+.thinking {
+    color: #FFFFFF !important;
+}
+
+/* Assurer que tous les textes "Listen and wait" et "Tap to continue" sont en blanc */
+#statusMessage,
+#hardStatusMessage {
+    color: #FFFFFF !important;
+}
