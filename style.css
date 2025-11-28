@@ -532,6 +532,7 @@ body {
 }
 
 .rules-content h2 {
+    background: #F6ECD1;
     color: white;
     margin-bottom: 20px;
     text-align: center;
