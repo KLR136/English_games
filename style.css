@@ -177,10 +177,10 @@ body {
     
     .continue-btn,
     .menu-btn,
-    .next-btn {
-        padding: 12px 25px;
-        font-size: 14px;
-    }
+/* Cacher le bouton Next Question */
+.next-btn {
+    display: none !important;
+}
     
     .mode-buttons-container {
         flex-direction: column;

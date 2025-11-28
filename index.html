@@ -44,7 +44,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 21...</div>
+            <div class="splash-text">Loading test 22...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -183,65 +183,57 @@
         <img src="images/turn_phone.png" alt="Turn your phone" class="turn-phone-image">
     </div>
 
-    <!-- Simple Game View -->
-    <div class="view game-view" id="simple-game-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
-        </div>
-        <div class="game-container">
-            <div class="question-display" id="questionDisplay">
-                <!-- La question sera générée dynamiquement -->
-            </div>
-
-            <div class="answers-display" id="answersDisplay">
-                <!-- Answers will be displayed here -->
-            </div>
-
-            <div class="status-message thinking" id="statusMessage">
-                Listen and wait.
-            </div>
-
-            <div class="controls">
-                <button class="next-btn" onclick="nextQuestion()" id="nextButton">
-                    Next Question
-                </button>
-            </div>
-        </div>
+    <!-- Simple Game View - Retirez la section controls -->
+<div class="view game-view" id="simple-game-view">
+    <div class="back-btn-container">
+        <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
     </div>
-
-    <!-- Hard Game View -->
-    <div class="view game-view" id="hard-game-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
+    <div class="game-container">
+        <div class="question-display" id="questionDisplay">
+            <!-- La question sera générée dynamiquement -->
         </div>
-        <div class="game-container">
-            <div class="question-display" id="hardQuestionDisplay">
-                <!-- La question sera générée dynamiquement -->
-            </div>
 
-            <div class="answers-display" id="hardAnswersDisplay">
-                <!-- Answers will be displayed here -->
-            </div>
-
-            <div class="status-message thinking" id="hardStatusMessage">
-                Listen and wait
-            </div>
-
-            <div class="penalty-message" id="penaltyMessage">
-                <!-- Penalty messages will appear here -->
-            </div>
-
-            <div class="trick-message" id="trickMessage">
-                <!-- Trick messages will appear here -->
-            </div>
-
-            <div class="controls">
-                <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
-                    Next Question
-                </button>
-            </div>
+        <div class="answers-display" id="answersDisplay">
+            <!-- Answers will be displayed here -->
         </div>
+
+        <div class="status-message thinking" id="statusMessage">
+            Listen and wait.
+        </div>
+
+        <!-- SUPPRIMEZ TOUTE LA SECTION CONTROLS -->
     </div>
+</div>
+
+<!-- Hard Game View - Retirez la section controls -->
+<div class="view game-view" id="hard-game-view">
+    <div class="back-btn-container">
+        <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
+    </div>
+    <div class="game-container">
+        <div class="question-display" id="hardQuestionDisplay">
+            <!-- La question sera générée dynamiquement -->
+        </div>
+
+        <div class="answers-display" id="hardAnswersDisplay">
+            <!-- Answers will be displayed here -->
+        </div>
+
+        <div class="status-message thinking" id="hardStatusMessage">
+            Listen and wait
+        </div>
+
+        <div class="penalty-message" id="penaltyMessage">
+            <!-- Penalty messages will appear here -->
+        </div>
+
+        <div class="trick-message" id="trickMessage">
+            <!-- Trick messages will appear here -->
+        </div>
+
+        <!-- SUPPRIMEZ TOUTE LA SECTION CONTROLS -->
+    </div>
+</div>
     
     <!-- Game Over View -->
     <div class="view" id="game-over-view">
@@ -645,24 +637,22 @@ function startNewQuestion() {
     // Setup icon error handling
     setupQuestionIcons(questionContainer);
     
-    // Display answers based on question type
-    answersDisplay.innerHTML = '';
-    
-    if (question.type === 'mcq') {
-        // Multiple choice question
-        question.options.forEach((option, index) => {
-            const answerElement = document.createElement('div');
-            answerElement.className = 'answer-item incorrect';
-            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-            answersDisplay.appendChild(answerElement);
-        });
-    } else {
-        // Open question - show answer format hint
+    // Dans startNewQuestion() - remplacez la partie des réponses :
+// Display answers based on question type
+answersDisplay.innerHTML = '';
+
+if (question.type === 'mcq') {
+    // Multiple choice question
+    question.options.forEach((option, index) => {
         const answerElement = document.createElement('div');
         answerElement.className = 'answer-item incorrect';
-        answerElement.textContent = "Answer format: Open response";
+        answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
         answersDisplay.appendChild(answerElement);
-    }
+    });
+} else {
+    // Open question - NO ANSWER FORMAT HINT, just empty
+    // Laisser vide pour les questions ouvertes
+}
 
     // Reset interface
     statusMessage.textContent = "Listen and wait.";
@@ -726,23 +716,22 @@ function startNewHardQuestion() {
     setupQuestionIcons(questionContainer);
     
     // Display answers based on question type
-    hardAnswersDisplay.innerHTML = '';
-    
-    if (question.type === 'mcq') {
-        // Multiple choice question
-        question.options.forEach((option, index) => {
-            const answerElement = document.createElement('div');
-            answerElement.className = 'answer-item incorrect disabled';
-            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-            hardAnswersDisplay.appendChild(answerElement);
-        });
-    } else {
-        // Open question - show answer format hint
+    // Dans startNewHardQuestion() - remplacez la partie des réponses :
+// Display answers based on question type
+hardAnswersDisplay.innerHTML = '';
+
+if (question.type === 'mcq') {
+    // Multiple choice question
+    question.options.forEach((option, index) => {
         const answerElement = document.createElement('div');
         answerElement.className = 'answer-item incorrect disabled';
-        answerElement.textContent = "Answer format: Open response";
+        answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
         hardAnswersDisplay.appendChild(answerElement);
-    }
+    });
+} else {
+    // Open question - NO ANSWER FORMAT HINT, just empty
+    // Laisser vide pour les questions ouvertes
+}
 
     // Reset interface
     hardStatusMessage.textContent = "Listen and wait";
@@ -1062,6 +1051,94 @@ function startNewHardQuestion() {
     if (splashLogo.complete) {
         handleLogoLoad();
     }
+
+    // Fonction pour gérer le tap sur l'écran
+function setupScreenTap() {
+    // Tap sur le conteneur de jeu pour passer à la question suivante
+    const gameContainers = document.querySelectorAll('.game-container');
+    
+    gameContainers.forEach(container => {
+        // Retirer les écouteurs existants pour éviter les doublons
+        container.removeEventListener('click', handleScreenTap);
+        container.addEventListener('click', handleScreenTap);
+    });
+}
+
+function handleScreenTap(event) {
+    // Vérifier si nous sommes dans l'état "Tap to continue"
+    const isSimpleReady = statusMessage.textContent.includes('Tap to continue');
+    const isHardReady = hardStatusMessage.textContent.includes('Tap to continue');
+    
+    if (isSimpleReady) {
+        nextQuestion();
+    } else if (isHardReady) {
+        nextHardQuestion();
+    }
+}
+
+// Modifiez les fonctions showCorrectAnswer et showHardCorrectAnswer :
+function showCorrectAnswer(question) {
+    // Mark the correct answer
+    const answerElements = answersDisplay.querySelectorAll('.answer-item');
+    
+    if (question.type === 'mcq') {
+        // For MCQ, highlight the correct answer
+        answerElements[question.correctIndex].className = 'answer-item correct';
+    } else {
+        // For open questions, show the expected answer
+        if (answerElements.length > 0) {
+            answerElements[0].className = 'answer-item correct';
+            answerElements[0].textContent = `Correct answer: ${question.answer}`;
+        } else {
+            // Créer un élément pour afficher la réponse si aucun n'existe
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item correct';
+            answerElement.textContent = `Correct answer: ${question.answer}`;
+            answersDisplay.appendChild(answerElement);
+        }
+    }
+
+    statusMessage.textContent = "Tap anywhere to continue";
+    statusMessage.className = 'status-message thinking';
+    gameView.classList.remove('blue-screen');
+    // Le bouton nextButton est maintenant caché par CSS
+    
+    // Activer le tap sur l'écran
+    setupScreenTap();
+}
+
+function showHardCorrectAnswer(question) {
+    // Mark the correct answer
+    const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+    
+    if (question.type === 'mcq') {
+        // For MCQ, highlight the correct answer
+        answerElements[question.correctIndex].className = 'answer-item correct';
+    } else {
+        // For open questions, show the expected answer
+        if (answerElements.length > 0) {
+            answerElements[0].className = 'answer-item correct';
+            answerElements[0].textContent = `Correct answer: ${question.answer}`;
+        } else {
+            // Créer un élément pour afficher la réponse si aucun n'existe
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item correct';
+            answerElement.textContent = `Correct answer: ${question.answer}`;
+            hardAnswersDisplay.appendChild(answerElement);
+        }
+    }
+
+    hardStatusMessage.textContent = "Tap anywhere to continue";
+    hardStatusMessage.className = 'status-message thinking';
+    hardGameView.classList.remove('blue-screen');
+    hardGameView.classList.remove('red-screen');
+    // Le bouton hardNextButton est maintenant caché par CSS
+    penaltyMessage.textContent = "";
+    trickMessage.textContent = "";
+    
+    // Activer le tap sur l'écran
+    setupScreenTap();
+}
 </script>
 </body>
 </html>
