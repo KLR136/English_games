@@ -44,7 +44,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 17...</div>
+            <div class="splash-text">Loading test 16...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -247,29 +247,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Quiz Question View -->
-    <div class="view" id="quiz-question-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
-        </div>
-        <div class="quiz-container">
-            <div class="quiz-progress">Q 1/20</div>
-            <div class="quiz-category">Personality</div>
-            <div class="quiz-question">Who created Facebook?</div>
-            
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="selectQuizOption(this)">A. Mark Zuckerberg</div>
-                <div class="quiz-option" onclick="selectQuizOption(this)">B. Reid Hoffman</div>
-                <div class="quiz-option" onclick="selectQuizOption(this)">C. Hannah Montana</div>
-            </div>
-            
-            <button class="quiz-action-button" onclick="revealQuizAnswer()">SLAP AND TELL</button>
-            
-            <div class="quiz-slap-tell">SLAP AND TELL</div>
-        </div>
-    </div>
-
+    
     <!-- Game Over View -->
     <div class="view" id="game-over-view">
         <div class="back-btn-container">
@@ -541,137 +519,146 @@
     }
 
         // Start a new question for simple mode
-    function startNewQuestion() {
-        const question = getRandomQuestion();
-        
-        if (!question) {
-            // Fallback if no questions available
-            questionDisplay.textContent = "No questions available. Please check the database.";
-            answersDisplay.innerHTML = '';
-            statusMessage.textContent = "Error loading questions";
-            return;
-        }
-
-        // Create question header with category and points
-        const questionHeader = document.createElement('div');
-        questionHeader.className = 'question-header';
-        questionHeader.innerHTML = `
-            <div class="question-category">${question.category}</div>
-            <div class="question-points">${question.points} pts</div>
-        `;
-
-        // Create question content with icon and text
-        const questionContent = document.createElement('div');
-        questionContent.className = 'question-content';
-        questionContent.innerHTML = `
-            <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
-            <div class="question-text">${question.text}</div>
-        `;
-
-        // Clear and rebuild the display
-        questionDisplay.innerHTML = '';
-        questionDisplay.appendChild(questionHeader);
-        questionDisplay.appendChild(questionContent);
-        
-        // Display answers based on question type
+    // Start a new question for simple mode
+function startNewQuestion() {
+    const question = getRandomQuestion();
+    
+    if (!question) {
+        // Fallback if no questions available
+        questionDisplay.textContent = "No questions available. Please check the database.";
         answersDisplay.innerHTML = '';
-        
-        if (question.type === 'mcq') {
-            // Multiple choice question
-            question.options.forEach((option, index) => {
-                const answerElement = document.createElement('div');
-                answerElement.className = 'answer-item incorrect';
-                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-                answersDisplay.appendChild(answerElement);
-            });
-        } else {
-            // Open question - show answer format hint
+        statusMessage.textContent = "Error loading questions";
+        return;
+    }
+
+    // Clear and rebuild the display
+    questionDisplay.innerHTML = '';
+    
+    // Create question header with category only (centered)
+    const questionHeader = document.createElement('div');
+    questionHeader.className = 'question-header';
+    questionHeader.innerHTML = `
+        <div class="question-category">${question.category}</div>
+    `;
+
+    // Create question container with icon, text and points
+    const questionContainer = document.createElement('div');
+    questionContainer.className = 'question-container';
+    questionContainer.innerHTML = `
+        <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
+        <div class="question-content">
+            <div class="question-text">${question.text}</div>
+            <div class="question-points">${question.points}</div>
+        </div>
+    `;
+
+    // Append elements to display
+    questionDisplay.appendChild(questionHeader);
+    questionDisplay.appendChild(questionContainer);
+    
+    // Display answers based on question type
+    answersDisplay.innerHTML = '';
+    
+    if (question.type === 'mcq') {
+        // Multiple choice question
+        question.options.forEach((option, index) => {
             const answerElement = document.createElement('div');
             answerElement.className = 'answer-item incorrect';
-            answerElement.textContent = "Answer format: Open response";
+            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
             answersDisplay.appendChild(answerElement);
-        }
-
-        // Reset interface
-        statusMessage.textContent = "Listen and wait.";
-        statusMessage.className = 'status-message thinking';
-        nextButton.style.display = 'none';
-        gameView.classList.remove('blue-screen');
-        gameView.classList.add('waiting');
-
-        startTimer(question);
+        });
+    } else {
+        // Open question - show answer format hint
+        const answerElement = document.createElement('div');
+        answerElement.className = 'answer-item incorrect';
+        answerElement.textContent = "Answer format: Open response";
+        answersDisplay.appendChild(answerElement);
     }
 
-    // Start a new question for hard mode
-    function startNewHardQuestion() {
-        const question = getRandomQuestion();
-        
-        if (!question) {
-            // Fallback if no questions available
-            hardQuestionDisplay.textContent = "No questions available. Please check the database.";
-            hardAnswersDisplay.innerHTML = '';
-            hardStatusMessage.textContent = "Error loading questions";
-            return;
-        }
+    // Reset interface
+    statusMessage.textContent = "Listen and wait.";
+    statusMessage.className = 'status-message thinking';
+    nextButton.style.display = 'none';
+    gameView.classList.remove('blue-screen');
+    gameView.classList.add('waiting');
 
-        // Reset game state
-        isBlueScreenActive = false;
-        canAnswer = false;
-        penaltyActive = false;
-        isTrickScreen = false;
-        penaltyMessage.textContent = '';
-        trickMessage.textContent = '';
+    startTimer(question);
+}
 
-        // Create question header with category and points
-        const questionHeader = document.createElement('div');
-        questionHeader.className = 'question-header';
-        questionHeader.innerHTML = `
-            <div class="question-category">${question.category}</div>
-            <div class="question-points">${question.points} pts</div>
-        `;
-
-        // Create question content with icon and text
-        const questionContent = document.createElement('div');
-        questionContent.className = 'question-content';
-        questionContent.innerHTML = `
-            <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
-            <div class="question-text">${question.text}</div>
-        `;
-
-        // Clear and rebuild the display
-        hardQuestionDisplay.innerHTML = '';
-        hardQuestionDisplay.appendChild(questionHeader);
-        hardQuestionDisplay.appendChild(questionContent);
-        
-        // Display answers based on question type
+// Start a new question for hard mode
+function startNewHardQuestion() {
+    const question = getRandomQuestion();
+    
+    if (!question) {
+        // Fallback if no questions available
+        hardQuestionDisplay.textContent = "No questions available. Please check the database.";
         hardAnswersDisplay.innerHTML = '';
-        
-        if (question.type === 'mcq') {
-            // Multiple choice question
-            question.options.forEach((option, index) => {
-                const answerElement = document.createElement('div');
-                answerElement.className = 'answer-item incorrect disabled';
-                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-                hardAnswersDisplay.appendChild(answerElement);
-            });
-        } else {
-            // Open question - show answer format hint
+        hardStatusMessage.textContent = "Error loading questions";
+        return;
+    }
+
+    // Reset game state
+    isBlueScreenActive = false;
+    canAnswer = false;
+    penaltyActive = false;
+    isTrickScreen = false;
+    penaltyMessage.textContent = '';
+    trickMessage.textContent = '';
+
+    // Clear and rebuild the display
+    hardQuestionDisplay.innerHTML = '';
+    
+    // Create question header with category only (centered)
+    const questionHeader = document.createElement('div');
+    questionHeader.className = 'question-header';
+    questionHeader.innerHTML = `
+        <div class="question-category">${question.category}</div>
+    `;
+
+    // Create question container with icon, text and points
+    const questionContainer = document.createElement('div');
+    questionContainer.className = 'question-container';
+    questionContainer.innerHTML = `
+        <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
+        <div class="question-content">
+            <div class="question-text">${question.text}</div>
+            <div class="question-points">${question.points}</div>
+        </div>
+    `;
+
+    // Append elements to display
+    hardQuestionDisplay.appendChild(questionHeader);
+    hardQuestionDisplay.appendChild(questionContainer);
+    
+    // Display answers based on question type
+    hardAnswersDisplay.innerHTML = '';
+    
+    if (question.type === 'mcq') {
+        // Multiple choice question
+        question.options.forEach((option, index) => {
             const answerElement = document.createElement('div');
             answerElement.className = 'answer-item incorrect disabled';
-            answerElement.textContent = "Answer format: Open response";
+            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
             hardAnswersDisplay.appendChild(answerElement);
-        }
-
-        // Reset interface
-        hardStatusMessage.textContent = "Listen and wait";
-        hardStatusMessage.className = 'status-message thinking';
-        hardNextButton.style.display = 'none';
-        hardGameView.classList.remove('blue-screen');
-        hardGameView.classList.remove('red-screen');
-        hardGameView.classList.add('waiting');
-
-        startHardTimer(question);
+        });
+    } else {
+        // Open question - show answer format hint
+        const answerElement = document.createElement('div');
+        answerElement.className = 'answer-item incorrect disabled';
+        answerElement.textContent = "Answer format: Open response";
+        hardAnswersDisplay.appendChild(answerElement);
     }
+
+    // Reset interface
+    hardStatusMessage.textContent = "Listen and wait";
+    hardStatusMessage.className = 'status-message thinking';
+    hardNextButton.style.display = 'none';
+    hardGameView.classList.remove('blue-screen');
+    hardGameView.classList.remove('red-screen');
+    hardGameView.classList.add('waiting');
+
+    startHardTimer(question);
+}
 
     // Timer for simple mode
     function startTimer(question) {
@@ -824,39 +811,6 @@
             }, (blueScreenTime - 1.5) * 1000);
         }, 1500);
     }
-    
-    // Functions for quiz question view
-function selectQuizOption(optionElement) {
-    // Retirer la sélection précédente
-    document.querySelectorAll('.quiz-option').forEach(opt => {
-        opt.classList.remove('selected');
-    });
-    
-    // Sélectionner l'option actuelle
-    optionElement.classList.add('selected');
-}
-
-function revealQuizAnswer() {
-    const selectedOption = document.querySelector('.quiz-option.selected');
-    if (!selectedOption) {
-        alert('Please select an answer first!');
-        return;
-    }
-    
-    // Ici vous pouvez ajouter la logique pour révéler la bonne réponse
-    // Pour l'instant, on simule juste une action
-    console.log('Answer selected:', selectedOption.textContent);
-    
-    // Exemple: passer à la question suivante après un délai
-    setTimeout(() => {
-        // showNextQuizQuestion();
-    }, 2000);
-}
-
-// Pour naviguer vers la vue quiz depuis le menu principal
-function showQuizView() {
-    showView('quiz-question-view');
-}
 
     // Nouvelle fonction pour l'écran de piège avec couleur aléatoire
     function showColorTrickScreen(question) {
@@ -969,6 +923,44 @@ function showQuizView() {
             }, 3000);
         });
     }
+
+// Function to handle missing mode icons
+function handleModeIconError(img) {
+    console.log('Mode icon not found:', img.src);
+    // Create a fallback element
+    const fallback = document.createElement('div');
+    fallback.style.width = '80px';
+    fallback.style.height = '80px';
+    fallback.style.backgroundColor = '#FBB728';
+    fallback.style.borderRadius = '50%';
+    fallback.style.display = 'flex';
+    fallback.style.alignItems = 'center';
+    fallback.style.justifyContent = 'center';
+    fallback.style.color = 'white';
+    fallback.style.fontWeight = 'bold';
+    fallback.style.fontSize = '12px';
+    fallback.style.textAlign = 'center';
+    fallback.innerHTML = img.alt.includes('Simple') ? 'SIMPLE' : 'HARD';
+    
+    img.parentNode.replaceChild(fallback, img);
+}
+
+// Dans les fonctions de création des questions, ajoutez les gestionnaires d'erreur après avoir créé les éléments :
+function setupQuestionIcons(questionContainer) {
+    const modeIcon = questionContainer.querySelector('.mode-icon-small');
+    if (modeIcon) {
+        modeIcon.onerror = function() {
+            handleModeIconError(this);
+        };
+    }
+}
+
+// Appelez cette fonction après avoir créé les conteneurs de questions
+// Dans startNewQuestion():
+setupQuestionIcons(questionContainer);
+
+// Dans startNewHardQuestion():
+setupQuestionIcons(questionContainer);
 
     function handleLogoError() {
         splashLogo.style.display = 'none';
