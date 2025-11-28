@@ -578,6 +578,21 @@ body {
     color: white;
 }
 
+/* Image pour tourner le téléphone */
+.turn-phone-image {
+    max-width: 150px;
+    width: 40%;
+    height: auto;
+    margin-top: 20px;
+    animation: rotatePhone 2s ease-in-out infinite;
+}
+
+@keyframes rotatePhone {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+    100% { transform: rotate(0deg); }
+}
+
 /* Game View */
 .game-view {
     background: #A1071F;
