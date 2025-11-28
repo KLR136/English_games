@@ -44,7 +44,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 18...</div>
+            <div class="splash-text">Loading test 19...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -924,44 +924,8 @@ function startNewHardQuestion() {
         });
     }
 
-// Function to handle missing mode icons
-function handleModeIconError(img) {
-    console.log('Mode icon not found:', img.src);
-    // Create a fallback element
-    const fallback = document.createElement('div');
-    fallback.style.width = '80px';
-    fallback.style.height = '80px';
-    fallback.style.backgroundColor = '#FBB728';
-    fallback.style.borderRadius = '50%';
-    fallback.style.display = 'flex';
-    fallback.style.alignItems = 'center';
-    fallback.style.justifyContent = 'center';
-    fallback.style.color = 'white';
-    fallback.style.fontWeight = 'bold';
-    fallback.style.fontSize = '12px';
-    fallback.style.textAlign = 'center';
-    fallback.innerHTML = img.alt.includes('Simple') ? 'SIMPLE' : 'HARD';
+
     
-    img.parentNode.replaceChild(fallback, img);
-}
-
-// Dans les fonctions de création des questions, ajoutez les gestionnaires d'erreur après avoir créé les éléments :
-function setupQuestionIcons(questionContainer) {
-    const modeIcon = questionContainer.querySelector('.mode-icon-small');
-    if (modeIcon) {
-        modeIcon.onerror = function() {
-            handleModeIconError(this);
-        };
-    }
-}
-
-// Appelez cette fonction après avoir créé les conteneurs de questions
-// Dans startNewQuestion():
-setupQuestionIcons(questionContainer);
-
-// Dans startNewHardQuestion():
-setupQuestionIcons(questionContainer);
-
     function handleLogoError() {
         splashLogo.style.display = 'none';
         document.querySelector('.splash-text').textContent = 'EL BEEPER';
