@@ -333,7 +333,7 @@
     // Load questions from JSON
     async function loadQuestions() {
         try {
-            const response = await fetch('database.json');
+            const response = await fetch('database/database.json');
             const data = await response.json();
             allQuestions = data.questions;
             console.log(`Loaded ${allQuestions.length} questions from database`);
