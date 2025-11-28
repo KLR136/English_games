@@ -383,10 +383,12 @@ body {
 
 .btn-simple {
     background: #FBB728;
+    color: white;
 }
 
 .btn-hard {
     background: #FBB728;
+    color: white;
 }
 
 .mode-btn:hover {
@@ -620,7 +622,7 @@ body {
 }
 
 .thinking {
-    color: #667eea;
+    color: #FFFFFF;
 }
 
 .blue-screen-message {
