@@ -1,3 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL BEEPER Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Orientation Message -->
+    <div class="orientation-message" id="orientation-message">
+        <div class="orientation-icon">📱</div>
+        <div class="orientation-text">Please rotate your device</div>
+        <div class="orientation-subtext">This game works best in landscape mode</div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="audio/background_music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio Elements -->
+    <audio id="bipSound" preload="auto">
+        <source src="audio/beepers/correct/real_buzzer.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fakebipSound1" preload="auto">
+        <source src="audio/beepers/incorrect/fake_buzzer_1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fakebipSound2" preload="auto">
+        <source src="audio/beepers/incorrect/fake_buzzer_2.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fakebipSound3" preload="auto">
+        <source src="audio/beepers/incorrect/fake_buzzer_3.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fakebipSound4" preload="auto">
+        <source src="audio/beepers/incorrect/fake_buzzer_4.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="ambienceMusic" preload="auto"></audio>
+    <audio id="errorSound" preload="auto"></audio>
+    <audio id="winSound" preload="auto"></audio>
+    <audio id="trickSound" preload="auto"></audio>
+
+    <!-- Splash Screen -->
+    <div class="view active" id="splash-screen">
+        <div class="splash-container">
+            <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
+            <div class="splash-text">Loading test 15...</div>
+            <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
+        </div>
+    </div>
+
+    <!-- Sound On Screen -->
+    <div class="view" id="sound-on-screen">
+        <div class="sound-on-container">
+            <img src="images/sound_on.png" alt="Turn Sound On" class="sound-on-icon" id="soundOnIcon">
+            <h1 class="sound-on-title">TURN YOUR SOUND ON!</h1>
+            <button class="continue-btn" onclick="startBackgroundMusic(); showView('main-menu')">
+                Continue to Game
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div class="view" id="main-menu">
+        <div class="menu-container">
+            <div class="logo-space">
+                <img src="images/game_logo.png" alt="EL BEEPER Logo" class="menu-logo" id="menuLogo">
+            </div>
+            
+            <div class="slogan-space">
+                <strong><p class="slogan" id="slogan">Be the fastest!<br>Be the smartest!<br>Beat the BEEP!</p></strong>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn btn-rules" onclick="showView('rules-view')">
+                    Rules
+                </button>
+                
+                <div class="mode-buttons-container">
+                    <button class="mode-btn btn-simple" onclick="startSimpleGame()">
+                        <img src="images/simple_mode_icon.png" alt="Simple Mode Icon" class="mode-icon">
+                        Simple Mode
+                    </button>
+                    <button class="mode-btn btn-hard" onclick="startHardGame()">
+                        <img src="images/hard_mode_icon.png" alt="Hard Mode Icon" class="mode-icon">
+                        Hard Mode
+                    </button>
+                </div>
+            </div>
+            
+            <p>A game developed by:</p>
+
+            <img src="images/team_logo.png" alt="Team Logo" class="menu-team-logo" id="menuTeamLogo">
+
+            <p>MDS - ANNECY</p>
+        </div>
+    </div>
+
+    <!-- Rules View -->
+    <div class="view" id="rules-view">
+        <div class="back-btn-container">
+            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
+        </div>
+        <div class="menu-container">
+            <div class="rules-content">
+                <h2>RULES</h2>
+                
+                <p class="rules-subtitle"><strong>Collect the most tokens by slapping the target and answering correctly:</strong></p>
+                
+                <div class="game-info">
+                    <p><strong>7 to 77 years old<br>15 min • 120 questions<br>2-6 players</strong></p>
+                </div>
+                
+                <h3>SETUP</h3>
+                <ol>
+                    <li>Place the Target Carpet in the center of the table.</li>
+                    <li>Place the tablet with the El Beeper app next to the target visible to everyone!</li>
+                    <li>Each player/team must take a "Score Card".</li>
+                    <li>Round Choice: Press the "THE RIGHT BEEP" button below to hear the correct Beep - Memorize it!</li>
+                    <li>Choose a difficulty on the app: Normal or Hard</li>
+                </ol>
+                
+                <!-- Bouton THE RIGHT BEEP -->
+                <div class="beep-button-container">
+                    <button class="beep-btn" onclick="playBeepSound()">
+                        THE RIGHT BEEP - CLICK TO HEAR
+                    </button>
+                </div>
+                
+                <h4>How to Play</h4>
+                <p><em>The game is played in rounds of questions controlled by the app.</em></p>
+                
+                <ol class="gameplay-steps">
+                    <li>
+                        <strong>READ:</strong> The question appears on the screen with its Token Value (1, 2, or 3). 
+                        Players read the question themselves.
+                    </li>
+                    <li>
+                        <strong>WAIT:</strong> Wait for the screen to turn RED. Wait for the signal.
+                    </li>
+                    <li>
+                        <strong>SLAP:</strong> As soon as the screen turns BLUE and you hear the BEEP, slap the target!
+                        <ul>
+                            <li>The first hand on the target gets to answer.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>ANSWER:</strong>
+                        <ul>
+                            <li>Say your answer aloud.</li>
+                            <li>Tap the game screen to reveal the correct answer.</li>
+                            <li><strong>Correct:</strong> Take the number of tokens shown on the screen (1, 2, or 3).</li>
+                            <li><strong>Wrong:</strong> You are out for this round. The next player who slapped gets to guess.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>HARD MODE</h3>
+                <ul>
+                    <li>The app will try to trick you with False Signals.</li>
+                    <li>Wrong Colors (other than Blue)</li>
+                    <li>Wrong Sounds (Buzzers or verbs)</li>
+                    <li>Do NOT slap unless it is the Correct Beep AND Blue Screen.</li>
+                    <li><strong>Penalty:</strong> If you slap on a false signal, you must sit out the next round.</li>
+                </ul>
+                
+                <h3>WINNING</h3>
+                <p>The game ends immediately when:</p>
+                <ul>
+                    <li>A player reaches 20 Points (Tokens), OR</li>
+                    <li>All questions have been played.</li>
+                </ul>
+                <p><strong>The player with the most tokens wins!</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Countdown View -->
+    <div class="view countdown-view" id="countdown-view">
+        <div class="countdown-number" id="countdownNumber">3</div>
+        <div class="countdown-text">ARE YOU READY?</div>
+        <div class="countdown-subtext">Turn your phone</div>
+        <img src="images/turn_phone.png" alt="Turn your phone" class="turn-phone-image">
+
+    </div>
+
+    <!-- Simple Game View -->
+    <div class="view game-view" id="simple-game-view">
+        <div class="back-btn-container">
+            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
+        </div>
+        <div class="game-container">
+            <h1>Simple Mode</h1>
+            
+            <div class="question-display" id="questionDisplay">
+                The question will appear here...
+            </div>
+
+            <div class="answers-display" id="answersDisplay">
+                <!-- Answers will be displayed here -->
+            </div>
+
+            <div class="status-message thinking" id="statusMessage">
+                Listen and wait.
+            </div>
+
+            <div class="controls">
+                <button class="next-btn" onclick="nextQuestion()" id="nextButton">
+                    Next Question
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hard Game View -->
+    <div class="view game-view" id="hard-game-view">
+        <div class="back-btn-container">
+            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
+        </div>
+        <div class="game-container">
+            <h1>Hard Mode</h1>
+            
+            <div class="question-display" id="hardQuestionDisplay">
+                The question will appear here...
+            </div>
+
+            <div class="answers-display" id="hardAnswersDisplay">
+                <!-- Answers will be displayed here -->
+            </div>
+
+            <div class="status-message thinking" id="hardStatusMessage">
+                Listen and wait
+            </div>
+
+            <div class="penalty-message" id="penaltyMessage">
+                <!-- Penalty messages will appear here -->
+            </div>
+
+            <div class="trick-message" id="trickMessage">
+                <!-- Trick messages will appear here -->
+            </div>
+
+            <div class="controls">
+                <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
+                    Next Question
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over View -->
+    <div class="view" id="game-over-view">
+        <div class="back-btn-container">
+            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
+        </div>
+        <div class="menu-container game-over">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p>You've collected <span id="finalScore">20</span> files!</p>
+            <p>You are the EL BEEPER champion!</p>
+            <button class="menu-btn btn-hard" onclick="showView('main-menu')">
+                Play Again
+            </button>
+        </div>
+    </div>
+
 <script>
     // Orientation Detection
     function checkOrientation() {
@@ -651,3 +916,5 @@
         handleLogoLoad();
     }
 </script>
+</body>
+</html>
