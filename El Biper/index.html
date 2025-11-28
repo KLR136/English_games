@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>El Biper - Squad Penguin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'biper-orange': '#F06B04',
+                        'biper-yellow': '#FBB728',
+                        'biper-cream': '#F6ECD1',
+                        'biper-blue-light': '#2B9FC6',
+                        'biper-blue-dark': '#1670AC',
+                        'biper-red-dark': '#A1071F',
+                        'biper-red-clear': '#D92842',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        
+        @keyframes flash-red {
+            0% { background-color: #A1071F; } 
+            50% { background-color: #D92842; } 
+            100% { background-color: #A1071F; }
+        }
+        .animate-flash-red {
+            animation: flash-red 1s infinite ease-in-out;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-biper-orange font-sans h-screen flex flex-col overflow-hidden relative">
+
+    <!-- ================= 1. SPLASH SCREENS ================= -->
+    
+    <!-- Screen 1: Logo Intro -->
+    <div id="splash1" class="absolute inset-0 z-50 bg-biper-cream flex items-center justify-center p-10 transition-opacity duration-1000">
+        <img id="img-splash1" src="" class="w-full max-w-md object-contain" alt="El Biper Logo">
+    </div>
+
+    <!-- Screen 2: Sound Check -->
+    <div id="splash2" class="absolute inset-0 z-40 bg-biper-cream flex items-center justify-center p-10 opacity-0 transition-opacity duration-1000 pointer-events-none">
+        <img id="img-splash2" src="" class="w-full max-w-md object-contain" alt="Turn on Sound">
+    </div>
+
+    <!-- ================= 2. MAIN MENU ================= -->
+    <div id="mainMenu" class="absolute inset-0 z-30 bg-biper-cream flex flex-col items-center justify-between p-6 opacity-0 transition-opacity duration-500 pointer-events-none overflow-y-auto no-scrollbar border-x-[16px] border-biper-orange">
+        
+        <!-- Game Logo -->
+        <div class="mt-4 w-full flex justify-center">
+            <img src="./assets/img/logo-game.png" alt="Logo" class="w-40 md:w-56" onerror="this.style.display='none'; this.parentElement.innerHTML='<h1 class=\'text-4xl font-black text-biper-red-dark\'>EL BIPER</h1>'">
+        </div>
+
+        <div class="text-center space-y-1">
+            <p class="text-gray-800 font-medium text-sm md:text-base">Be the fastest.</p>
+            <p class="text-gray-800 font-medium text-sm md:text-base">Be the smartest.</p>
+            <p class="text-gray-800 font-bold text-lg md:text-xl uppercase">Beat the BIP.</p>
+        </div>
+
+        <button onclick="showRules()" class="bg-biper-orange text-white font-black uppercase tracking-widest py-3 px-12 rounded-full shadow-lg hover:scale-105 transition-transform text-sm md:text-base underline underline-offset-4">
+            RULES
+        </button>
+
+        <div class="flex gap-4 w-full max-w-md justify-center">
+            <!-- Simple Mode -->
+            <button onclick="startCountdown('normal')" class="flex-1 bg-biper-yellow rounded-2xl p-4 shadow-lg flex flex-col items-center justify-center gap-4 hover:scale-105 transition-transform aspect-[3/5]">
+                <span class="text-gray-900 font-black text-lg md:text-xl leading-tight">Simple<br>mode</span>
+                <img src="./assets/img/face-easy-mode-dark.png" alt="">
+            </button>
+            
+            <!-- Hard Mode -->
+            <button onclick="startCountdown('hard')" class="flex-1 bg-biper-yellow rounded-2xl p-4 shadow-lg flex flex-col items-center justify-center gap-4 hover:scale-105 transition-transform aspect-[3/5]">
+                <span class="text-gray-900 font-black text-lg md:text-xl leading-tight">Hard<br>mode</span>
+                <img src="./assets/img/face-hard-mode.png" alt="">
+            </button>
+        </div>
+
+        <div class="mb-4 text-center space-y-2">
+            <p class="text-xs text-gray-600">A game developed by</p>
+            <img src="./assets/img/squad-logo-society.png" class="h-12 mx-auto object-contain grayscale" alt="Squad Penguin" onerror="this.style.display='none'">
+        </div>
+    </div>
+
+    <!-- ================= 3. RULES OVERLAY ================= -->
+    <div id="rulesScreen" class="absolute inset-0 z-50 bg-biper-cream hidden flex-col border-x-[16px] border-biper-orange">
+        <div class="flex-1 overflow-y-auto p-4 flex flex-col items-center">
+            <img id="img-rules" src="" class="w-full max-w-lg object-contain" alt="Rules">
+            
+            <button onclick="hideRules()" class="sticky bottom-6 bg-biper-red-dark text-white font-black py-4 px-12 rounded-full shadow-xl hover:bg-gray-800 transition-colors mt-4">
+                BACK TO MENU
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= 4. COUNTDOWN SEQUENCE ================= -->
+    <div id="countdownScreen" class="absolute inset-0 z-40 bg-biper-cream hidden items-center justify-center">
+        <img id="countdownImg" src="" class="w-full h-full object-cover">
+    </div>
+
+    <!-- ================= 5. GAME SCREEN ================= -->
+    <div id="gameScreen" class="absolute inset-0 z-30 bg-biper-red-dark hidden flex-col transition-colors duration-100 ease-linear">
+        
+        <!-- Header -->
+        <div class="w-full p-6 flex justify-between items-start z-20 text-white">
+            <div class="font-medium text-lg">Q <span id="qCount">1/20</span></div>
+            <button onclick="quitGame()" class="font-medium text-lg flex items-center gap-2 hover:opacity-80">
+                Quit <span class="text-2xl">🚪</span>
+            </button>
+        </div>
+
+        <!-- Center Content -->
+        <div class="flex-1 flex flex-col items-center justify-center p-6 text-center w-full max-w-4xl mx-auto z-10">
+            
+            <!-- Category Pill -->
+            <div class="mb-8">
+                <span id="qCategory" class="border-2 border-white rounded-full px-6 py-1 text-sm font-bold text-white uppercase tracking-wider">
+                    Category
+                </span>
+            </div>
+
+            <!-- Question Row -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-12 w-full">
+                
+                <!-- The Asset Icon (Generic Face) -->
+                <div class="text-4xl md:text-6xl animate-bounce">🚨</div>
+                
+                <!-- Question Text -->
+                <h2 id="qText" class="text-3xl md:text-5xl font-black text-white leading-tight max-w-2xl">
+                    Loading Question...
+                </h2>
+
+                <!-- Files/Points Badge -->
+                <span class="border-2 border-white rounded-full px-4 py-1 text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                    <span id="qPoints">1</span> FILES
+                </span>
+            </div>
+
+            <!-- MCQ Options -->
+            <div id="qOptions" class="w-full max-w-xl space-y-4 text-left text-white/90 text-xl md:text-2xl font-medium hidden">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Open Answer Reveal -->
+            <div id="openAnswerBox" class="hidden mt-8 w-full max-w-2xl">
+                 <p class="text-biper-yellow font-bold text-xl mb-2 uppercase">Answer :</p>
+                 <p id="openAnswerText" class="text-3xl md:text-4xl font-black text-biper-yellow leading-tight animate-bounce-in">
+                    The Answer
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Footer Status -->
+        <div class="p-10 text-center z-20">
+            <div id="statusText" class="text-white/80 font-bold text-sm md:text-base uppercase tracking-[0.2em]">
+                LISTEN AND WAIT...
+            </div>
+        </div>
+
+        <!-- Full Screen Tap Overlay -->
+        <div id="tapOverlay" onclick="handleTap()" class="absolute inset-0 z-50 cursor-pointer hidden"></div>
+        
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 0. ASSET MAPPING (CHANGE LINKS HERE IF WRONG) ---
+        // I have converted your drive links to the correct format: uc?export=view&id=...
+        const imgAssets = {
+            splash1: "./assets/img/logo-game.png", // First Screen
+            splash2: "./assets/img/sound-on.png", // Second Screen
+            rules:   "https://drive.google.com/uc?export=view&id=1aY-Ix82t2BXL0hR6ctA7o1SV7GMQVMAB", // Rules
+            cd3:     "./assets/img/3.png", // Countdown 3
+            cd2:     "./assets/img/2.png", // Countdown 2
+            cd1:     "./assets/img/1.png", // Countdown 1
+            cdGo:    "https://drive.google.com/uc?export=view&id=1Uj8zgZG5XeT2VxW2iWtr5QYSfNdyhvgj"  // GO
+        };
+
+        // Assign images on load
+        document.getElementById('img-splash1').src = imgAssets.splash1;
+        document.getElementById('img-splash2').src = imgAssets.splash2;
+        document.getElementById('img-rules').src = imgAssets.rules;
+
+        // --- DATA ---
+        const questions = [
+            { id: 1, type: 'mcq', category: 'Security', text: "What does 'Phishing' mean?", options: ["A fishing technique", "Identity theft via email", "A virus", "Photo editing"], correctIndex: 1, points: 1 },
+            { id: 2, type: 'open', category: 'History', text: "Who created Facebook?", answer: "Mark Zuckerberg", points: 1 },
+            { id: 3, type: 'mcq', category: 'Tech', text: "What is HTML?", options: ["A language", "A car", "A food", "A country"], correctIndex: 0, points: 1 },
+            // ... (Your full list of questions)
+        ];
+
+        // --- STATE & AUDIO ---
+        let currentQIndex = 0;
+        let isHardMode = false;
+        let timerId = null;
+        let gameState = 'intro'; 
+        let shuffledQuestions = [];
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playTone(freq, type, duration) {
+            if (!audioCtx) initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        const sounds = {
+            real: () => { playTone(880, 'square', 0.1); setTimeout(() => playTone(1760, 'square', 0.4), 100); },
+            fake1: () => { playTone(150, 'sawtooth', 0.3); setTimeout(() => playTone(100, 'sawtooth', 0.4), 150); },
+            fake2: () => { playTone(400, 'triangle', 0.1); setTimeout(() => playTone(300, 'triangle', 0.3), 100); },
+            reveal: () => playTone(1200, 'sine', 0.1)
+        };
+
+        // --- INTRO SEQUENCE ---
+        window.onload = function() {
+            setTimeout(() => {
+                const s1 = document.getElementById('splash1');
+                const s2 = document.getElementById('splash2');
+                s1.style.opacity = '0';
+                setTimeout(() => {
+                    s1.style.display = 'none';
+                    s2.style.opacity = '1';
+                    setTimeout(() => {
+                        s2.style.opacity = '0';
+                        setTimeout(() => {
+                            s2.style.display = 'none';
+                            const menu = document.getElementById('mainMenu');
+                            menu.style.opacity = '1';
+                            menu.style.pointerEvents = 'auto';
+                        }, 500);
+                    }, 2500);
+                }, 1000);
+            }, 2000);
+        };
+
+        function showRules() { document.getElementById('rulesScreen').style.display = 'flex'; }
+        function hideRules() { document.getElementById('rulesScreen').style.display = 'none'; }
+
+        // --- GAME START ---
+        function startCountdown(mode) {
+            initAudio();
+            isHardMode = (mode === 'hard');
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5).slice(0, 20);
+            currentQIndex = 0;
+
+            document.getElementById('mainMenu').style.display = 'none';
+            const cdScreen = document.getElementById('countdownScreen');
+            const cdImg = document.getElementById('countdownImg');
+            cdScreen.style.display = 'flex';
+
+            const images = [imgAssets.cd3, imgAssets.cd2, imgAssets.cd1, imgAssets.cdGo];
+            let step = 0;
+
+            function showNext() {
+                if (step < images.length) {
+                    cdImg.src = images[step];
+                    step++;
+                    setTimeout(showNext, 1000);
+                } else {
+                    cdScreen.style.display = 'none';
+                    document.getElementById('gameScreen').style.display = 'flex';
+                    loadQuestion();
+                }
+            }
+            showNext();
+        }
+
+        // --- GAME LOGIC ---
+        function loadQuestion() {
+            if (currentQIndex >= shuffledQuestions.length) {
+                alert("Game Complete!");
+                location.reload();
+                return;
+            }
+
+            const q = shuffledQuestions[currentQIndex];
+            const screen = document.getElementById('gameScreen');
+            
+            // RESET TO WAITING (RED FLASHING)
+            screen.className = "absolute inset-0 z-30 flex flex-col transition-colors duration-100 ease-linear animate-flash-red";
+            screen.style.backgroundColor = ''; 
+            
+            document.getElementById('statusText').innerText = "LISTEN AND WAIT...";
+            document.getElementById('qCount').innerText = `${currentQIndex + 1}/20`;
+            document.getElementById('qCategory').innerText = q.category;
+            document.getElementById('qPoints').innerText = q.points;
+            document.getElementById('qText').innerText = q.text;
+            
+            document.getElementById('openAnswerBox').classList.add('hidden');
+            document.getElementById('tapOverlay').classList.add('hidden');
+
+            const optDiv = document.getElementById('qOptions');
+            optDiv.innerHTML = '';
+            if (q.type === 'mcq') {
+                optDiv.classList.remove('hidden');
+                q.options.forEach((opt, idx) => {
+                    const p = document.createElement('div');
+                    p.className = "option-item transition-colors p-2 rounded";
+                    p.innerHTML = `${String.fromCharCode(65+idx)}. ${opt}`;
+                    optDiv.appendChild(p);
+                });
+            } else {
+                optDiv.classList.add('hidden');
+            }
+
+            gameState = 'waiting';
+            const time = Math.random() * (15000 - 5000) + 5000;
+            if (isHardMode && Math.random() < 0.4) {
+                const fakeTime = time * 0.6;
+                timerId = setTimeout(() => {
+                    triggerFake();
+                    timerId = setTimeout(triggerReal, time - fakeTime + 1500);
+                }, fakeTime);
+            } else {
+                timerId = setTimeout(triggerReal, time);
+            }
+        }
+
+        function triggerFake() {
+            if (gameState !== 'waiting') return;
+            const screen = document.getElementById('gameScreen');
+            const isYellow = Math.random() > 0.5;
+            screen.classList.remove('animate-flash-red');
+            screen.style.backgroundColor = isYellow ? '#FBB728' : '#22C55E'; 
+            if(isYellow) sounds.fake1(); else sounds.fake2();
+            setTimeout(() => {
+                if (gameState === 'waiting') {
+                    screen.style.backgroundColor = ''; 
+                    screen.classList.add('animate-flash-red');
+                }
+            }, 1000);
+        }
+
+        function triggerReal() {
+            if (gameState !== 'waiting') return;
+            gameState = 'ready';
+            const screen = document.getElementById('gameScreen');
+            screen.classList.remove('animate-flash-red');
+            screen.style.backgroundColor = '#2B9FC6'; 
+            sounds.real();
+            document.getElementById('statusText').innerText = "SLAP AND TELL";
+            document.getElementById('tapOverlay').classList.remove('hidden');
+        }
+
+        function handleTap() {
+            if (gameState !== 'ready' && gameState !== 'revealed') return;
+            
+            if (gameState === 'revealed') {
+                nextQuestion();
+                return;
+            }
+
+            gameState = 'revealed';
+            const q = shuffledQuestions[currentQIndex];
+            
+            document.getElementById('statusText').innerText = "TAP TO CONTINUE";
+            sounds.reveal();
+            
+            if (q.type === 'mcq') {
+                const opts = document.querySelectorAll('.option-item');
+                opts.forEach((el, idx) => {
+                    if(idx === q.correctIndex) {
+                        el.classList.add('text-biper-yellow', 'font-black');
+                    }
+                });
+            } else {
+                const ansBox = document.getElementById('openAnswerBox');
+                ansBox.classList.remove('hidden');
+                document.getElementById('openAnswerText').innerText = q.answer;
+            }
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            loadQuestion();
+        }
+
+        function quitGame() {
+            if(confirm("Exit to Menu?")) location.reload();
+        }
+    </script>
+</body>
+</html>
