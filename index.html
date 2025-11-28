@@ -599,7 +599,6 @@ function startNewQuestion() {
     const question = getRandomQuestion();
     
     if (!question) {
-        // Fallback if no questions available
         questionDisplay.textContent = "No questions available. Please check the database.";
         answersDisplay.innerHTML = '';
         statusMessage.textContent = "Error loading questions";
@@ -609,14 +608,14 @@ function startNewQuestion() {
     // Clear and rebuild the display
     questionDisplay.innerHTML = '';
     
-    // Create question header with category only (centered)
+    // Create question header with category ONLY (above the question box)
     const questionHeader = document.createElement('div');
     questionHeader.className = 'question-header';
     questionHeader.innerHTML = `
         <div class="question-category">${question.category}</div>
     `;
 
-    // Create question container with icon, text and points INSIDE the same box (no background)
+    // Create question container with icon, text and points (the main question box)
     const questionContainer = document.createElement('div');
     questionContainer.className = 'question-container';
     questionContainer.innerHTML = `
@@ -630,29 +629,25 @@ function startNewQuestion() {
         </div>
     `;
 
-    // Append elements to display
+    // Append elements to display - CATEGORY FIRST, then question container
     questionDisplay.appendChild(questionHeader);
     questionDisplay.appendChild(questionContainer);
     
     // Setup icon error handling
     setupQuestionIcons(questionContainer);
     
-    // Dans startNewQuestion() - remplacez la partie des réponses :
-// Display answers based on question type
-answersDisplay.innerHTML = '';
+    // Display answers based on question type
+    answersDisplay.innerHTML = '';
 
-if (question.type === 'mcq') {
-    // Multiple choice question
-    question.options.forEach((option, index) => {
-        const answerElement = document.createElement('div');
-        answerElement.className = 'answer-item incorrect';
-        answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-        answersDisplay.appendChild(answerElement);
-    });
-} else {
-    // Open question - NO ANSWER FORMAT HINT, just empty
-    // Laisser vide pour les questions ouvertes
-}
+    if (question.type === 'mcq') {
+        question.options.forEach((option, index) => {
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item incorrect';
+            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+            answersDisplay.appendChild(answerElement);
+        });
+    }
+    // Open questions leave answers area empty
 
     // Reset interface
     statusMessage.textContent = "Listen and wait.";
@@ -664,12 +659,10 @@ if (question.type === 'mcq') {
     startTimer(question);
 }
 
-// Start a new question for hard mode
 function startNewHardQuestion() {
     const question = getRandomQuestion();
     
     if (!question) {
-        // Fallback if no questions available
         hardQuestionDisplay.textContent = "No questions available. Please check the database.";
         hardAnswersDisplay.innerHTML = '';
         hardStatusMessage.textContent = "Error loading questions";
@@ -687,14 +680,14 @@ function startNewHardQuestion() {
     // Clear and rebuild the display
     hardQuestionDisplay.innerHTML = '';
     
-    // Create question header with category only (centered)
+    // Create question header with category ONLY (above the question box)
     const questionHeader = document.createElement('div');
     questionHeader.className = 'question-header';
     questionHeader.innerHTML = `
         <div class="question-category">${question.category}</div>
     `;
 
-    // Create question container with icon, text and points INSIDE the same box (no background)
+    // Create question container with icon, text and points (the main question box)
     const questionContainer = document.createElement('div');
     questionContainer.className = 'question-container';
     questionContainer.innerHTML = `
@@ -708,7 +701,7 @@ function startNewHardQuestion() {
         </div>
     `;
 
-    // Append elements to display
+    // Append elements to display - CATEGORY FIRST, then question container
     hardQuestionDisplay.appendChild(questionHeader);
     hardQuestionDisplay.appendChild(questionContainer);
     
@@ -716,22 +709,17 @@ function startNewHardQuestion() {
     setupQuestionIcons(questionContainer);
     
     // Display answers based on question type
-    // Dans startNewHardQuestion() - remplacez la partie des réponses :
-// Display answers based on question type
-hardAnswersDisplay.innerHTML = '';
+    hardAnswersDisplay.innerHTML = '';
 
-if (question.type === 'mcq') {
-    // Multiple choice question
-    question.options.forEach((option, index) => {
-        const answerElement = document.createElement('div');
-        answerElement.className = 'answer-item incorrect disabled';
-        answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-        hardAnswersDisplay.appendChild(answerElement);
-    });
-} else {
-    // Open question - NO ANSWER FORMAT HINT, just empty
-    // Laisser vide pour les questions ouvertes
-}
+    if (question.type === 'mcq') {
+        question.options.forEach((option, index) => {
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item incorrect disabled';
+            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+            hardAnswersDisplay.appendChild(answerElement);
+        });
+    }
+    // Open questions leave answers area empty
 
     // Reset interface
     hardStatusMessage.textContent = "Listen and wait";

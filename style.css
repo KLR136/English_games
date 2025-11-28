@@ -929,12 +929,12 @@ body {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Styles pour l'affichage des questions avec points et catégorie */
+/* Updated Question Layout - Category above question */
 .question-header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced margin since category is now closer to question */
     width: 100%;
     max-width: 600px;
 }
@@ -967,7 +967,7 @@ body {
     min-height: 120px;
     padding: 25px;
     width: 100%;
-    /* Pas de background - transparent */
+    /* No background - transparent */
 }
 
 .mode-icon-small {
@@ -995,7 +995,6 @@ body {
     color: #FBB728;
     padding: 8px 15px;
     border-radius: 20px;
-    /* Même background que le reste de l'interface */
     background: rgba(0, 0, 0, 0.3);
     border: 2px solid #FBB728;
 }
