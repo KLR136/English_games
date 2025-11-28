@@ -489,7 +489,8 @@ body {
 }
 
 .beep-btn {
-    color: white;
+    color: black;
+    background: #F6ECD1;
     padding: 20px 30px;
     border: 2px solid black;
     border-radius: 15px;
