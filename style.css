@@ -571,6 +571,8 @@ body {
 
 .game-info {
     display: flex;
+    background: #F6ECD1;
+    color: black;
     justify-content: space-between;
     margin-bottom: 20px;
     flex-wrap: wrap;
