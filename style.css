@@ -622,25 +622,31 @@ body {
     transition: background-color 0.5s ease;
 }
 
+/* Animation de pulsation pour les écrans d'attente */
+.game-view.waiting {
+    animation: pulseBackground 2s ease-in-out infinite;
+}
+
+@keyframes pulseBackground {
+    0% {
+        background-color: #A1071F;
+    }
+    50% {
+        background-color: #CF364E;
+    }
+    100% {
+        background-color: #A1071F;
+    }
+}
+
 .blue-screen {
     background: #2B9FC6 !important;
+    animation: none !important;
 }
 
 .red-screen {
     background: #A1071F;
-    animation: redPulse 1s ease-in-out infinite !important;
-}
-
-@keyframes redPulse {
-    0% {
-        background: #A1071F;
-    }
-    50% {
-        background: #CF364E;
-    }
-    100% {
-        background: #A1071F;
-    }
+    animation: none !important;
 }
 
 .game-container {
