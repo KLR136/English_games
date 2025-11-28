@@ -489,10 +489,9 @@ body {
 }
 
 .beep-btn {
-    background: linear-gradient(45deg, #F06B04, #FBB728);
     color: white;
     padding: 20px 30px;
-    border: none;
+    border: 2px solid black;
     border-radius: 15px;
     font-size: 20px;
     font-weight: bold;
@@ -500,14 +499,11 @@ body {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     animation: pulse-glow 2s infinite;
 }
 
 .beep-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(45deg, #FBB728, #F06B04);
 }
 
 .beep-btn:active {
