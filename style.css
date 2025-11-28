@@ -824,17 +824,17 @@ body {
 .gameplay-steps {
     margin-left: 0;
     padding-left: 20px;
-    color: white;
+    color: black;
 }
 
 .gameplay-steps li {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: white;
+    color: black;
 }
 
 .gameplay-steps strong {
-    color: #FBB728;
+    color: black;
 }
 
 /* Remove backgrounds from other game menus */
