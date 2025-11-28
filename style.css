@@ -25,10 +25,40 @@ body {
     align-items: center;
     text-align: center;
     padding: 20px;
+    position: relative;
 }
 
 .view.active {
     display: flex;
+}
+
+/* Container pour le bouton de retour */
+.back-btn-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+/* Flèche de retour améliorée */
+.back-btn {
+    background: #F06B04;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid white;
+}
+
+.back-btn:hover {
+    background: #FBB728;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
 /* Orientation Message */
@@ -114,6 +144,16 @@ body {
         max-height: 40px;
         margin-bottom: 5px;
     }
+
+    .back-btn-container {
+        top: 10px;
+        left: 10px;
+    }
+
+    .back-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -139,6 +179,11 @@ body {
     .blue-screen-message,
     .red-screen-message {
         font-size: 24px;
+    }
+
+    .back-btn-container {
+        top: 15px;
+        left: 15px;
     }
 }
 
@@ -196,6 +241,16 @@ body {
     .answer-item {
         padding: 10px;
         font-size: 14px;
+    }
+
+    .back-btn-container {
+        top: 10px;
+        left: 10px;
+    }
+
+    .back-btn {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 }
 
@@ -356,12 +411,6 @@ body {
     margin-bottom: 15px;
 }
 
-@media (max-width: 480px) {
-    .mode-buttons-container {
-        flex-direction: column;
-    }
-}
-
 .mode-btn {
     flex: 1;
     padding: 15px 10px;
@@ -433,16 +482,45 @@ body {
     transform: translateY(-1px);
 }
 
-.back-btn {
-    background: #F06B04;
+/* Bouton THE RIGHT BEEP */
+.beep-button-container {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.beep-btn {
+    background: linear-gradient(45deg, #F06B04, #FBB728);
     color: white;
-    padding: 10px 20px;
+    padding: 20px 30px;
     border: none;
-    border-radius: 25px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
-    margin-bottom: 20px;
     transition: all 0.3s ease;
-    margin-left: 0%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: pulse-glow 2s infinite;
+}
+
+.beep-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #FBB728, #F06B04);
+}
+
+.beep-btn:active {
+    transform: translateY(-1px);
+}
+
+@keyframes pulse-glow {
+    0%, 100% { 
+        box-shadow: 0 5px 15px rgba(240, 107, 4, 0.4);
+    }
+    50% { 
+        box-shadow: 0 5px 25px rgba(240, 107, 4, 0.8);
+    }
 }
 
 /* Rules View */
@@ -622,7 +700,7 @@ body {
 }
 
 .thinking {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 
 .blue-screen-message {
@@ -639,6 +717,7 @@ body {
     font-weight: bold;
     text-align: center;
     background: transparent !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .controls {
@@ -767,80 +846,6 @@ body {
 #game-over-view .menu-container {
     background: transparent;
     box-shadow: none;
-}
-
-/* Bouton THE RIGHT BEEP */
-.beep-button-container {
-    text-align: center;
-    margin: 25px 0;
-}
-
-.beep-btn {
-    background: linear-gradient(45deg, #F06B04, #FBB728);
-    color: white;
-    padding: 20px 30px;
-    border: none;
-    border-radius: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: pulse-glow 2s infinite;
-}
-
-.beep-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(45deg, #FBB728, #F06B04);
-}
-
-.beep-btn:active {
-    transform: translateY(-1px);
-}
-
-@keyframes pulse-glow {
-    0%, 100% { 
-        box-shadow: 0 5px 15px rgba(240, 107, 4, 0.4);
-    }
-    50% { 
-        box-shadow: 0 5px 25px rgba(240, 107, 4, 0.8);
-    }
-}
-
-/* Flèche de retour améliorée */
-.back-btn {
-    background: #F06B04;
-    color: white;
-    padding: 15px 25px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 2px solid white;
-    align-self: flex-start;
-    margin-left: 20px;
-}
-
-.back-btn:hover {
-    background: #FBB728;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-}
-
-/* Couleur des textes en blanc */
-.status-message.thinking {
-    color: #FFFFFF !important;
-}
-
-.thinking {
-    color: #FFFFFF !important;
 }
 
 /* Assurer que tous les textes "Listen and wait" et "Tap to continue" sont en blanc */
