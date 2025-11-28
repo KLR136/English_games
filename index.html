@@ -44,7 +44,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading...</div>
+            <div class="splash-text">Loading 1...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -594,143 +594,143 @@
         }
     }
 
-// Start a new question for simple mode
-function startNewQuestion() {
-    const question = getRandomQuestion();
-    
-    if (!question) {
-        questionDisplay.textContent = "No questions available. Please check the database.";
+    // Start a new question for simple mode
+    function startNewQuestion() {
+        const question = getRandomQuestion();
+        
+        if (!question) {
+            questionDisplay.textContent = "No questions available. Please check the database.";
+            answersDisplay.innerHTML = '';
+            statusMessage.textContent = "Error loading questions";
+            return;
+        }
+
+        // Clear and rebuild the display
+        questionDisplay.innerHTML = '';
+        
+        // Create question header with category ONLY (above the question box)
+        const questionHeader = document.createElement('div');
+        questionHeader.className = 'question-header';
+        questionHeader.innerHTML = `
+            <div class="question-category">${question.category}</div>
+        `;
+
+        // Create question container with icon, text and points (the main question box)
+        const questionContainer = document.createElement('div');
+        questionContainer.className = 'question-container';
+        questionContainer.innerHTML = `
+            <div class="question-content">
+                <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
+                <div class="question-text">${question.text}</div>
+                <div class="question-points">
+                    <span class="points-icon">📁</span>
+                    ${question.points} files
+                </div>
+            </div>
+        `;
+
+        // Append elements to display - CATEGORY FIRST, then question container
+        questionDisplay.appendChild(questionHeader);
+        questionDisplay.appendChild(questionContainer);
+        
+        // Setup icon error handling
+        setupQuestionIcons(questionContainer);
+        
+        // Display answers based on question type
         answersDisplay.innerHTML = '';
-        statusMessage.textContent = "Error loading questions";
-        return;
+
+        if (question.type === 'mcq') {
+            question.options.forEach((option, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item incorrect';
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+                answersDisplay.appendChild(answerElement);
+            });
+        }
+        // Open questions leave answers area empty
+
+        // Reset interface
+        statusMessage.textContent = "Listen and wait.";
+        statusMessage.className = 'status-message thinking';
+        nextButton.style.display = 'none';
+        gameView.classList.remove('blue-screen');
+        gameView.classList.add('waiting');
+
+        startTimer(question);
     }
 
-    // Clear and rebuild the display
-    questionDisplay.innerHTML = '';
-    
-    // Create question header with category ONLY (above the question box)
-    const questionHeader = document.createElement('div');
-    questionHeader.className = 'question-header';
-    questionHeader.innerHTML = `
-        <div class="question-category">${question.category}</div>
-    `;
+    function startNewHardQuestion() {
+        const question = getRandomQuestion();
+        
+        if (!question) {
+            hardQuestionDisplay.textContent = "No questions available. Please check the database.";
+            hardAnswersDisplay.innerHTML = '';
+            hardStatusMessage.textContent = "Error loading questions";
+            return;
+        }
 
-    // Create question container with icon, text and points (the main question box)
-    const questionContainer = document.createElement('div');
-    questionContainer.className = 'question-container';
-    questionContainer.innerHTML = `
-        <div class="question-content">
-            <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
-            <div class="question-text">${question.text}</div>
-            <div class="question-points">
-                <span class="points-icon">📁</span>
-                ${question.points} files
+        // Reset game state
+        isBlueScreenActive = false;
+        canAnswer = false;
+        penaltyActive = false;
+        isTrickScreen = false;
+        penaltyMessage.textContent = '';
+        trickMessage.textContent = '';
+
+        // Clear and rebuild the display
+        hardQuestionDisplay.innerHTML = '';
+        
+        // Create question header with category ONLY (above the question box)
+        const questionHeader = document.createElement('div');
+        questionHeader.className = 'question-header';
+        questionHeader.innerHTML = `
+            <div class="question-category">${question.category}</div>
+        `;
+
+        // Create question container with icon, text and points (the main question box)
+        const questionContainer = document.createElement('div');
+        questionContainer.className = 'question-container';
+        questionContainer.innerHTML = `
+            <div class="question-content">
+                <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
+                <div class="question-text">${question.text}</div>
+                <div class="question-points">
+                    <span class="points-icon">📁</span>
+                    ${question.points} files
+                </div>
             </div>
-        </div>
-    `;
+        `;
 
-    // Append elements to display - CATEGORY FIRST, then question container
-    questionDisplay.appendChild(questionHeader);
-    questionDisplay.appendChild(questionContainer);
-    
-    // Setup icon error handling
-    setupQuestionIcons(questionContainer);
-    
-    // Display answers based on question type
-    answersDisplay.innerHTML = '';
-
-    if (question.type === 'mcq') {
-        question.options.forEach((option, index) => {
-            const answerElement = document.createElement('div');
-            answerElement.className = 'answer-item incorrect';
-            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-            answersDisplay.appendChild(answerElement);
-        });
-    }
-    // Open questions leave answers area empty
-
-    // Reset interface
-    statusMessage.textContent = "Listen and wait.";
-    statusMessage.className = 'status-message thinking';
-    nextButton.style.display = 'none';
-    gameView.classList.remove('blue-screen');
-    gameView.classList.add('waiting');
-
-    startTimer(question);
-}
-
-function startNewHardQuestion() {
-    const question = getRandomQuestion();
-    
-    if (!question) {
-        hardQuestionDisplay.textContent = "No questions available. Please check the database.";
+        // Append elements to display - CATEGORY FIRST, then question container
+        hardQuestionDisplay.appendChild(questionHeader);
+        hardQuestionDisplay.appendChild(questionContainer);
+        
+        // Setup icon error handling
+        setupQuestionIcons(questionContainer);
+        
+        // Display answers based on question type
         hardAnswersDisplay.innerHTML = '';
-        hardStatusMessage.textContent = "Error loading questions";
-        return;
+
+        if (question.type === 'mcq') {
+            question.options.forEach((option, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item incorrect disabled';
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+                hardAnswersDisplay.appendChild(answerElement);
+            });
+        }
+        // Open questions leave answers area empty
+
+        // Reset interface
+        hardStatusMessage.textContent = "Listen and wait";
+        hardStatusMessage.className = 'status-message thinking';
+        hardNextButton.style.display = 'none';
+        hardGameView.classList.remove('blue-screen');
+        hardGameView.classList.remove('red-screen');
+        hardGameView.classList.add('waiting');
+
+        startHardTimer(question);
     }
-
-    // Reset game state
-    isBlueScreenActive = false;
-    canAnswer = false;
-    penaltyActive = false;
-    isTrickScreen = false;
-    penaltyMessage.textContent = '';
-    trickMessage.textContent = '';
-
-    // Clear and rebuild the display
-    hardQuestionDisplay.innerHTML = '';
-    
-    // Create question header with category ONLY (above the question box)
-    const questionHeader = document.createElement('div');
-    questionHeader.className = 'question-header';
-    questionHeader.innerHTML = `
-        <div class="question-category">${question.category}</div>
-    `;
-
-    // Create question container with icon, text and points (the main question box)
-    const questionContainer = document.createElement('div');
-    questionContainer.className = 'question-container';
-    questionContainer.innerHTML = `
-        <div class="question-content">
-            <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
-            <div class="question-text">${question.text}</div>
-            <div class="question-points">
-                <span class="points-icon">📁</span>
-                ${question.points} files
-            </div>
-        </div>
-    `;
-
-    // Append elements to display - CATEGORY FIRST, then question container
-    hardQuestionDisplay.appendChild(questionHeader);
-    hardQuestionDisplay.appendChild(questionContainer);
-    
-    // Setup icon error handling
-    setupQuestionIcons(questionContainer);
-    
-    // Display answers based on question type
-    hardAnswersDisplay.innerHTML = '';
-
-    if (question.type === 'mcq') {
-        question.options.forEach((option, index) => {
-            const answerElement = document.createElement('div');
-            answerElement.className = 'answer-item incorrect disabled';
-            answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
-            hardAnswersDisplay.appendChild(answerElement);
-        });
-    }
-    // Open questions leave answers area empty
-
-    // Reset interface
-    hardStatusMessage.textContent = "Listen and wait";
-    hardStatusMessage.className = 'status-message thinking';
-    hardNextButton.style.display = 'none';
-    hardGameView.classList.remove('blue-screen');
-    hardGameView.classList.remove('red-screen');
-    hardGameView.classList.add('waiting');
-
-    startHardTimer(question);
-}
 
     // Timer for simple mode
     function startTimer(question) {
