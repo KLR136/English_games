@@ -1,6 +1,651 @@
 {
-  "hard_questions": [],
-  "hard_answer": [],
-  "normal_questions": [],
-  "normal_answers": []
+  "questions": [
+    {
+      "id": 1,
+      "type": "mcq",
+      "category": "Security",
+      "text": "What does 'Phishing' mean?",
+      "options": ["A fishing technique", "Identity theft via email", "A virus slowing down the PC", "Photo editing software"],
+      "correctIndex": 1
+    },
+    {
+      "id": 2,
+      "type": "open",
+      "category": "Security",
+      "text": "Which secure protocol is indicated by a padlock in the address bar?",
+      "answer": "HTTPS"
+    },
+    {
+      "id": 3,
+      "type": "mcq",
+      "category": "Security",
+      "text": "What is the most used (and worst) password in the world?",
+      "options": ["password", "123456", "azerty", "admin"],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "type": "open",
+      "category": "Security",
+      "text": "What do you call malware that demands a ransom?",
+      "answer": "Ransomware"
+    },
+    {
+      "id": 5,
+      "type": "mcq",
+      "category": "Security",
+      "text": "What does GDPR stand for?",
+      "options": ["General Data Protection Regulation", "Global Digital Protocol Registry", "Grand Public Distribution Network", "Nothing, it's a code name"],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "type": "open",
+      "category": "Security",
+      "text": "Which tool allows private browsing by masking your IP address?",
+      "answer": "A VPN"
+    },
+    {
+      "id": 41,
+      "type": "open",
+      "category": "Security",
+      "text": "What is a firewall?",
+      "answer": "A system blocking unauthorized traffic"
+    },
+    {
+      "id": 42,
+      "type": "open",
+      "category": "Security",
+      "text": "Which antivirus was created by a criminal?",
+      "answer": "John McAfee"
+    },
+    {
+      "id": 43,
+      "type": "open",
+      "category": "Security",
+      "text": "What is the purpose of a password?",
+      "answer": "To protect accounts and data"
+    },
+    {
+      "id": 44,
+      "type": "mcq",
+      "category": "Security",
+      "text": "What does VPN mean?",
+      "options": ["Virtual Private Network", "Very Paranormal Network", "Very Private Network", "Virtual Public Node"],
+      "correctIndex": 0
+    },
+    {
+      "id": 45,
+      "type": "open",
+      "category": "Security",
+      "text": "What are the main risks when clicking on unknown links?",
+      "answer": "Viruses, phishing, data theft, malware"
+    },
+    {
+      "id": 46,
+      "type": "open",
+      "category": "Security",
+      "text": "What precautions should you take when shopping online?",
+      "answer": "Check HTTPS, read reviews, secure payment, avoid suspicious links"
+    },
+    {
+      "id": 47,
+      "type": "open",
+      "category": "Security",
+      "text": "What are privacy risks related to using social media?",
+      "answer": "Data collection, tracking, targeted ads, identity theft"
+    },
+    {
+      "id": 7,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "Which of these languages is used for web page styling?",
+      "options": ["HTML", "Python", "CSS", "SQL"],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "type": "open",
+      "category": "Technical",
+      "text": "Which HTTP error is displayed when a page is not found?",
+      "answer": "Error 404"
+    },
+    {
+      "id": 9,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "What does 'HTML' stand for?",
+      "options": ["HyperText Markup Language", "High Tech Multi Level", "Home Tool Made Live", "Hyper Transfer Main Link"],
+      "correctIndex": 0
+    },
+    {
+      "id": 10,
+      "type": "open",
+      "category": "Technical",
+      "text": "Which computer component is considered its 'short-term memory'?",
+      "answer": "RAM"
+    },
+    {
+      "id": 11,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "What is the standard local IP address of an internet router?",
+      "options": ["192.168.1.1", "255.255.255.0", "127.0.0.1", "8.8.8.8"],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "type": "open",
+      "category": "Technical",
+      "text": "What do you call the 'visible' part of a website for the user?",
+      "answer": "Front-End"
+    },
+    {
+      "id": 48,
+      "type": "open",
+      "category": "Technical",
+      "text": "What is the internet?",
+      "answer": "Global computer network"
+    },
+    {
+      "id": 49,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "Which of these tools is NOT a web browser?",
+      "options": ["Safari", "Brave", "Opera", "Brevo"],
+      "correctIndex": 3
+    },
+    {
+      "id": 50,
+      "type": "open",
+      "category": "Technical",
+      "text": "What does the acronym SEO mean?",
+      "answer": "Search Engine Optimization"
+    },
+    {
+      "id": 51,
+      "type": "open",
+      "category": "Technical",
+      "text": "What is a DNS?",
+      "answer": "System translating names to IPs"
+    },
+    {
+      "id": 52,
+      "type": "open",
+      "category": "Technical",
+      "text": "What is cloud storage?",
+      "answer": "Online storage accessible from anywhere"
+    },
+    {
+      "id": 53,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "What does the 'IP' in IP address mean?",
+      "options": ["Internet Protocol", "Invisible Penguins", "Intellectual Property", "Internal Port"],
+      "correctIndex": 0
+    },
+    {
+      "id": 54,
+      "type": "open",
+      "category": "Technical",
+      "text": "What language is used to structure web pages?",
+      "answer": "HTML"
+    },
+    {
+      "id": 55,
+      "type": "open",
+      "category": "Technical",
+      "text": "What do UI and UX mean?",
+      "answer": "UI = Visual Interface; UX = User Experience"
+    },
+    {
+      "id": 56,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "What is the meaning of HTTPS?",
+      "options": ["Hypertext Transfer Protocol Secure", "Hyper-Tuned Transit Packet Synchronizer", "Hamster Powered Tunnel Propulsion System", "High Tech Protocol Service"],
+      "correctIndex": 0
+    },
+    {
+      "id": 13,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "Which video was the first to reach 1 billion views on YouTube?",
+      "options": ["Baby (Justin Bieber)", "Gangnam Style", "Despacito", "Charlie bit my finger"],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "Which animal is the logo of the Firefox browser?",
+      "answer": "A Red Panda"
+    },
+    {
+      "id": 15,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "What does the term 'Rickroll' mean?",
+      "options": ["A type of dance", "Pranking someone with Rick Astley's song", "A hacking technique", "A type of sushi"],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "What is the name of the famous flying cat with a Pop-Tart body?",
+      "answer": "Nyan Cat"
+    },
+    {
+      "id": 17,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "On Twitch, what are the small images used in chat called?",
+      "options": ["Emojis", "Emotes", "Stickers", "Gifs"],
+      "correctIndex": 1
+    },
+    {
+      "id": 18,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "Which cryptocurrency features a Shiba Inu dog?",
+      "answer": "Dogecoin"
+    },
+    {
+      "id": 57,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "When did the Influencer Ruby Nikara sell her bathwater for €1500?",
+      "options": ["2021", "2022", "2023", "2024"],
+      "correctIndex": 2
+    },
+    {
+      "id": 58,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "What do you call someone who pretends to be someone else online?",
+      "answer": "Catfish"
+    },
+    {
+      "id": 59,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "On which social network did the influencer Nasdas become known?",
+      "answer": "Snapchat"
+    },
+    {
+      "id": 60,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "What is a meme?",
+      "answer": "A cultural item spread virally online"
+    },
+    {
+      "id": 61,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "Which influencer became known for her dances on TikTok in 2020?",
+      "options": ["Dixie D'Amelio", "Charli D'Amelio", "Nikita Dragun", "Addison Rae"],
+      "correctIndex": 1
+    },
+    {
+      "id": 62,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "Who used the term 'influvoleur'?",
+      "options": ["Booba", "Morgane Makeup", "Cyril Hanouna", "Sebby Daddy"],
+      "correctIndex": 0
+    },
+    {
+      "id": 63,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "Who said the iconic phrase 'Non mais allo'?",
+      "answer": "Nabilla"
+    },
+    {
+      "id": 64,
+      "type": "mcq",
+      "category": "Pop Culture",
+      "text": "Which of these French artists gained recognition online before traditional media?",
+      "options": ["Angèle", "Jul", "PNL", "M. Pokora"],
+      "correctIndex": 0
+    },
+    {
+      "id": 65,
+      "type": "open",
+      "category": "Pop Culture",
+      "text": "Which French electronic artist started on SoundCloud before global success?",
+      "answer": "Petit Biscuit"
+    },
+    {
+      "id": 19,
+      "type": "mcq",
+      "category": "History",
+      "text": "In which year was the first iPhone launched?",
+      "options": ["2005", "2007", "2008", "2010"],
+      "correctIndex": 1
+    },
+    {
+      "id": 20,
+      "type": "open",
+      "category": "History",
+      "text": "Who is considered the creator of the World Wide Web (WWW)?",
+      "answer": "Tim Berners-Lee"
+    },
+    {
+      "id": 21,
+      "type": "mcq",
+      "category": "History",
+      "text": "What was Google's code name in its early days?",
+      "options": ["BackRub", "SearchMaster", "AlphaWeb", "FindIt"],
+      "correctIndex": 0
+    },
+    {
+      "id": 22,
+      "type": "open",
+      "category": "History",
+      "text": "What is the ancestor of the Internet created by the US military?",
+      "answer": "ARPANET"
+    },
+    {
+      "id": 23,
+      "type": "mcq",
+      "category": "History",
+      "text": "Who created Facebook in 2004?",
+      "options": ["Mark Zuckerberg", "Reid Hoffman", "Hannah Montana", "Elon Musk"],
+      "correctIndex": 0
+    },
+    {
+      "id": 24,
+      "type": "open",
+      "category": "History",
+      "text": "Which company bought YouTube in 2006?",
+      "answer": "Google"
+    },
+    {
+      "id": 66,
+      "type": "mcq",
+      "category": "History",
+      "text": "When was TikTok created (initially as Douyin)?",
+      "options": ["2010", "2014", "2016", "2020"],
+      "correctIndex": 2
+    },
+    {
+      "id": 67,
+      "type": "open",
+      "category": "History",
+      "text": "When was Instagram acquired by Meta?",
+      "answer": "2012"
+    },
+    {
+      "id": 68,
+      "type": "open",
+      "category": "History",
+      "text": "What online streaming platform was formerly a video rental service?",
+      "answer": "Netflix"
+    },
+    {
+      "id": 69,
+      "type": "open",
+      "category": "History",
+      "text": "What is the old name of TikTok?",
+      "answer": "Douyin (or Musical.ly)"
+    },
+    {
+      "id": 25,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which social network uses the term 'Thread'?",
+      "options": ["Instagram", "X (Twitter)", "Snapchat", "Pinterest"],
+      "correctIndex": 1
+    },
+    {
+      "id": 26,
+      "type": "open",
+      "category": "Social",
+      "text": "Which Chinese app is known for its short vertical videos?",
+      "answer": "TikTok"
+    },
+    {
+      "id": 27,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which is the professional social network par excellence?",
+      "options": ["Facebook", "Tinder", "LinkedIn", "Discord"],
+      "correctIndex": 2
+    },
+    {
+      "id": 28,
+      "type": "open",
+      "category": "Social",
+      "text": "On which platform do you mainly find video game streamers?",
+      "answer": "Twitch"
+    },
+    {
+      "id": 29,
+      "type": "mcq",
+      "category": "Social",
+      "text": "What was the original name of Snapchat?",
+      "options": ["Picaboo", "Chatty", "Ghost", "Vine"],
+      "correctIndex": 0
+    },
+    {
+      "id": 30,
+      "type": "open",
+      "category": "Social",
+      "text": "What do you call a person who manages a brand's social networks?",
+      "answer": "A Community Manager"
+    },
+    {
+      "id": 70,
+      "type": "mcq",
+      "category": "Social",
+      "text": "What is the official minimum age to register on most social networks?",
+      "options": ["10 years", "13 years", "15 years", "18 years"],
+      "correctIndex": 1
+    },
+    {
+      "id": 71,
+      "type": "mcq",
+      "category": "Social",
+      "text": "What is the name of the social network with a blue butterfly logo?",
+      "options": ["Butterfly", "Twitter", "BlueSky", "Mastodon"],
+      "correctIndex": 2
+    },
+    {
+      "id": 72,
+      "type": "open",
+      "category": "Social",
+      "text": "What country was Twitch created in?",
+      "answer": "United States"
+    },
+    {
+      "id": 73,
+      "type": "open",
+      "category": "Social",
+      "text": "Which service allows you to schedule posts on Facebook and Instagram?",
+      "answer": "Meta Business Suite"
+    },
+    {
+      "id": 74,
+      "type": "mcq",
+      "category": "Social",
+      "text": "What is the time limit for an Instagram story (traditionally)?",
+      "options": ["15 seconds", "1 minute", "3 minutes", "10 seconds"],
+      "correctIndex": 1
+    },
+    {
+      "id": 75,
+      "type": "open",
+      "category": "Social",
+      "text": "What does 'shadowban' mean?",
+      "answer": "Invisible decrease in account/post visibility"
+    },
+    {
+      "id": 76,
+      "type": "open",
+      "category": "Social",
+      "text": "Which company owns WhatsApp?",
+      "answer": "Meta"
+    },
+    {
+      "id": 77,
+      "type": "open",
+      "category": "Social",
+      "text": "What is the name of YouTube's watchtime-based algorithm?",
+      "answer": "Deep Neural Network (or Cortex)"
+    },
+    {
+      "id": 78,
+      "type": "open",
+      "category": "Social",
+      "text": "What is the economic model of Snapchat?",
+      "answer": "Advertisement"
+    },
+    {
+      "id": 79,
+      "type": "open",
+      "category": "Social",
+      "text": "What does 'cross-posting' mean?",
+      "answer": "Publishing the same post on multiple networks at once"
+    },
+    {
+      "id": 80,
+      "type": "mcq",
+      "category": "Social",
+      "text": "In which country is Snapchat NOT allowed?",
+      "options": ["China", "Bhutan", "Taiwan", "Japan"],
+      "correctIndex": 0
+    },
+    {
+      "id": 81,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which content does Instagram prioritize most?",
+      "options": ["Horizontal photos", "Private messages", "Reels / Time spent", "Audio notes"],
+      "correctIndex": 2
+    },
+    {
+      "id": 82,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which AI model detects faces on Facebook?",
+      "options": ["InstaFace", "DeepVision", "DeepFace", "FaceNet"],
+      "correctIndex": 2
+    },
+    {
+      "id": 83,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which YouTube format was created to compete with TikTok?",
+      "options": ["Capsules", "Reels", "Shorts", "Stories"],
+      "correctIndex": 2
+    },
+    {
+      "id": 84,
+      "type": "mcq",
+      "category": "Social",
+      "text": "What is the purpose of Instagram's 'graph integrity check'?",
+      "options": ["Measure network speed", "Detect fake followers", "Improve video quality", "Check copyright"],
+      "correctIndex": 1
+    },
+    {
+      "id": 85,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which AI does Pinterest use to visually recognize objects?",
+      "options": ["VisualTripleNet", "Siamese Neural Networks", "Deep Zoom Filter", "PinLens"],
+      "correctIndex": 1
+    },
+    {
+      "id": 86,
+      "type": "open",
+      "category": "Social",
+      "text": "What is a 'bot' on social media?",
+      "answer": "Automated program that posts/likes/spams"
+    },
+    {
+      "id": 87,
+      "type": "open",
+      "category": "Social",
+      "text": "What is an 'influencer'?",
+      "answer": "Person who influences opinions/purchases of an audience"
+    },
+    {
+      "id": 31,
+      "type": "mcq",
+      "category": "Technical",
+      "text": "What does 'USB' stand for?",
+      "options": ["Universal Serial Bus", "United State Bus", "Ultra Speed Boot", "User System Backup"],
+      "correctIndex": 0
+    },
+    {
+      "id": 32,
+      "type": "open",
+      "category": "Technical",
+      "text": "Which programming language has a snake as its logo?",
+      "answer": "Python"
+    },
+    {
+      "id": 33,
+      "type": "mcq",
+      "category": "Culture",
+      "text": "Who is the CEO of Tesla and SpaceX?",
+      "options": ["Jeff Bezos", "Bill Gates", "Elon Musk", "Mark Zuckerberg"],
+      "correctIndex": 2
+    },
+    {
+      "id": 34,
+      "type": "open",
+      "category": "Security",
+      "text": "What is the name of the double verification by SMS or app during login?",
+      "answer": "Two-Factor Authentication (2FA)"
+    },
+    {
+      "id": 35,
+      "type": "mcq",
+      "category": "History",
+      "text": "Which computer beat chess champion Kasparov in 1997?",
+      "options": ["Deep Blue", "AlphaGo", "Watson", "HAL 9000"],
+      "correctIndex": 0
+    },
+    {
+      "id": 36,
+      "type": "open",
+      "category": "Technical",
+      "text": "What is the unit of measurement for processor (CPU) speed?",
+      "answer": "Hertz (or Gigahertz)"
+    },
+    {
+      "id": 37,
+      "type": "mcq",
+      "category": "Social",
+      "text": "Which platform belongs to Microsoft?",
+      "options": ["Slack", "Discord", "LinkedIn", "Zoom"],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "type": "open",
+      "category": "Culture",
+      "text": "What do you call the fear of not having your mobile phone?",
+      "answer": "Nomophobia"
+    },
+    {
+      "id": 39,
+      "type": "mcq",
+      "category": "Security",
+      "text": "What is a 'White Hat'?",
+      "options": ["An ethical hacker", "An invisible virus", "A network admin", "An antivirus brand"],
+      "correctIndex": 0
+    },
+    {
+      "id": 40,
+      "type": "open",
+      "category": "Culture",
+      "text": "What does the term 'Cloud' refer to in computing?",
+      "answer": "Remote servers / Cloud Computing"
+    }
+  ]
 }

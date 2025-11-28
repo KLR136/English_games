@@ -1,856 +1,653 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL BEEPER Game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Orientation Message -->
-    <div class="orientation-message" id="orientation-message">
-        <div class="orientation-icon">📱</div>
-        <div class="orientation-text">Please rotate your device</div>
-        <div class="orientation-subtext">This game works best in landscape mode</div>
-    </div>
-
-    <!-- Background Music -->
-    <audio id="backgroundMusic" loop>
-        <source src="audio/background_music.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Audio Elements -->
-    <audio id="bipSound" preload="auto">
-        <source src="audio/beepers/correct/real_buzzer.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound1" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound2" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_2.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound3" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_3.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound4" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_4.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="ambienceMusic" preload="auto"></audio>
-    <audio id="errorSound" preload="auto"></audio>
-    <audio id="winSound" preload="auto"></audio>
-    <audio id="trickSound" preload="auto"></audio>
-
-    <!-- Splash Screen -->
-    <div class="view active" id="splash-screen">
-        <div class="splash-container">
-            <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 15...</div>
-            <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
-        </div>
-    </div>
-
-    <!-- Sound On Screen -->
-    <div class="view" id="sound-on-screen">
-        <div class="sound-on-container">
-            <img src="images/sound_on.png" alt="Turn Sound On" class="sound-on-icon" id="soundOnIcon">
-            <h1 class="sound-on-title">TURN YOUR SOUND ON!</h1>
-            <button class="continue-btn" onclick="startBackgroundMusic(); showView('main-menu')">
-                Continue to Game
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Menu -->
-    <div class="view" id="main-menu">
-        <div class="menu-container">
-            <div class="logo-space">
-                <img src="images/game_logo.png" alt="EL BEEPER Logo" class="menu-logo" id="menuLogo">
-            </div>
-            
-            <div class="slogan-space">
-                <strong><p class="slogan" id="slogan">Be the fastest!<br>Be the smartest!<br>Beat the BEEP!</p></strong>
-            </div>
-            
-            <div class="menu-buttons">
-                <button class="menu-btn btn-rules" onclick="showView('rules-view')">
-                    Rules
-                </button>
-                
-                <div class="mode-buttons-container">
-                    <button class="mode-btn btn-simple" onclick="startSimpleGame()">
-                        <img src="images/simple_mode_icon.png" alt="Simple Mode Icon" class="mode-icon">
-                        Simple Mode
-                    </button>
-                    <button class="mode-btn btn-hard" onclick="startHardGame()">
-                        <img src="images/hard_mode_icon.png" alt="Hard Mode Icon" class="mode-icon">
-                        Hard Mode
-                    </button>
-                </div>
-            </div>
-            
-            <p>A game developed by:</p>
-
-            <img src="images/team_logo.png" alt="Team Logo" class="menu-team-logo" id="menuTeamLogo">
-
-            <p>MDS - ANNECY</p>
-        </div>
-    </div>
-
-    <!-- Rules View -->
-    <div class="view" id="rules-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
-        </div>
-        <div class="menu-container">
-            <div class="rules-content">
-                <h2>RULES</h2>
-                
-                <p class="rules-subtitle"><strong>Collect the most tokens by slapping the target and answering correctly:</strong></p>
-                
-                <div class="game-info">
-                    <p><strong>7 to 77 years old<br>15 min • 120 questions<br>2-6 players</strong></p>
-                </div>
-                
-                <h3>SETUP</h3>
-                <ol>
-                    <li>Place the Target Carpet in the center of the table.</li>
-                    <li>Place the tablet with the El Beeper app next to the target visible to everyone!</li>
-                    <li>Each player/team must take a "Score Card".</li>
-                    <li>Round Choice: Press the "THE RIGHT BEEP" button below to hear the correct Beep - Memorize it!</li>
-                    <li>Choose a difficulty on the app: Normal or Hard</li>
-                </ol>
-                
-                <!-- Bouton THE RIGHT BEEP -->
-                <div class="beep-button-container">
-                    <button class="beep-btn" onclick="playBeepSound()">
-                        THE RIGHT BEEP - CLICK TO HEAR
-                    </button>
-                </div>
-                
-                <h4>How to Play</h4>
-                <p><em>The game is played in rounds of questions controlled by the app.</em></p>
-                
-                <ol class="gameplay-steps">
-                    <li>
-                        <strong>READ:</strong> The question appears on the screen with its Token Value (1, 2, or 3). 
-                        Players read the question themselves.
-                    </li>
-                    <li>
-                        <strong>WAIT:</strong> Wait for the screen to turn RED. Wait for the signal.
-                    </li>
-                    <li>
-                        <strong>SLAP:</strong> As soon as the screen turns BLUE and you hear the BEEP, slap the target!
-                        <ul>
-                            <li>The first hand on the target gets to answer.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <strong>ANSWER:</strong>
-                        <ul>
-                            <li>Say your answer aloud.</li>
-                            <li>Tap the game screen to reveal the correct answer.</li>
-                            <li><strong>Correct:</strong> Take the number of tokens shown on the screen (1, 2, or 3).</li>
-                            <li><strong>Wrong:</strong> You are out for this round. The next player who slapped gets to guess.</li>
-                        </ul>
-                    </li>
-                </ol>
-                
-                <h3>HARD MODE</h3>
-                <ul>
-                    <li>The app will try to trick you with False Signals.</li>
-                    <li>Wrong Colors (other than Blue)</li>
-                    <li>Wrong Sounds (Buzzers or verbs)</li>
-                    <li>Do NOT slap unless it is the Correct Beep AND Blue Screen.</li>
-                    <li><strong>Penalty:</strong> If you slap on a false signal, you must sit out the next round.</li>
-                </ul>
-                
-                <h3>WINNING</h3>
-                <p>The game ends immediately when:</p>
-                <ul>
-                    <li>A player reaches 20 Points (Tokens), OR</li>
-                    <li>All questions have been played.</li>
-                </ul>
-                <p><strong>The player with the most tokens wins!</strong></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Countdown View -->
-    <div class="view countdown-view" id="countdown-view">
-        <div class="countdown-number" id="countdownNumber">3</div>
-        <div class="countdown-text">ARE YOU READY?</div>
-        <div class="countdown-subtext">Turn your phone</div>
-        <img src="images/turn_phone.png" alt="Turn your phone" class="turn-phone-image">
-
-    </div>
-
-    <!-- Simple Game View -->
-    <div class="view game-view" id="simple-game-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
-        </div>
-        <div class="game-container">
-            <h1>Simple Mode</h1>
-            
-            <div class="question-display" id="questionDisplay">
-                The question will appear here...
-            </div>
-
-            <div class="answers-display" id="answersDisplay">
-                <!-- Answers will be displayed here -->
-            </div>
-
-            <div class="status-message thinking" id="statusMessage">
-                Listen and wait.
-            </div>
-
-            <div class="controls">
-                <button class="next-btn" onclick="nextQuestion()" id="nextButton">
-                    Next Question
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hard Game View -->
-    <div class="view game-view" id="hard-game-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
-        </div>
-        <div class="game-container">
-            <h1>Hard Mode</h1>
-            
-            <div class="question-display" id="hardQuestionDisplay">
-                The question will appear here...
-            </div>
-
-            <div class="answers-display" id="hardAnswersDisplay">
-                <!-- Answers will be displayed here -->
-            </div>
-
-            <div class="status-message thinking" id="hardStatusMessage">
-                Listen and wait
-            </div>
-
-            <div class="penalty-message" id="penaltyMessage">
-                <!-- Penalty messages will appear here -->
-            </div>
-
-            <div class="trick-message" id="trickMessage">
-                <!-- Trick messages will appear here -->
-            </div>
-
-            <div class="controls">
-                <button class="next-btn" onclick="nextHardQuestion()" id="hardNextButton">
-                    Next Question
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Game Over View -->
-    <div class="view" id="game-over-view">
-        <div class="back-btn-container">
-            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
-        </div>
-        <div class="menu-container game-over">
-            <h2>🎉 Congratulations! 🎉</h2>
-            <p>You've collected <span id="finalScore">20</span> files!</p>
-            <p>You are the EL BEEPER champion!</p>
-            <button class="menu-btn btn-hard" onclick="showView('main-menu')">
-                Play Again
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // Orientation Detection
-        function checkOrientation() {
-            const orientationMessage = document.getElementById('orientation-message');
-            const isPortrait = window.innerHeight > window.innerWidth;
-            
-            if (isPortrait && window.innerWidth < 768) {
-                orientationMessage.classList.add('active');
-            } else {
-                orientationMessage.classList.remove('active');
-            }
-        }
-
-        // Initial check
-        checkOrientation();
-
-        // Listen for orientation changes
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
-
-        // Game variables
-        let currentTimer;
-        let timeLeft;
-        const thinkingTime = 10;
-        const blueScreenTime = 5;
-        let currentQuestionIndex = 0;
-        let isMusicPlaying = false;
-        let countdownInterval;
-        let fakeAlarmTimer;
-
-        // Hard Mode specific variables
-        let isBlueScreenActive = false;
-        let canAnswer = false;
-        let playerScore = 0;
-        let penaltyActive = false;
-        let isTrickScreen = false;
-
-        // DOM Elements
-        const questionDisplay = document.getElementById('questionDisplay');
-        const answersDisplay = document.getElementById('answersDisplay');
-        const statusMessage = document.getElementById('statusMessage');
-        const bipSound = document.getElementById('bipSound');
-        const countdownNumber = document.getElementById('countdownNumber');
-        const nextButton = document.getElementById('nextButton');
-        const gameView = document.getElementById('simple-game-view');
+<script>
+    // Orientation Detection
+    function checkOrientation() {
+        const orientationMessage = document.getElementById('orientation-message');
+        const isPortrait = window.innerHeight > window.innerWidth;
         
-        // Hard Mode DOM Elements
-        const hardQuestionDisplay = document.getElementById('hardQuestionDisplay');
-        const hardAnswersDisplay = document.getElementById('hardAnswersDisplay');
-        const hardStatusMessage = document.getElementById('hardStatusMessage');
-        const hardNextButton = document.getElementById('hardNextButton');
-        const hardGameView = document.getElementById('hard-game-view');
-        const penaltyMessage = document.getElementById('penaltyMessage');
-        const trickMessage = document.getElementById('trickMessage');
-        const gameOverView = document.getElementById('game-over-view');
+        if (isPortrait && window.innerWidth < 768) {
+            orientationMessage.classList.add('active');
+        } else {
+            orientationMessage.classList.remove('active');
+        }
+    }
 
-        // Logo elements
-        const splashLogo = document.getElementById('splashLogo');
-        const menuLogo = document.getElementById('menuLogo');
-        const splashTeamLogo = document.getElementById('splashTeamLogo');
-        const menuTeamLogo = document.getElementById('menuTeamLogo');
-        const soundOnIcon = document.getElementById('soundOnIcon');
+    // Initial check
+    checkOrientation();
 
-        // Background Music Function
-        function startBackgroundMusic() {
-            const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.volume = 0.3;
-            backgroundMusic.play().catch(e => {
-                console.log("Autoplay prevented - user interaction required");
-            });
+    // Listen for orientation changes
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+
+    // Game variables
+    let currentTimer;
+    let timeLeft;
+    const thinkingTime = 10;
+    const blueScreenTime = 5;
+    let currentQuestionIndex = 0;
+    let isMusicPlaying = false;
+    let countdownInterval;
+    let fakeAlarmTimer;
+
+    // Hard Mode specific variables
+    let isBlueScreenActive = false;
+    let canAnswer = false;
+    let playerScore = 0;
+    let penaltyActive = false;
+    let isTrickScreen = false;
+
+    // Questions data
+    let allQuestions = [];
+    let usedQuestions = [];
+
+    // DOM Elements
+    const questionDisplay = document.getElementById('questionDisplay');
+    const answersDisplay = document.getElementById('answersDisplay');
+    const statusMessage = document.getElementById('statusMessage');
+    const bipSound = document.getElementById('bipSound');
+    const countdownNumber = document.getElementById('countdownNumber');
+    const nextButton = document.getElementById('nextButton');
+    const gameView = document.getElementById('simple-game-view');
+    
+    // Hard Mode DOM Elements
+    const hardQuestionDisplay = document.getElementById('hardQuestionDisplay');
+    const hardAnswersDisplay = document.getElementById('hardAnswersDisplay');
+    const hardStatusMessage = document.getElementById('hardStatusMessage');
+    const hardNextButton = document.getElementById('hardNextButton');
+    const hardGameView = document.getElementById('hard-game-view');
+    const penaltyMessage = document.getElementById('penaltyMessage');
+    const trickMessage = document.getElementById('trickMessage');
+    const gameOverView = document.getElementById('game-over-view');
+
+    // Logo elements
+    const splashLogo = document.getElementById('splashLogo');
+    const menuLogo = document.getElementById('menuLogo');
+    const splashTeamLogo = document.getElementById('splashTeamLogo');
+    const menuTeamLogo = document.getElementById('menuTeamLogo');
+    const soundOnIcon = document.getElementById('soundOnIcon');
+
+    // Load questions from JSON
+    async function loadQuestions() {
+        try {
+            const response = await fetch('database.json');
+            const data = await response.json();
+            allQuestions = data.questions;
+            console.log(`Loaded ${allQuestions.length} questions from database`);
+        } catch (error) {
+            console.error('Error loading questions:', error);
+            // Fallback to empty array if loading fails
+            allQuestions = [];
+        }
+    }
+
+    // Get a random question
+    function getRandomQuestion() {
+        if (allQuestions.length === 0) {
+            console.error('No questions available');
+            return null;
         }
 
-        // Fonction pour jouer le vrai buzzer quand l'écran devient bleu
-        function playRealBuzzer() {
-            const realBuzzer = document.getElementById('bipSound');
-            realBuzzer.currentTime = 0;
-            realBuzzer.play().catch(e => {
-                console.log("Real buzzer error:", e);
-            });
+        // If we've used all questions, reset the used list
+        if (usedQuestions.length >= allQuestions.length) {
+            usedQuestions = [];
         }
 
-        // Fonction pour jouer un faux buzzer aléatoire
-        function playRandomFakeBuzzer() {
-            const fakeBuzzers = [
-                document.getElementById('fakebipSound1'),
-                document.getElementById('fakebipSound2'), 
-                document.getElementById('fakebipSound3'),
-                document.getElementById('fakebipSound4')
-            ];
+        // Find a question that hasn't been used recently
+        let availableQuestions = allQuestions.filter(q => !usedQuestions.includes(q.id));
+        
+        // If all questions have been used, use any question
+        if (availableQuestions.length === 0) {
+            availableQuestions = allQuestions;
+        }
+
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const question = availableQuestions[randomIndex];
+        
+        // Mark this question as used
+        usedQuestions.push(question.id);
+        
+        return question;
+    }
+
+    // Background Music Function
+    function startBackgroundMusic() {
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.volume = 0.3;
+        backgroundMusic.play().catch(e => {
+            console.log("Autoplay prevented - user interaction required");
+        });
+    }
+
+    // Fonction pour jouer le vrai buzzer quand l'écran devient bleu
+    function playRealBuzzer() {
+        const realBuzzer = document.getElementById('bipSound');
+        realBuzzer.currentTime = 0;
+        realBuzzer.play().catch(e => {
+            console.log("Real buzzer error:", e);
+        });
+    }
+
+    // Fonction pour jouer un faux buzzer aléatoire
+    function playRandomFakeBuzzer() {
+        const fakeBuzzers = [
+            document.getElementById('fakebipSound1'),
+            document.getElementById('fakebipSound2'), 
+            document.getElementById('fakebipSound3'),
+            document.getElementById('fakebipSound4')
+        ];
+        
+        // Choisir un buzzer aléatoire
+        const randomIndex = Math.floor(Math.random() * fakeBuzzers.length);
+        const randomFakeBuzzer = fakeBuzzers[randomIndex];
+        
+        randomFakeBuzzer.currentTime = 0;
+        randomFakeBuzzer.play().catch(e => {
+            console.log("Fake buzzer error:", e);
+        });
+    }
+
+    // Fonction pour choisir une couleur aléatoire (autre que bleu et rouge)
+    function getRandomTrickColor() {
+        const trickColors = [
+            '#FFD700', // Or
+            '#32CD32', // Vert lime
+            '#8A2BE2', // Violet
+            '#FF69B4', // Rose
+            '#00CED1', // Turquoise
+            '#FF8C00', // Orange foncé
+            '#9370DB'  // Violet moyen
+        ];
+        
+        const randomIndex = Math.floor(Math.random() * trickColors.length);
+        return trickColors[randomIndex];
+    }
+
+    // Function to play beep sound (pour le bouton dans les règles)
+    function playBeepSound() {
+        playRealBuzzer();
+    }
+
+    // Fonction pour les fausses alarmes avec délai aléatoire
+    function scheduleFakeAlarms() {
+        // Arrêter toute alarme précédente
+        if (fakeAlarmTimer) {
+            clearTimeout(fakeAlarmTimer);
+        }
+
+        // Planifier 1-3 fausses alarmes pendant le temps de réflexion
+        const numFakeAlarms = Math.floor(Math.random() * 3) + 1; // 1 à 3 fausses alarmes
+        
+        for (let i = 0; i < numFakeAlarms; i++) {
+            // Délai aléatoire entre 3 et 5 secondes
+            const delay = (Math.random() * 2 + 3) * 1000; // 3-5 secondes
             
-            // Choisir un buzzer aléatoire
-            const randomIndex = Math.floor(Math.random() * fakeBuzzers.length);
-            const randomFakeBuzzer = fakeBuzzers[randomIndex];
-            
-            randomFakeBuzzer.currentTime = 0;
-            randomFakeBuzzer.play().catch(e => {
-                console.log("Fake buzzer error:", e);
-            });
+            setTimeout(() => {
+                if (timeLeft > blueScreenTime) { // Ne pas jouer pendant l'écran bleu
+                    playRandomFakeBuzzer();
+                }
+            }, delay + (i * 2000)); // Espacer les alarmes de 2 secondes
         }
+    }
 
-        // Fonction pour choisir une couleur aléatoire (autre que bleu et rouge)
-        function getRandomTrickColor() {
-            const trickColors = [
-                '#FFD700', // Or
-                '#32CD32', // Vert lime
-                '#8A2BE2', // Violet
-                '#FF69B4', // Rose
-                '#00CED1', // Turquoise
-                '#FF8C00', // Orange foncé
-                '#9370DB'  // Violet moyen
-            ];
-            
-            const randomIndex = Math.floor(Math.random() * trickColors.length);
-            return trickColors[randomIndex];
-        }
+    // Function to change view
+    function showView(viewId) {
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+        });
+        document.getElementById(viewId).classList.add('active');
+    }
 
-        // Function to play beep sound (pour le bouton dans les règles)
-        function playBeepSound() {
-            playRealBuzzer();
-        }
+    // Start simple game
+    function startSimpleGame() {
+        showView('countdown-view');
+        startCountdown();
+    }
 
-        // Fonction pour les fausses alarmes avec délai aléatoire
-        function scheduleFakeAlarms() {
-            // Arrêter toute alarme précédente
+    // Start hard game
+    function startHardGame() {
+        showView('countdown-view');
+        startCountdown('hard');
+    }
+
+    // Return to menu from game
+    function returnToMenu() {
+        if (confirm("Do you really want to return to the menu? Your progress will be lost.")) {
+            clearInterval(currentTimer);
             if (fakeAlarmTimer) {
                 clearTimeout(fakeAlarmTimer);
             }
-
-            // Planifier 1-3 fausses alarmes pendant le temps de réflexion
-            const numFakeAlarms = Math.floor(Math.random() * 3) + 1; // 1 à 3 fausses alarmes
-            
-            for (let i = 0; i < numFakeAlarms; i++) {
-                // Délai aléatoire entre 3 et 5 secondes
-                const delay = (Math.random() * 2 + 3) * 1000; // 3-5 secondes
-                
-                setTimeout(() => {
-                    if (timeLeft > blueScreenTime) { // Ne pas jouer pendant l'écran bleu
-                        playRandomFakeBuzzer();
-                    }
-                }, delay + (i * 2000)); // Espacer les alarmes de 2 secondes
-            }
+            showView('main-menu');
         }
+    }
 
-        // Sample questions
-        const sampleQuestions = [
-            {
-                question: "What is the capital of France?",
-                answers: [
-                    { text: "London", correct: false },
-                    { text: "Paris", correct: true },
-                    { text: "Berlin", correct: false },
-                    { text: "Madrid", correct: false }
-                ]
-            },
-            {
-                question: "How much is 2 + 2?",
-                answers: [
-                    { text: "3", correct: false },
-                    { text: "4", correct: true },
-                    { text: "5", correct: false },
-                    { text: "6", correct: false }
-                ]
-            },
-            {
-                question: "What is the color of the sky on a clear day?",
-                answers: [
-                    { text: "Red", correct: false },
-                    { text: "Green", correct: false },
-                    { text: "Blue", correct: true },
-                    { text: "Yellow", correct: false }
-                ]
-            }
-        ];
-
-        // Function to change view
-        function showView(viewId) {
-            document.querySelectorAll('.view').forEach(view => {
-                view.classList.remove('active');
-            });
-            document.getElementById(viewId).classList.add('active');
-        }
-
-        // Start simple game
-        function startSimpleGame() {
-            showView('countdown-view');
-            startCountdown();
-        }
-
-        // Start hard game
-        function startHardGame() {
-            showView('countdown-view');
-            startCountdown('hard');
-        }
-
-        // Return to menu from game
-        function returnToMenu() {
-            if (confirm("Do you really want to return to the menu? Your progress will be lost.")) {
-                clearInterval(currentTimer);
-                if (fakeAlarmTimer) {
-                    clearTimeout(fakeAlarmTimer);
-                }
-                showView('main-menu');
-            }
-        }
-
-        // Start countdown
-        function startCountdown(mode = 'simple') {
-            let count = 3;
-            countdownNumber.textContent = count;
+    // Start countdown
+    function startCountdown(mode = 'simple') {
+        let count = 3;
+        countdownNumber.textContent = count;
                     
-            countdownInterval = setInterval(() => {
-                count--;
-                countdownNumber.textContent = count;
-                
-                if (count <= 0) {
-                    clearInterval(countdownInterval);
-                    if (mode === 'hard') {
-                        startHardGameSession();
-                    } else {
-                        startSimpleGameSession();
-                    }
-                }
-            }, 1000);
-        }
-
-        // Start simple game session
-        function startSimpleGameSession() {
-            showView('simple-game-view');
-            currentQuestionIndex = 0;
-            startNewQuestion();
-        }
-
-        // Start hard game session
-        function startHardGameSession() {
-            showView('hard-game-view');
-            currentQuestionIndex = 0;
-            startNewHardQuestion();
-        }
-
-        // Start a new question for simple mode
-        function startNewQuestion() {
-            if (currentQuestionIndex >= sampleQuestions.length) {
-                currentQuestionIndex = 0;
-            }
-
-            const question = sampleQuestions[currentQuestionIndex];
-            currentQuestionIndex++;
-
-            // Display the question
-            questionDisplay.textContent = question.question;
+        countdownInterval = setInterval(() => {
+            count--;
+            countdownNumber.textContent = count;
             
-            // Display all answers
+            if (count <= 0) {
+                clearInterval(countdownInterval);
+                if (mode === 'hard') {
+                    startHardGameSession();
+                } else {
+                    startSimpleGameSession();
+                }
+            }
+        }, 1000);
+    }
+
+    // Start simple game session
+    function startSimpleGameSession() {
+        showView('simple-game-view');
+        currentQuestionIndex = 0;
+        startNewQuestion();
+    }
+
+    // Start hard game session
+    function startHardGameSession() {
+        showView('hard-game-view');
+        currentQuestionIndex = 0;
+        startNewHardQuestion();
+    }
+
+    // Start a new question for simple mode
+    function startNewQuestion() {
+        const question = getRandomQuestion();
+        
+        if (!question) {
+            // Fallback if no questions available
+            questionDisplay.textContent = "No questions available. Please check the database.";
             answersDisplay.innerHTML = '';
-            question.answers.forEach((answer, index) => {
+            statusMessage.textContent = "Error loading questions";
+            return;
+        }
+
+        // Display the question
+        questionDisplay.textContent = question.text;
+        
+        // Display answers based on question type
+        answersDisplay.innerHTML = '';
+        
+        if (question.type === 'mcq') {
+            // Multiple choice question
+            question.options.forEach((option, index) => {
                 const answerElement = document.createElement('div');
                 answerElement.className = 'answer-item incorrect';
-                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
                 answersDisplay.appendChild(answerElement);
             });
-
-            // Reset interface
-            statusMessage.textContent = "Listen and wait.";
-            statusMessage.className = 'status-message thinking';
-            nextButton.style.display = 'none';
-            gameView.classList.remove('blue-screen');
-
-            startTimer();
+        } else {
+            // Open question - show answer format hint
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item incorrect';
+            answerElement.textContent = "Answer format: Open response";
+            answersDisplay.appendChild(answerElement);
         }
 
-        // Start a new question for hard mode
-        function startNewHardQuestion() {
-            if (currentQuestionIndex >= sampleQuestions.length) {
-                currentQuestionIndex = 0;
-            }
+        // Reset interface
+        statusMessage.textContent = "Listen and wait.";
+        statusMessage.className = 'status-message thinking';
+        nextButton.style.display = 'none';
+        gameView.classList.remove('blue-screen');
+        gameView.classList.add('waiting');
 
-            const question = sampleQuestions[currentQuestionIndex];
-            currentQuestionIndex++;
+        startTimer(question);
+    }
 
-            // Reset game state
-            isBlueScreenActive = false;
-            canAnswer = false;
-            penaltyActive = false;
-            isTrickScreen = false;
-            penaltyMessage.textContent = '';
-            trickMessage.textContent = '';
-
-            // Display the question
-            hardQuestionDisplay.textContent = question.question;
-            
-            // Display all answers
+    // Start a new question for hard mode
+    function startNewHardQuestion() {
+        const question = getRandomQuestion();
+        
+        if (!question) {
+            // Fallback if no questions available
+            hardQuestionDisplay.textContent = "No questions available. Please check the database.";
             hardAnswersDisplay.innerHTML = '';
-            question.answers.forEach((answer, index) => {
+            hardStatusMessage.textContent = "Error loading questions";
+            return;
+        }
+
+        // Reset game state
+        isBlueScreenActive = false;
+        canAnswer = false;
+        penaltyActive = false;
+        isTrickScreen = false;
+        penaltyMessage.textContent = '';
+        trickMessage.textContent = '';
+
+        // Display the question
+        hardQuestionDisplay.textContent = question.text;
+        
+        // Display answers based on question type
+        hardAnswersDisplay.innerHTML = '';
+        
+        if (question.type === 'mcq') {
+            // Multiple choice question
+            question.options.forEach((option, index) => {
                 const answerElement = document.createElement('div');
                 answerElement.className = 'answer-item incorrect disabled';
-                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${answer.text}`;
+                answerElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
                 hardAnswersDisplay.appendChild(answerElement);
             });
-
-            // Reset interface
-            hardStatusMessage.textContent = "Listen and wait";
-            hardStatusMessage.className = 'status-message thinking';
-            hardNextButton.style.display = 'none';
-            hardGameView.classList.remove('blue-screen');
-            hardGameView.classList.remove('red-screen');
-
-            startHardTimer();
+        } else {
+            // Open question - show answer format hint
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-item incorrect disabled';
+            answerElement.textContent = "Answer format: Open response";
+            hardAnswersDisplay.appendChild(answerElement);
         }
 
-        // Timer for simple mode
-        function startTimer() {
-            timeLeft = thinkingTime;
+        // Reset interface
+        hardStatusMessage.textContent = "Listen and wait";
+        hardStatusMessage.className = 'status-message thinking';
+        hardNextButton.style.display = 'none';
+        hardGameView.classList.remove('blue-screen');
+        hardGameView.classList.remove('red-screen');
+        hardGameView.classList.add('waiting');
 
-            currentTimer = setInterval(() => {
-                timeLeft--;
+        startHardTimer(question);
+    }
 
-                if (timeLeft <= 0) {
-                    clearInterval(currentTimer);
-                    timeUp();
-                }
-            }, 1000);
-        }
+    // Timer for simple mode
+    function startTimer(question) {
+        timeLeft = thinkingTime;
 
-        // Timer for hard mode
-        function startHardTimer() {
-            timeLeft = thinkingTime;
+        currentTimer = setInterval(() => {
+            timeLeft--;
 
-            // Planifier les fausses alarmes pour le mode difficile
-            scheduleFakeAlarms();
-
-            currentTimer = setInterval(() => {
-                timeLeft--;
-
-                if (timeLeft <= 0) {
-                    clearInterval(currentTimer);
-                    hardTimeUp();
-                }
-            }, 1000);
-        }
-
-        // Time's up for simple mode
-        function timeUp() {
-            // Show blue screen
-            showBlueScreen();
-        }
-
-        // Time's up for hard mode
-        function hardTimeUp() {
-            // Arrêter les fausses alarmes
-            if (fakeAlarmTimer) {
-                clearTimeout(fakeAlarmTimer);
+            if (timeLeft <= 0) {
+                clearInterval(currentTimer);
+                timeUp(question);
             }
+        }, 1000);
+    }
 
-            // 40% de chance d'écran bleu normal, 60% de chance de piège
-            const isNormalScreen = Math.random() < 0.4;
+    // Timer for hard mode
+    function startHardTimer(question) {
+        timeLeft = thinkingTime;
+
+        // Planifier les fausses alarmes pour le mode difficile
+        scheduleFakeAlarms();
+
+        currentTimer = setInterval(() => {
+            timeLeft--;
+
+            if (timeLeft <= 0) {
+                clearInterval(currentTimer);
+                hardTimeUp(question);
+            }
+        }, 1000);
+    }
+
+    // Time's up for simple mode
+    function timeUp(question) {
+        // Show blue screen
+        showBlueScreen(question);
+    }
+
+    // Time's up for hard mode
+    function hardTimeUp(question) {
+        // Arrêter les fausses alarmes
+        if (fakeAlarmTimer) {
+            clearTimeout(fakeAlarmTimer);
+        }
+
+        // 40% de chance d'écran bleu normal, 60% de chance de piège
+        const isNormalScreen = Math.random() < 0.4;
+        
+        if (isNormalScreen) {
+            // Écran bleu normal avec vrai buzzer
+            showHardBlueScreen(question);
+        } else {
+            // Piège : soit écran rouge, soit autre couleur avec faux buzzer
+            const isRedTrick = Math.random() < 0.5;
             
-            if (isNormalScreen) {
-                // Écran bleu normal avec vrai buzzer
-                showHardBlueScreen();
+            if (isRedTrick) {
+                showRedScreen(question);
             } else {
-                // Piège : soit écran rouge, soit autre couleur avec faux buzzer
-                const isRedTrick = Math.random() < 0.5;
-                
-                if (isRedTrick) {
-                    showRedScreen();
-                } else {
-                    showColorTrickScreen();
-                }
+                showColorTrickScreen(question);
             }
         }
+    }
 
-        // Show blue screen for simple mode
-        function showBlueScreen() {
-            gameView.classList.add('blue-screen');
-            statusMessage.textContent = "Slap and tell!";
-            statusMessage.className = 'blue-screen-message';
-            
-            // Jouer le vrai buzzer automatiquement
-            setTimeout(() => {
-                playRealBuzzer();
-            }, 100);
-            
-            // After blueScreenTime seconds, show the answer
-            setTimeout(() => {
-                showCorrectAnswer();
-            }, blueScreenTime * 1000);
-        }
+    // Show blue screen for simple mode
+    function showBlueScreen(question) {
+        gameView.classList.remove('waiting');
+        gameView.classList.add('blue-screen');
+        statusMessage.textContent = "Slap and tell!";
+        statusMessage.className = 'blue-screen-message';
+        
+        // Jouer le vrai buzzer automatiquement
+        setTimeout(() => {
+            playRealBuzzer();
+        }, 100);
+        
+        // After blueScreenTime seconds, show the answer
+        setTimeout(() => {
+            showCorrectAnswer(question);
+        }, blueScreenTime * 1000);
+    }
 
-        // Show blue screen for hard mode
-        function showHardBlueScreen() {
-            hardGameView.classList.add('blue-screen');
-            hardStatusMessage.textContent = "SLAP AND TELL!";
-            hardStatusMessage.className = 'blue-screen-message';
-            
-            isBlueScreenActive = true;
-            canAnswer = true;
-            
-            // Jouer le vrai buzzer automatiquement
-            setTimeout(() => {
-                playRealBuzzer();
-            }, 100);
-            
-            // Enable answer selection
+    // Show blue screen for hard mode
+    function showHardBlueScreen(question) {
+        hardGameView.classList.remove('waiting');
+        hardGameView.classList.add('blue-screen');
+        hardStatusMessage.textContent = "SLAP AND TELL!";
+        hardStatusMessage.className = 'blue-screen-message';
+        
+        isBlueScreenActive = true;
+        canAnswer = true;
+        
+        // Jouer le vrai buzzer automatiquement
+        setTimeout(() => {
+            playRealBuzzer();
+        }, 100);
+        
+        // Enable answer selection for MCQ questions
+        if (question.type === 'mcq') {
             const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
             answerElements.forEach(element => {
                 element.classList.remove('disabled');
                 element.classList.add('selectable');
             });
+        }
+        
+        // After blueScreenTime seconds, disable answering and show correct answer
+        setTimeout(() => {
+            canAnswer = false;
+            isBlueScreenActive = false;
+            showHardCorrectAnswer(question);
+        }, blueScreenTime * 1000);
+    }
+
+    // Show red screen (trick) for hard mode
+    function showRedScreen(question) {
+        hardGameView.classList.remove('waiting');
+        hardGameView.classList.add('red-screen');
+        hardStatusMessage.textContent = "⏰ Time's up!";
+        hardStatusMessage.className = 'red-screen-message';
+        trickMessage.textContent = "⚠️ TRICK! Wait for the BLUE screen!";
+        
+        // After a shorter time, switch to blue screen
+        setTimeout(() => {
+            hardGameView.classList.remove('red-screen');
+            hardGameView.classList.add('blue-screen');
+            hardStatusMessage.className = 'blue-screen-message';
+            trickMessage.textContent = "";
             
-            // After blueScreenTime seconds, disable answering and show correct answer
+            // Enable answering on blue screen
+            isBlueScreenActive = true;
+            canAnswer = true;
+            
+            // Jouer le vrai buzzer
+            playRealBuzzer();
+            
+            // Enable answer selection for MCQ questions
+            if (question.type === 'mcq') {
+                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+                answerElements.forEach(element => {
+                    element.classList.remove('disabled');
+                    element.classList.add('selectable');
+                });
+            }
+            
+            // Then show the answer after the remaining time
             setTimeout(() => {
                 canAnswer = false;
                 isBlueScreenActive = false;
-                showHardCorrectAnswer();
-            }, blueScreenTime * 1000);
-        }
+                showHardCorrectAnswer(question);
+            }, (blueScreenTime - 1.5) * 1000);
+        }, 1500);
+    }
 
-        // Show red screen (trick) for hard mode
-        function showRedScreen() {
-            hardGameView.classList.add('red-screen');
-            hardStatusMessage.textContent = "⏰ Time's up!";
-            hardStatusMessage.className = 'red-screen-message';
-            trickMessage.textContent = "⚠️ TRICK! Wait for the BLUE screen!";
-            
-            // After a shorter time, switch to blue screen
-            setTimeout(() => {
-                hardGameView.classList.remove('red-screen');
-                hardGameView.classList.add('blue-screen');
-                hardStatusMessage.className = 'blue-screen-message';
-                trickMessage.textContent = "";
-                
-                // Enable answering on blue screen
-                isBlueScreenActive = true;
-                canAnswer = true;
-                
-                // Jouer le vrai buzzer
-                playRealBuzzer();
-                
-                // Enable answer selection
-                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-                answerElements.forEach(element => {
-                    element.classList.remove('disabled');
-                    element.classList.add('selectable');
-                });
-                
-                // Then show the answer after the remaining time
-                setTimeout(() => {
-                    canAnswer = false;
-                    isBlueScreenActive = false;
-                    showHardCorrectAnswer();
-                }, (blueScreenTime - 1.5) * 1000);
-            }, 1500);
-        }
-
-        // Nouvelle fonction pour l'écran de piège avec couleur aléatoire
-        function showColorTrickScreen() {
-            // Choisir une couleur aléatoire
-            const trickColor = getRandomTrickColor();
-            
-            // Appliquer la couleur à l'écran
-            hardGameView.style.background = trickColor;
-            hardStatusMessage.textContent = "⏰ Time's up!";
-            hardStatusMessage.className = 'red-screen-message';
-            trickMessage.textContent = "⚠️ TRICK! Wrong color!";
-            
-            // Jouer un faux buzzer aléatoire
-            setTimeout(() => {
-                playRandomFakeBuzzer();
-            }, 100);
-            
-            // Après un court délai, passer à l'écran bleu
-            setTimeout(() => {
-                hardGameView.style.background = '';
-                hardGameView.classList.add('blue-screen');
-                hardStatusMessage.className = 'blue-screen-message';
-                trickMessage.textContent = "";
-                
-                // Enable answering on blue screen
-                isBlueScreenActive = true;
-                canAnswer = true;
-                
-                // Jouer le vrai buzzer
-                playRealBuzzer();
-                
-                // Enable answer selection
-                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-                answerElements.forEach(element => {
-                    element.classList.remove('disabled');
-                    element.classList.add('selectable');
-                });
-                
-                // Then show the answer after the remaining time
-                setTimeout(() => {
-                    canAnswer = false;
-                    isBlueScreenActive = false;
-                    showHardCorrectAnswer();
-                }, (blueScreenTime - 1.5) * 1000);
-            }, 1500);
-        }
-
-        // Show correct answer for simple mode
-        function showCorrectAnswer() {
-            const question = sampleQuestions[currentQuestionIndex - 1];
-            
-            // Mark the correct answer
-            const answerElements = answersDisplay.querySelectorAll('.answer-item');
-            question.answers.forEach((answer, index) => {
-                if (answer.correct) {
-                    answerElements[index].className = 'answer-item correct';
-                }
-            });
-
-            statusMessage.textContent = "Tap to continue.";
-            statusMessage.className = 'status-message thinking';
-            gameView.classList.remove('blue-screen');
-            nextButton.style.display = 'block';
-        }
-
-        // Show correct answer for hard mode
-        function showHardCorrectAnswer() {
-            const question = sampleQuestions[currentQuestionIndex - 1];
-            
-            // Mark the correct answer
-            const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-            question.answers.forEach((answer, index) => {
-                if (answer.correct) {
-                    answerElements[index].className = 'answer-item correct';
-                }
-            });
-
-            hardStatusMessage.textContent = "Tap to continue.";
-            hardStatusMessage.className = 'status-message thinking';
-            hardGameView.classList.remove('blue-screen');
-            hardGameView.classList.remove('red-screen');
-            hardNextButton.style.display = 'block';
-            penaltyMessage.textContent = "";
-            trickMessage.textContent = "";
-        }
-
-        // Next question for simple mode
-        function nextQuestion() {
-            startNewQuestion();
-        }
-
-        // Next question for hard mode
-        function nextHardQuestion() {
-            startNewHardQuestion();
-        }
-
-        // Handle logo loading and splash screen
-        function handleLogoLoad() {
-            setTimeout(() => {
-                showView('sound-on-screen');
-            }, 3000);
-        }
-
-        function handleLogoError() {
-            splashLogo.style.display = 'none';
-            document.querySelector('.splash-text').textContent = 'EL BEEPER';
-            setTimeout(() => {
-                showView('sound-on-screen');
-            }, 3000);
-        }
-
-        // Set up logo event listeners
-        splashLogo.onload = handleLogoLoad;
-        splashLogo.onerror = handleLogoError;
-        menuLogo.onerror = function() {
-            menuLogo.style.display = 'none';
-        };
+    // Nouvelle fonction pour l'écran de piège avec couleur aléatoire
+    function showColorTrickScreen(question) {
+        hardGameView.classList.remove('waiting');
+        // Choisir une couleur aléatoire
+        const trickColor = getRandomTrickColor();
         
-        // Set up team logo event listeners
-        splashTeamLogo.onerror = function() {
-            splashTeamLogo.style.display = 'none';
-        };
-        menuTeamLogo.onerror = function() {
-            menuTeamLogo.style.display = 'none';
-        };
+        // Appliquer la couleur à l'écran
+        hardGameView.style.background = trickColor;
+        hardStatusMessage.textContent = "⏰ Time's up!";
+        hardStatusMessage.className = 'red-screen-message';
+        trickMessage.textContent = "⚠️ TRICK! Wrong color!";
+        
+        // Jouer un faux buzzer aléatoire
+        setTimeout(() => {
+            playRandomFakeBuzzer();
+        }, 100);
+        
+        // Après un court délai, passer à l'écran bleu
+        setTimeout(() => {
+            hardGameView.style.background = '';
+            hardGameView.classList.add('blue-screen');
+            hardStatusMessage.className = 'blue-screen-message';
+            trickMessage.textContent = "";
+            
+            // Enable answering on blue screen
+            isBlueScreenActive = true;
+            canAnswer = true;
+            
+            // Jouer le vrai buzzer
+            playRealBuzzer();
+            
+            // Enable answer selection for MCQ questions
+            if (question.type === 'mcq') {
+                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+                answerElements.forEach(element => {
+                    element.classList.remove('disabled');
+                    element.classList.add('selectable');
+                });
+            }
+            
+            // Then show the answer after the remaining time
+            setTimeout(() => {
+                canAnswer = false;
+                isBlueScreenActive = false;
+                showHardCorrectAnswer(question);
+            }, (blueScreenTime - 1.5) * 1000);
+        }, 1500);
+    }
 
-        // Set up sound on icon event listener
-        soundOnIcon.onerror = function() {
-            soundOnIcon.style.display = 'none';
-            document.querySelector('.sound-on-title').innerHTML = '🔊 TURN YOUR SOUND ON!';
-        };
-
-        // Check if logo has already loaded
-        if (splashLogo.complete) {
-            handleLogoLoad();
+    // Show correct answer for simple mode
+    function showCorrectAnswer(question) {
+        // Mark the correct answer
+        const answerElements = answersDisplay.querySelectorAll('.answer-item');
+        
+        if (question.type === 'mcq') {
+            // For MCQ, highlight the correct answer
+            answerElements[question.correctIndex].className = 'answer-item correct';
+        } else {
+            // For open questions, show the expected answer
+            answerElements[0].className = 'answer-item correct';
+            answerElements[0].textContent = `Correct answer: ${question.answer}`;
         }
-    </script>
-</body>
-</html>
+
+        statusMessage.textContent = "Tap to continue.";
+        statusMessage.className = 'status-message thinking';
+        gameView.classList.remove('blue-screen');
+        nextButton.style.display = 'block';
+    }
+
+    // Show correct answer for hard mode
+    function showHardCorrectAnswer(question) {
+        // Mark the correct answer
+        const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
+        
+        if (question.type === 'mcq') {
+            // For MCQ, highlight the correct answer
+            answerElements[question.correctIndex].className = 'answer-item correct';
+        } else {
+            // For open questions, show the expected answer
+            answerElements[0].className = 'answer-item correct';
+            answerElements[0].textContent = `Correct answer: ${question.answer}`;
+        }
+
+        hardStatusMessage.textContent = "Tap to continue.";
+        hardStatusMessage.className = 'status-message thinking';
+        hardGameView.classList.remove('blue-screen');
+        hardGameView.classList.remove('red-screen');
+        hardNextButton.style.display = 'block';
+        penaltyMessage.textContent = "";
+        trickMessage.textContent = "";
+    }
+
+    // Next question for simple mode
+    function nextQuestion() {
+        startNewQuestion();
+    }
+
+    // Next question for hard mode
+    function nextHardQuestion() {
+        startNewHardQuestion();
+    }
+
+    // Handle logo loading and splash screen
+    function handleLogoLoad() {
+        // Load questions first, then proceed to sound screen
+        loadQuestions().then(() => {
+            setTimeout(() => {
+                showView('sound-on-screen');
+            }, 3000);
+        });
+    }
+
+    function handleLogoError() {
+        splashLogo.style.display = 'none';
+        document.querySelector('.splash-text').textContent = 'EL BEEPER';
+        // Load questions even if logo fails
+        loadQuestions().then(() => {
+            setTimeout(() => {
+                showView('sound-on-screen');
+            }, 3000);
+        });
+    }
+
+    // Set up logo event listeners
+    splashLogo.onload = handleLogoLoad;
+    splashLogo.onerror = handleLogoError;
+    menuLogo.onerror = function() {
+        menuLogo.style.display = 'none';
+    };
+    
+    // Set up team logo event listeners
+    splashTeamLogo.onerror = function() {
+        splashTeamLogo.style.display = 'none';
+    };
+    menuTeamLogo.onerror = function() {
+        menuTeamLogo.style.display = 'none';
+    };
+
+    // Set up sound on icon event listener
+    soundOnIcon.onerror = function() {
+        soundOnIcon.style.display = 'none';
+        document.querySelector('.sound-on-title').innerHTML = '🔊 TURN YOUR SOUND ON!';
+    };
+
+    // Check if logo has already loaded
+    if (splashLogo.complete) {
+        handleLogoLoad();
+    }
+</script>
