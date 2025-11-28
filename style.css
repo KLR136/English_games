@@ -491,7 +491,6 @@ body {
 .beep-btn {
     color: black;
     background: #F6ECD1;
-    padding: 20px 30px;
     border: 2px solid black;
     border-radius: 15px;
     font-size: 20px;
@@ -841,7 +840,6 @@ body {
 /* S'assurer que le conteneur principal des règles a le bon fond */
 #rules-view .menu-container {
     background: #F6ECD1 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Forcer tout le texte des règles à être noir */
@@ -934,5 +932,4 @@ body {
 /* Correction spécifique pour la vue des règles */
 #rules-view .menu-container {
     background: #F6ECD1 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
