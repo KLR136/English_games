@@ -248,6 +248,28 @@
         </div>
     </div>
 
+    <!-- Quiz Question View -->
+    <div class="view" id="quiz-question-view">
+        <div class="back-btn-container">
+            <button class="back-btn" onclick="showView('main-menu')">← Back to Menu</button>
+        </div>
+        <div class="quiz-container">
+            <div class="quiz-progress">Q 1/20</div>
+            <div class="quiz-category">Personality</div>
+            <div class="quiz-question">Who created Facebook?</div>
+            
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectQuizOption(this)">A. Mark Zuckerberg</div>
+                <div class="quiz-option" onclick="selectQuizOption(this)">B. Reid Hoffman</div>
+                <div class="quiz-option" onclick="selectQuizOption(this)">C. Hannah Montana</div>
+            </div>
+            
+            <button class="quiz-action-button" onclick="revealQuizAnswer()">SLAP AND TELL</button>
+            
+            <div class="quiz-slap-tell">SLAP AND TELL</div>
+        </div>
+    </div>
+
     <!-- Game Over View -->
     <div class="view" id="game-over-view">
         <div class="back-btn-container">
@@ -802,6 +824,39 @@
             }, (blueScreenTime - 1.5) * 1000);
         }, 1500);
     }
+    
+    // Functions for quiz question view
+function selectQuizOption(optionElement) {
+    // Retirer la sélection précédente
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Sélectionner l'option actuelle
+    optionElement.classList.add('selected');
+}
+
+function revealQuizAnswer() {
+    const selectedOption = document.querySelector('.quiz-option.selected');
+    if (!selectedOption) {
+        alert('Please select an answer first!');
+        return;
+    }
+    
+    // Ici vous pouvez ajouter la logique pour révéler la bonne réponse
+    // Pour l'instant, on simule juste une action
+    console.log('Answer selected:', selectedOption.textContent);
+    
+    // Exemple: passer à la question suivante après un délai
+    setTimeout(() => {
+        // showNextQuizQuestion();
+    }, 2000);
+}
+
+// Pour naviguer vers la vue quiz depuis le menu principal
+function showQuizView() {
+    showView('quiz-question-view');
+}
 
     // Nouvelle fonction pour l'écran de piège avec couleur aléatoire
     function showColorTrickScreen(question) {
