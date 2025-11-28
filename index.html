@@ -184,16 +184,16 @@
 
     </div>
 
-    <!-- Simple Game View -->
+        <!-- Simple Game View -->
     <div class="view game-view" id="simple-game-view">
         <div class="back-btn-container">
             <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
         </div>
         <div class="game-container">
-            <h1>Simple Mode</h1>
+            <!-- Le titre h1 a été retiré -->
             
             <div class="question-display" id="questionDisplay">
-                The question will appear here...
+                <!-- La question sera générée dynamiquement -->
             </div>
 
             <div class="answers-display" id="answersDisplay">
@@ -218,10 +218,10 @@
             <button class="back-btn" onclick="returnToMenu()">← Back to Menu</button>
         </div>
         <div class="game-container">
-            <h1>Hard Mode</h1>
+            <!-- Le titre h1 a été retiré -->
             
             <div class="question-display" id="hardQuestionDisplay">
-                The question will appear here...
+                <!-- La question sera générée dynamiquement -->
             </div>
 
             <div class="answers-display" id="hardAnswersDisplay">
@@ -518,7 +518,7 @@
         startNewHardQuestion();
     }
 
-    // Start a new question for simple mode
+        // Start a new question for simple mode
     function startNewQuestion() {
         const question = getRandomQuestion();
         
@@ -530,8 +530,26 @@
             return;
         }
 
-        // Display the question
-        questionDisplay.textContent = question.text;
+        // Create question header with category and points
+        const questionHeader = document.createElement('div');
+        questionHeader.className = 'question-header';
+        questionHeader.innerHTML = `
+            <div class="question-category">${question.category}</div>
+            <div class="question-points">${question.points} pts</div>
+        `;
+
+        // Create question content with icon and text
+        const questionContent = document.createElement('div');
+        questionContent.className = 'question-content';
+        questionContent.innerHTML = `
+            <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
+            <div class="question-text">${question.text}</div>
+        `;
+
+        // Clear and rebuild the display
+        questionDisplay.innerHTML = '';
+        questionDisplay.appendChild(questionHeader);
+        questionDisplay.appendChild(questionContent);
         
         // Display answers based on question type
         answersDisplay.innerHTML = '';
@@ -582,8 +600,26 @@
         penaltyMessage.textContent = '';
         trickMessage.textContent = '';
 
-        // Display the question
-        hardQuestionDisplay.textContent = question.text;
+        // Create question header with category and points
+        const questionHeader = document.createElement('div');
+        questionHeader.className = 'question-header';
+        questionHeader.innerHTML = `
+            <div class="question-category">${question.category}</div>
+            <div class="question-points">${question.points} pts</div>
+        `;
+
+        // Create question content with icon and text
+        const questionContent = document.createElement('div');
+        questionContent.className = 'question-content';
+        questionContent.innerHTML = `
+            <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
+            <div class="question-text">${question.text}</div>
+        `;
+
+        // Clear and rebuild the display
+        hardQuestionDisplay.innerHTML = '';
+        hardQuestionDisplay.appendChild(questionHeader);
+        hardQuestionDisplay.appendChild(questionContent);
         
         // Display answers based on question type
         hardAnswersDisplay.innerHTML = '';
