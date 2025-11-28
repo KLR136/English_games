@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL BEEPER Game</title>
+    <link rel="stylesheet" href="style.css">
 <body>
-    <!-- Orientation Message -->
-    <div class="orientation-message" id="orientation-message">
-        <div class="orientation-icon">📱</div>
-        <div class="orientation-text">Please rotate your device</div>
-        <div class="orientation-subtext">This game works best in landscape mode</div>
-    </div>
-
     <!-- Background Music -->
     <audio id="backgroundMusic" loop>
         <source src="audio/background_music.mp3" type="audio/mpeg">
@@ -16,18 +14,6 @@
     <!-- Audio Elements -->
     <audio id="bipSound" preload="auto">
         <source src="audio/beepers/correct/real_buzzer.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound1" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound2" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_2.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound3" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_3.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="fakebipSound4" preload="auto">
-        <source src="audio/beepers/incorrect/fake_buzzer_4.mp3" type="audio/mpeg">
     </audio>
     <audio id="ambienceMusic" preload="auto"></audio>
     <audio id="errorSound" preload="auto"></audio>
@@ -38,7 +24,7 @@
     <div class="view active" id="splash-screen">
         <div class="splash-container">
             <img src="images/game_logo.png" alt="EL BEEPER Logo" class="splash-logo" id="splashLogo">
-            <div class="splash-text">Loading test 8...</div>
+            <div class="splash-text">Loading test 7...</div>
             <img src="images/team_logo.png" alt="Team Logo" class="splash-team-logo" id="splashTeamLogo">
         </div>
     </div>
@@ -247,25 +233,6 @@
     </div>
 
     <script>
-        // Orientation Detection
-        function checkOrientation() {
-            const orientationMessage = document.getElementById('orientation-message');
-            const isPortrait = window.innerHeight > window.innerWidth;
-            
-            if (isPortrait && window.innerWidth < 768) {
-                orientationMessage.classList.add('active');
-            } else {
-                orientationMessage.classList.remove('active');
-            }
-        }
-
-        // Initial check
-        checkOrientation();
-
-        // Listen for orientation changes
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
-
         // Game variables
         let currentTimer;
         let timeLeft;
@@ -317,53 +284,13 @@
             });
         }
 
-        // Fonction pour jouer le vrai buzzer quand l'écran devient bleu
-        function playRealBuzzer() {
-            const realBuzzer = document.getElementById('bipSound');
-            realBuzzer.currentTime = 0;
-            realBuzzer.play().catch(e => {
-                console.log("Real buzzer error:", e);
-            });
-        }
-
-        // Fonction pour jouer un faux buzzer aléatoire
-        function playRandomFakeBuzzer() {
-            const fakeBuzzers = [
-                document.getElementById('fakebipSound1'),
-                document.getElementById('fakebipSound2'), 
-                document.getElementById('fakebipSound3'),
-                document.getElementById('fakebipSound4')
-            ];
-            
-            // Choisir un buzzer aléatoire
-            const randomIndex = Math.floor(Math.random() * fakeBuzzers.length);
-            const randomFakeBuzzer = fakeBuzzers[randomIndex];
-            
-            randomFakeBuzzer.currentTime = 0;
-            randomFakeBuzzer.play().catch(e => {
-                console.log("Fake buzzer error:", e);
-            });
-        }
-
-        // Fonction pour choisir une couleur aléatoire (autre que bleu et rouge)
-        function getRandomTrickColor() {
-            const trickColors = [
-                '#FFD700', // Or
-                '#32CD32', // Vert lime
-                '#8A2BE2', // Violet
-                '#FF69B4', // Rose
-                '#00CED1', // Turquoise
-                '#FF8C00', // Orange foncé
-                '#9370DB'  // Violet moyen
-            ];
-            
-            const randomIndex = Math.floor(Math.random() * trickColors.length);
-            return trickColors[randomIndex];
-        }
-
-        // Function to play beep sound (pour le bouton dans les règles)
+        // Function to play beep sound
         function playBeepSound() {
-            playRealBuzzer();
+            const bipSound = document.getElementById('bipSound');
+            bipSound.currentTime = 0;
+            bipSound.play().catch(e => {
+                console.log("Beep sound error:", e);
+            });
         }
 
         // Sample questions
@@ -564,21 +491,13 @@
 
         // Time's up for hard mode
         function hardTimeUp() {
-            // 40% de chance d'écran bleu normal, 60% de chance de piège
-            const isNormalScreen = Math.random() < 0.4;
+            // Randomly decide if this will be a trick screen (30% chance)
+            isTrickScreen = Math.random() < 0.3;
             
-            if (isNormalScreen) {
-                // Écran bleu normal avec vrai buzzer
-                showHardBlueScreen();
+            if (isTrickScreen) {
+                showRedScreen();
             } else {
-                // Piège : soit écran rouge, soit autre couleur avec faux buzzer
-                const isRedTrick = Math.random() < 0.5;
-                
-                if (isRedTrick) {
-                    showRedScreen();
-                } else {
-                    showColorTrickScreen();
-                }
+                showHardBlueScreen();
             }
         }
 
@@ -587,11 +506,6 @@
             gameView.classList.add('blue-screen');
             statusMessage.textContent = "Slap and tell!";
             statusMessage.className = 'blue-screen-message';
-            
-            // Jouer le vrai buzzer automatiquement
-            setTimeout(() => {
-                playRealBuzzer();
-            }, 100); // Petit délai pour s'assurer que l'écran est bleu
             
             // After blueScreenTime seconds, show the answer
             setTimeout(() => {
@@ -607,11 +521,6 @@
             
             isBlueScreenActive = true;
             canAnswer = true;
-            
-            // Jouer le vrai buzzer automatiquement
-            setTimeout(() => {
-                playRealBuzzer();
-            }, 100);
             
             // Enable answer selection
             const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
@@ -645,55 +554,6 @@
                 // Enable answering on blue screen
                 isBlueScreenActive = true;
                 canAnswer = true;
-                
-                // Jouer le vrai buzzer
-                playRealBuzzer();
-                
-                // Enable answer selection
-                const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
-                answerElements.forEach(element => {
-                    element.classList.remove('disabled');
-                    element.classList.add('selectable');
-                });
-                
-                // Then show the answer after the remaining time
-                setTimeout(() => {
-                    canAnswer = false;
-                    isBlueScreenActive = false;
-                    showHardCorrectAnswer();
-                }, (blueScreenTime - 1.5) * 1000);
-            }, 1500);
-        }
-
-        // Nouvelle fonction pour l'écran de piège avec couleur aléatoire
-        function showColorTrickScreen() {
-            // Choisir une couleur aléatoire
-            const trickColor = getRandomTrickColor();
-            
-            // Appliquer la couleur à l'écran
-            hardGameView.style.background = trickColor;
-            hardStatusMessage.textContent = "⏰ Time's up!";
-            hardStatusMessage.className = 'red-screen-message';
-            trickMessage.textContent = "⚠️ TRICK! Wrong color!";
-            
-            // Jouer un faux buzzer aléatoire
-            setTimeout(() => {
-                playRandomFakeBuzzer();
-            }, 100);
-            
-            // Après un court délai, passer à l'écran bleu
-            setTimeout(() => {
-                hardGameView.style.background = ''; // Réinitialiser la couleur
-                hardGameView.classList.add('blue-screen');
-                hardStatusMessage.className = 'blue-screen-message';
-                trickMessage.textContent = "";
-                
-                // Enable answering on blue screen
-                isBlueScreenActive = true;
-                canAnswer = true;
-                
-                // Jouer le vrai buzzer
-                playRealBuzzer();
                 
                 // Enable answer selection
                 const answerElements = hardAnswersDisplay.querySelectorAll('.answer-item');
