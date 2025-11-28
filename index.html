@@ -602,8 +602,8 @@
         }
     }
 
-    // Start a new question for simple mode
-    function startNewQuestion() {
+// Start a new question for simple mode
+function startNewQuestion() {
     const question = getRandomQuestion();
     
     if (!question) {
@@ -624,14 +624,17 @@
         <div class="question-category">${question.category}</div>
     `;
 
-    // Create question container with icon, text and points INSIDE the same box
+    // Create question container with icon, text and points INSIDE the same box (no background)
     const questionContainer = document.createElement('div');
     questionContainer.className = 'question-container';
     questionContainer.innerHTML = `
         <div class="question-content">
             <img src="images/simple_mode_icon.png" alt="Simple Mode" class="mode-icon-small">
             <div class="question-text">${question.text}</div>
-            <div class="question-points">${question.points}</div>
+            <div class="question-points">
+                <span class="points-icon">📁</span>
+                ${question.points} files
+            </div>
         </div>
     `;
 
@@ -671,7 +674,6 @@
     startTimer(question);
 }
 
-    
 // Start a new question for hard mode
 function startNewHardQuestion() {
     const question = getRandomQuestion();
@@ -702,14 +704,17 @@ function startNewHardQuestion() {
         <div class="question-category">${question.category}</div>
     `;
 
-    // Create question container with icon, text and points INSIDE the same box
+    // Create question container with icon, text and points INSIDE the same box (no background)
     const questionContainer = document.createElement('div');
     questionContainer.className = 'question-container';
     questionContainer.innerHTML = `
         <div class="question-content">
             <img src="images/hard_mode_icon.png" alt="Hard Mode" class="mode-icon-small">
             <div class="question-text">${question.text}</div>
-            <div class="question-points">${question.points}</div>
+            <div class="question-points">
+                <span class="points-icon">📁</span>
+                ${question.points} files
+            </div>
         </div>
     `;
 

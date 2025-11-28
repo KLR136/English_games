@@ -965,11 +965,9 @@ body {
     gap: 20px;
     position: relative;
     min-height: 120px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
     padding: 25px;
-    border: 3px solid rgba(255, 255, 255, 0.2);
     width: 100%;
+    /* Pas de background - transparent */
 }
 
 .mode-icon-small {
@@ -989,23 +987,21 @@ body {
 }
 
 .question-points {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #FBB728;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 12px 18px;
-    border-radius: 50%;
-    min-width: 70px;
-    height: 70px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 3px solid #FBB728;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    z-index: 3;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FBB728;
+    padding: 8px 15px;
+    border-radius: 20px;
+    /* Même background que le reste de l'interface */
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #FBB728;
+}
+
+.points-icon {
+    font-size: 18px;
 }
 
 /* Cacher les titres Simple Mode/Hard Mode */
